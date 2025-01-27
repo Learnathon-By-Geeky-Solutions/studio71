@@ -1,20 +1,25 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public class PlayerAttack : MonoBehaviour
+/// <summary>
+/// Controls Attack command of the player.
+/// </summary>
+namespace Player
 {
-    [SerializeField] private Gun _equippedGun;
-    // Start is called once before the first execution of Update after the MonoBehaviour is create
-    public void OnFire(InputAction.CallbackContext trigger)
+    public class PlayerAttack : MonoBehaviour
     {
-        if (_equippedGun == null) { print($"No gun equipped on {gameObject.name}"); return; }
-        if (trigger.started || trigger.performed)
+        [SerializeField] private Weapon.Gun _equippedGun;
+        // Start is called once before the first execution of Update after the MonoBehaviour is create
+        public void OnFire(InputAction.CallbackContext trigger)
         {
-            _equippedGun.StartShooting();
+            if (_equippedGun == null) { print($"No gun equipped on {gameObject.name}"); return; }
+            if (trigger.started || trigger.performed)
+            {
+                _equippedGun.StartShooting();
+            }
+            else if (trigger.canceled)
+            {
+                _equippedGun.StopShooting();
+            }
         }
-        else if(trigger.canceled)
-        { 
-            _equippedGun.StopShooting();        
-        }
-    }    
+    }
 }

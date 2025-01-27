@@ -1,19 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-public class SemiAutomaticGun : Gun
+/// <summary>
+/// Implementation for Semi-Auto Gun.
+/// </summary>
+namespace Weapon
 {
-    private void OnEnable()
+    public class SemiAutomaticGun : Gun
     {
-        Shoot();
-    }
-
-    protected override void Shoot()
-    {
-        if (_isShooting)
+        private void OnEnable()
         {
-            Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
-            _isShooting = false;
+            Shoot();
+        }
+
+        protected override void Shoot()
+        {
+            if (_isShooting)
+            {
+                Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
+                _isShooting = false;
+            }
         }
     }
 }

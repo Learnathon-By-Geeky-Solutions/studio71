@@ -1,20 +1,25 @@
 using UnityEngine;
-
-public class AutomaticGun : Gun
+/// <summary>
+/// Implementation for Automatic Gun.
+/// </summary>
+namespace Weapon
 {
-    private float _nextFireTime;
-
-    private void Update()
+    public class AutomaticGun : Gun
     {
-        if (_isShooting && Time.time >= _nextFireTime)
+        private float _nextFireTime;
+
+        private void Update()
         {
-            Shoot();
-            _nextFireTime = Time.time + 1f / Fire_Rate;
+            if (_isShooting && Time.time >= _nextFireTime)
+            {
+                Shoot();
+                _nextFireTime = Time.time + 1f / Fire_Rate;
+            }
         }
-    }
 
-    protected override void Shoot()
-    {
-        Instantiate(Prefab_Bullet,Fire_Point.position, Fire_Point.rotation);
+        protected override void Shoot()
+        {
+            Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
+        }
     }
 }
