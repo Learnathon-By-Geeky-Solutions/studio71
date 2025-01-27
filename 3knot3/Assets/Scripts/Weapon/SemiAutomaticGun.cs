@@ -1,16 +1,18 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SemiAutomaticGun : Gun
 {
-    private void Update()
+    private void OnEnable()
     {
         Shoot();
     }
-    public override void Shoot()
+
+    protected override void Shoot()
     {
         if (_isShooting)
         {
-            Instantiate(Prefab_Bullert, _firePoint.position, _firePoint.rotation);
+            Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
             _isShooting = false;
         }
     }

@@ -7,6 +7,7 @@ public class PlayerAttack : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is create
     public void OnFire(InputAction.CallbackContext trigger)
     {
+        if (_equippedGun == null) { print($"No gun equipped on {gameObject.name}"); return; }
         if (trigger.started || trigger.performed)
         {
             _equippedGun.StartShooting();

@@ -9,12 +9,12 @@ public class AutomaticGun : Gun
         if (_isShooting && Time.time >= _nextFireTime)
         {
             Shoot();
-            _nextFireTime = Time.time + 1f / _fireRate;
+            _nextFireTime = Time.time + 1f / Fire_Rate;
         }
     }
 
-    public override void Shoot()
+    protected override void Shoot()
     {
-        Instantiate(Prefab_Bullert,_firePoint.position, _firePoint.rotation);
+        Instantiate(Prefab_Bullet,Fire_Point.position, Fire_Point.rotation);
     }
 }

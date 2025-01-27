@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
-
+/// <summary>
+/// Renders a grid on the plane for better visualization.
+/// </summary>
 public class GridRenderer : MonoBehaviour
 {
-    [SerializeField] int _gridSize;
-    [SerializeField] float _cellSize = 1f; // Size of each cell
-
+    [SerializeField] private int _gridSize = 10;
+    [Min(0.1f)]
+    [SerializeField] private float _cellSize = 1f; // Size of each cell
     private void OnDrawGizmos()
     {
         Vector2 gridSize = new Vector2(_gridSize, _gridSize);
