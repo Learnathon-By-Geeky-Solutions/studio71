@@ -43,8 +43,8 @@ namespace Player
             if (Mouse.current == null) return;
             Vector2 MousePosition = Mouse.current.position.ReadValue();
             Ray ray = _mainCamera.ScreenPointToRay(MousePosition);                  // Ray from screen mouse position to world
-                                                                                    // Checks is ray hit the ground
-            if (_groundPlane.Raycast(ray, out float Distance))
+                                                                                   
+            if (_groundPlane.Raycast(ray, out float Distance))                        // Checks is ray hit the ground
             {
 
                 Vector3 mouseWorldPosition = ray.GetPoint(Distance);

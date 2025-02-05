@@ -1022,7 +1022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 651824840845167802, guid: 41810b06532436447b18476e94ed14eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1197,8 +1197,8 @@ GameObject:
   - component: {fileID: 1304813761}
   - component: {fileID: 1304813760}
   - component: {fileID: 1304813759}
-  m_Layer: 0
-  m_Name: Cube (1)
+  m_Layer: 7
+  m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1380,8 +1380,8 @@ GameObject:
   - component: {fileID: 1734772725}
   - component: {fileID: 1734772730}
   - component: {fileID: 1734772729}
-  m_Layer: 0
-  m_Name: Cube
+  m_Layer: 6
+  m_Name: Npc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1402,7 +1402,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1470,7 +1470,7 @@ Transform:
   m_GameObject: {fileID: 1734772724}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.47, y: 1.5, z: 8.66}
+  m_LocalPosition: {x: 4.63, y: 1.5, z: 0.49}
   m_LocalScale: {x: 1, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1732,7 +1732,7 @@ GameObject:
   - component: {fileID: 1881009016}
   - component: {fileID: 1881009015}
   - component: {fileID: 1881009018}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1865,11 +1865,35 @@ MonoBehaviour:
     m_ActionId: fe38af9a-5dd3-460b-9857-ebd0a008fb30
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1881009015}
+        m_TargetAssemblyTypeName: Player.PlayerAttack, Assembly-CSharp
+        m_MethodName: OnFire
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 93b96960-1fea-4d92-a8c7-0138bb140da2
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1881009018}
+        m_TargetAssemblyTypeName: Interaction.InteractionSystem, Assembly-CSharp
+        m_MethodName: Interact
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: f2b2c8c1-2e7b-435d-9bdf-921d745ae81e
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
@@ -1885,7 +1909,19 @@ MonoBehaviour:
     m_ActionId: 98e5c50b-5a88-4d37-ab7e-16e86b8fc5b8
     m_ActionName: 'Player/Previous[/Keyboard/1]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1881009018}
+        m_TargetAssemblyTypeName: Interaction.InteractionSystem, Assembly-CSharp
+        m_MethodName: LayerChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: ef0c98d7-bc7e-4eb8-ac74-8d87532aba1a
     m_ActionName: 'Player/Next[/Keyboard/2]'
   - m_PersistentCalls:
@@ -1998,9 +2034,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1881009006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dca1d0312d319c74aa1bbf5b4e819c7b, type: 3}
+  m_Script: {fileID: 11500000, guid: 953506fa19243b847b4af347e1c0b47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _interactionRadius: 2
 --- !u!1 &2049025125
 GameObject:
   m_ObjectHideFlags: 0

@@ -36,7 +36,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "f2b2c8c1-2e7b-435d-9bdf-921d745ae81e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
@@ -45,7 +45,7 @@
                     "name": "Crouch",
                     "type": "Button",
                     "id": "dbb1f933-d4a6-4b5d-a211-50aaf1bcf5a3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -63,7 +63,7 @@
                     "name": "Previous",
                     "type": "Button",
                     "id": "98e5c50b-5a88-4d37-ab7e-16e86b8fc5b8",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -72,7 +72,7 @@
                     "name": "Next",
                     "type": "Button",
                     "id": "ef0c98d7-bc7e-4eb8-ac74-8d87532aba1a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -81,7 +81,7 @@
                     "name": "Sprint",
                     "type": "Button",
                     "id": "e536a53b-590d-4061-baff-ef9a9757ff9d",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -343,6 +343,17 @@
                 },
                 {
                     "name": "",
+                    "id": "9d111ab5-8e2d-4749-8074-604579d2c696",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "1b2a9e93-c8dc-4dcd-85a0-cb4f20b209a7",
                     "path": "<Keyboard>/leftShift",
                     "interactions": "",
@@ -432,7 +443,7 @@
                 {
                     "name": "",
                     "id": "42deab56-6f8e-4320-a6bb-092a967a9373",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
