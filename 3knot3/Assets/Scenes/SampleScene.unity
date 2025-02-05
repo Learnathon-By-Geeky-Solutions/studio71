@@ -1858,91 +1858,79 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 70ff2e41-f87a-4817-91c6-440220430e2f
+    m_ActionId: 3af6104a-17a7-493e-af78-cd9476eecabb
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 4de0a037-9c26-470e-b2ea-e11309799a20
+    m_ActionId: fe38af9a-5dd3-460b-9857-ebd0a008fb30
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1881009015}
-        m_TargetAssemblyTypeName: PlayerAttack, Assembly-CSharp
-        m_MethodName: OnFire
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: d749c8be-adc5-4558-a15e-ff60320c4be6
+      m_Calls: []
+    m_ActionId: 93b96960-1fea-4d92-a8c7-0138bb140da2
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: a9072c88-12c9-46ab-90da-0302b5e44f76
+    m_ActionId: f2b2c8c1-2e7b-435d-9bdf-921d745ae81e
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ca896943-8aef-44fc-a2eb-6cbb1243b95c
+    m_ActionId: dbb1f933-d4a6-4b5d-a211-50aaf1bcf5a3
     m_ActionName: 'Player/Crouch[/Keyboard/c]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 59f6e24d-156f-401c-98ca-8a21ba60ab52
+    m_ActionId: c1e87166-c5a9-4c21-8762-25e9eac7e99f
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 19cc0f5e-0f5c-46cb-845d-60d953262070
+    m_ActionId: 98e5c50b-5a88-4d37-ab7e-16e86b8fc5b8
     m_ActionName: 'Player/Previous[/Keyboard/1]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: e8a2471b-2b20-4fd1-911b-e1f26861ab52
+    m_ActionId: ef0c98d7-bc7e-4eb8-ac74-8d87532aba1a
     m_ActionName: 'Player/Next[/Keyboard/2]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2d48566f-2e6b-4f44-a415-0027c4ece9de
+    m_ActionId: e536a53b-590d-4061-baff-ef9a9757ff9d
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: a20a51fa-228c-47bf-aae0-a04a4be33bb9
+    m_ActionId: 3704587a-e493-4fca-ab69-8b3acbb43d10
     m_ActionName: 'UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: af0ed41c-67c1-419f-bf33-150df10c9a12
+    m_ActionId: 520a8a0a-c7d8-4654-a3df-d47bcad66cf2
     m_ActionName: 'UI/Submit[/Keyboard/enter]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: aa4ea1ae-9ac6-4151-a6a0-e4561e5f3c99
+    m_ActionId: 0c4643cb-f729-4ab8-9a78-94eeb812935f
     m_ActionName: 'UI/Cancel[/Keyboard/escape]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 91b2cc61-0259-4c6a-bcb0-8bac4a689134
+    m_ActionId: 298d9c8a-4429-4ecc-999a-77cdc3db55ec
     m_ActionName: 'UI/Point[/Mouse/position,/Pen/position]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 42e88b72-b3e6-4a2f-a822-7fd674892789
+    m_ActionId: 6744d77d-e49b-4117-bbfe-ff6b4d233253
     m_ActionName: 'UI/Click[/Mouse/leftButton,/Pen/tip]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: b2ca3a4a-d8b3-42c3-a20f-b876adf37694
+    m_ActionId: 837617eb-08b2-4a87-acad-a03dc58e5c45
     m_ActionName: 'UI/RightClick[/Mouse/rightButton]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 49c9a669-3bc4-4080-b573-f38762873042
+    m_ActionId: b9252a89-1612-4a2c-9bda-84c25d17c061
     m_ActionName: 'UI/MiddleClick[/Mouse/middleButton]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ada26c19-82b4-4916-88d4-f917890ed2a6
+    m_ActionId: 5615afbc-f912-4e2f-af83-a11c14f1737c
     m_ActionName: 'UI/ScrollWheel[/Mouse/scroll]'
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 16fa134d-0858-443f-9041-3e2209140511
+    m_ActionId: 6e5a5af6-4e64-4da8-aeaa-f227ece1f694
     m_ActionName: UI/TrackedDevicePosition
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: f1e7f3e4-cfdc-41a4-aa70-57bf560fb388
+    m_ActionId: 2edab13f-047d-4b2f-acf5-d8c2db83eaa3
     m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
