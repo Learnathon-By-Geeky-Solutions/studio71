@@ -1379,7 +1379,6 @@ GameObject:
   - component: {fileID: 1734772726}
   - component: {fileID: 1734772725}
   - component: {fileID: 1734772730}
-  - component: {fileID: 1734772729}
   m_Layer: 6
   m_Name: Npc
   m_TagString: Untagged
@@ -1476,19 +1475,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1734772729
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734772724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0455cdda472c8f47bfec3ec4a26b718, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trigger: {fileID: 1734772730}
 --- !u!114 &1734772730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1731,6 +1717,7 @@ GameObject:
   - component: {fileID: 1881009017}
   - component: {fileID: 1881009016}
   - component: {fileID: 1881009015}
+  - component: {fileID: 1881009019}
   - component: {fileID: 1881009018}
   m_Layer: 3
   m_Name: Player
@@ -1897,7 +1884,19 @@ MonoBehaviour:
     m_ActionId: f2b2c8c1-2e7b-435d-9bdf-921d745ae81e
     m_ActionName: 'Player/Interact[/Keyboard/e]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1881009019}
+        m_TargetAssemblyTypeName: PlayerCrouch, Assembly-CSharp
+        m_MethodName: Crouch
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: dbb1f933-d4a6-4b5d-a211-50aaf1bcf5a3
     m_ActionName: 'Player/Crouch[/Keyboard/c]'
   - m_PersistentCalls:
@@ -1985,7 +1984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44840ab284ba6d44e9890ed3d38c6a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 4
+  Move_Speed: 5
 --- !u!114 &1881009015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2038,6 +2037,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionRadius: 2
+--- !u!114 &1881009019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881009006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9f78fc03f671543b20c9a96c020e5a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _crouchModifier: 0.3
 --- !u!1 &2049025125
 GameObject:
   m_ObjectHideFlags: 0

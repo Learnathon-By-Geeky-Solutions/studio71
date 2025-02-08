@@ -7,13 +7,12 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] private float _moveSpeed = 1f;
+        public float Move_Speed = 1f;
         private InputAction _moveAction;
 
         // Awake is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
         {
-
             PlayerInput _playerInput = GetComponent<PlayerInput>();
             _moveAction = _playerInput.actions.FindAction("Move");
             if (_playerInput == null) { print($"Input System is missing on {gameObject.name}"); }
@@ -29,7 +28,7 @@ namespace Player
         public void MovePlayer()
         {
             Vector2 Direction = _moveAction.ReadValue<Vector2>();
-            transform.position += new Vector3(Direction.x, 0, Direction.y) * _moveSpeed * Time.deltaTime;
+            transform.position += new Vector3(Direction.x, 0, Direction.y) * Move_Speed * Time.deltaTime;
         }
     }
 }

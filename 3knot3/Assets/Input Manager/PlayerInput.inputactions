@@ -321,17 +321,6 @@
                 },
                 {
                     "name": "",
-                    "id": "4f23c3c7-bcd0-4cbc-8836-d23a4c008eea",
-                    "path": "<Keyboard>/2",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Next",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c8a2b397-038e-4048-ada0-3f2a1af83635",
                     "path": "<Gamepad>/dpad/right",
                     "interactions": "",
@@ -503,7 +492,7 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "520a8a0a-c7d8-4654-a3df-d47bcad66cf2",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -512,7 +501,7 @@
                     "name": "Cancel",
                     "type": "Button",
                     "id": "0c4643cb-f729-4ab8-9a78-94eeb812935f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
