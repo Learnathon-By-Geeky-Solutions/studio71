@@ -19,8 +19,7 @@ namespace Player
         }
         // Update is called once per fixed frame that adheres by Physics System
         void FixedUpdate()
-        {   if(DialogueManager.isActive)
-            return;
+        {
             MovePlayer();
         }
 
