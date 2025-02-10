@@ -7,7 +7,7 @@ namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
-        public float Move_Speed = 1f;
+        public float Move_Speed { get; set; } = 5f;
         private InputAction _moveAction;
 
         // Awake is called once before the first execution of Update after the MonoBehaviour is created
