@@ -7,18 +7,16 @@ namespace Weapon
 {
     public class SemiAutomaticGun : Gun
     {
-        private void OnEnable()
+        private void Update()
         {
             Shoot();
         }
 
         protected override void Shoot()
         {
-            if (_isShooting)
-            {
-                Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
-                _isShooting = false;
-            }
+            if (!IsShooting) return;
+            Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
+            IsShooting = false;
         }
     }
 }

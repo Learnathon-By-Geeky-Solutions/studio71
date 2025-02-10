@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Previous",
+                    "name": "Primary Weapon",
                     "type": "Button",
                     "id": "98e5c50b-5a88-4d37-ab7e-16e86b8fc5b8",
                     "expectedControlType": "",
@@ -69,7 +69,16 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Next",
+                    "name": "Secondary Weapon",
+                    "type": "Button",
+                    "id": "98a3af52-b39a-44d9-be5d-9d2cbec35f5e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Next Action",
                     "type": "Button",
                     "id": "ef0c98d7-bc7e-4eb8-ac74-8d87532aba1a",
                     "expectedControlType": "",
@@ -326,7 +335,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Next",
+                    "action": "Next Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -337,7 +346,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "Next",
+                    "action": "Next Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -414,7 +423,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Previous",
+                    "action": "Primary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -425,7 +434,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Previous",
+                    "action": "Primary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -470,6 +479,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c6e4768f-2197-4fdb-94b8-d6f7304252c9",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Secondary Weapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1c933696-5a9e-4a33-9e16-683d7540c65e",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Secondary Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
