@@ -9,13 +9,14 @@ namespace Player
     public class PlayerCrouch : MonoBehaviour
     {
         private CapsuleCollider _playerCollider;
-        private bool _isCrouching = false;
+        public bool _isCrouching { get; private set; }
         private PlayerMovement _playerMovement;
         [Min(0.1f)]
         [SerializeField] private float _crouchModifier = 1f;
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
         {
+            _isCrouching = false;
             _playerCollider = GetComponent<CapsuleCollider>();
             _playerMovement = GetComponent<PlayerMovement>();
         }

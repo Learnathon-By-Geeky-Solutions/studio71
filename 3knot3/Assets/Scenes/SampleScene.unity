@@ -962,9 +962,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1815195768}
     - target: {fileID: -7066157331538260599, guid: 41810b06532436447b18476e94ed14eb, type: 3}
+      propertyPath: Magazine_Size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -7066157331538260599, guid: 41810b06532436447b18476e94ed14eb, type: 3}
       propertyPath: Prefab_Bullet
       value: 
       objectReference: {fileID: 740028438637745972, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
+    - target: {fileID: -7066157331538260599, guid: 41810b06532436447b18476e94ed14eb, type: 3}
+      propertyPath: <Magazine_Size>k__BackingField
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 470348036605633570, guid: 41810b06532436447b18476e94ed14eb, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -1327,9 +1335,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1815195768}
     - target: {fileID: 4720527046448379773, guid: 1fe64bf3235db9241a0c2a2e58c76fe7, type: 3}
+      propertyPath: Magazine_Size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4720527046448379773, guid: 1fe64bf3235db9241a0c2a2e58c76fe7, type: 3}
       propertyPath: Prefab_Bullet
       value: 
       objectReference: {fileID: 740028438637745972, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
+    - target: {fileID: 4720527046448379773, guid: 1fe64bf3235db9241a0c2a2e58c76fe7, type: 3}
+      propertyPath: <Magazine_Size>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 9191288921441140512, guid: 1fe64bf3235db9241a0c2a2e58c76fe7, type: 3}
       propertyPath: m_LocalScale.x
       value: 2
@@ -1714,6 +1730,8 @@ GameObject:
   - component: {fileID: 1881009016}
   - component: {fileID: 1881009015}
   - component: {fileID: 1881009019}
+  - component: {fileID: 1881009021}
+  - component: {fileID: 1881009022}
   - component: {fileID: 1881009018}
   - component: {fileID: 1881009020}
   m_Layer: 3
@@ -1935,7 +1953,19 @@ MonoBehaviour:
     m_ActionId: ef0c98d7-bc7e-4eb8-ac74-8d87532aba1a
     m_ActionName: 'Player/Next[/Keyboard/2]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1881009021}
+        m_TargetAssemblyTypeName: Player.PlayerSprint, Assembly-CSharp
+        m_MethodName: Sprint
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e536a53b-590d-4061-baff-ef9a9757ff9d
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
@@ -1994,6 +2024,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 98a3af52-b39a-44d9-be5d-9d2cbec35f5e
     m_ActionName: 'Player/Secondary Weapon[/Keyboard/2]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1881009022}
+        m_TargetAssemblyTypeName: Player.PlayerReload, Assembly-CSharp
+        m_MethodName: Reload
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7f2171fb-f1d0-407a-8449-46c5ad494a95
+    m_ActionName: 'Player/Reload[/Keyboard/r]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -2085,6 +2131,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ad2f2e1482b772438712f4cdba1b440, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1881009021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881009006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0691a5496a33f1946b1d132e325c600e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sprintModifier: 1.5
+--- !u!114 &1881009022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1881009006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4154fb2f6206b747b20d367b6ab21fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1949279525 stripped

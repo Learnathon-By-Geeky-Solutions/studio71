@@ -18,10 +18,11 @@ namespace Player
             if (_playerInput == null) { print($"Input System is missing on {gameObject.name}"); }
         }
         // Update is called once per fixed frame that adheres by Physics System
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             MovePlayer();
         }
+        
 
         // Directional Movement Method
         public void MovePlayer()

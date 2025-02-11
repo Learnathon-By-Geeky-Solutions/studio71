@@ -9,6 +9,8 @@ namespace Weapon
         [SerializeField] protected float Fire_Rate;
         [SerializeField] protected Transform Fire_Point;
         [SerializeField] protected GameObject Prefab_Bullet;
+        [field: SerializeField] public int Magazine_Size { get; private set; }
+        public int CurrentMagazineSize { get; set; }
 
         public bool IsShooting { get; protected set; }
         private void Awake()

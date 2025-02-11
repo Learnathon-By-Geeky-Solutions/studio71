@@ -9,18 +9,26 @@ namespace Player
     public class PlayerAttack : MonoBehaviour
     {
 
-        private Gun _equippedGun;
+        public Gun _equippedGun { get; private set; }
+        private void Start()
+        {
+            _equippedGun = GetComponent<PlayerWeaponChange>()._currentEquippedGun;
+        }
         public void OnFire(InputAction.CallbackContext trigger)
         {
             _equippedGun = GetComponent<PlayerWeaponChange>()._currentEquippedGun;
             if (_equippedGun == null) { print($"No gun equipped on {gameObject.name}"); return; }
-            if (trigger.started || trigger.performed)
+
+            if (!gameObject.GetComponent<PlayerSprint>().Is_Sprinting)
             {
-                _equippedGun.StartShooting();
-            }
-            else if (trigger.canceled)
-            {
-                _equippedGun.StopShooting();
+                if (trigger.started || trigger.performed)
+                {
+                    _equippedGun.StartShooting();
+                }
+                else if (trigger.canceled)
+                {
+                    _equippedGun.StopShooting();
+                }
             }
         }
     }
