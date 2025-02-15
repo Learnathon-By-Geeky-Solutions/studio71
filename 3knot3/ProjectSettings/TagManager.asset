@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Weapon
+  - Npc
+  - Interactable
   layers:
   - Default
   - TransparentFX
