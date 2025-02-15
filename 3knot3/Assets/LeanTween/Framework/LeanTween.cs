@@ -2942,7 +2942,7 @@ public class LTBezier {
         int high = (int)this.len;
         int index = 0;
         while (low < high) {
-            index = low + ((int)((high - low) / 2.0f) | 0);
+            index = low + ((int)((high - low) / 2.0f) );
             if (this.arcLengths[index] < targetLength) {
                 low = index + 1;
             } else {
