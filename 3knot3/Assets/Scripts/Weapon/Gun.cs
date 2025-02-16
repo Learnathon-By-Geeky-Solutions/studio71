@@ -9,8 +9,10 @@ namespace Weapon
         [SerializeField] protected float Fire_Rate;
         [SerializeField] protected Transform Fire_Point;
         [SerializeField] protected GameObject Prefab_Bullet;
+        [field: SerializeField] public int Magazine_Size { get; private set; }
+        public int CurrentMagazineSize { get; set; }
 
-        protected bool _isShooting;
+        public bool IsShooting { get; protected set; }
         private void Awake()
         {
             if (Fire_Point == null) { print($"Fire Point not Assigned for{gameObject.name}"); }
@@ -18,7 +20,7 @@ namespace Weapon
         }
         protected abstract void Shoot();
 
-        public void StartShooting() => _isShooting = true;
-        public void StopShooting() => _isShooting = false;
+        public void StartShooting() => IsShooting = true;
+        public void StopShooting() => IsShooting = false;
     }
 }

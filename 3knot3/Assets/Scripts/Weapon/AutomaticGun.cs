@@ -7,13 +7,17 @@ namespace Weapon
     public class AutomaticGun : Gun
     {
         private float _nextFireTime;
-
+        private void Awake()
+        {
+            CurrentMagazineSize = Magazine_Size;
+        }
         private void Update()
         {
-            if (_isShooting && Time.time >= _nextFireTime)
+            if (IsShooting && (Time.time >= _nextFireTime)&&CurrentMagazineSize>0)
             {
                 Shoot();
                 _nextFireTime = Time.time + 1f / Fire_Rate;
+                CurrentMagazineSize -= 1;
             }
         }
 

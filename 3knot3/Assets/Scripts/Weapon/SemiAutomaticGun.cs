@@ -7,18 +7,22 @@ namespace Weapon
 {
     public class SemiAutomaticGun : Gun
     {
-        private void OnEnable()
+        private void Awake()
+        {
+            CurrentMagazineSize = Magazine_Size;
+        }
+        private void Update()
         {
             Shoot();
         }
 
         protected override void Shoot()
         {
-            if (_isShooting)
-            {
+            if (!IsShooting||CurrentMagazineSize <= 0) return;          
                 Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
-                _isShooting = false;
-            }
+                IsShooting = false;
+                CurrentMagazineSize -= 1;
+            
         }
     }
 }
