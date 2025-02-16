@@ -2339,7 +2339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 5
   _rotationSpeed: 5
-  _crouchModifier: 0.3
+  _crouchModifier: 0.4
   _sprintModifier: 1.5
 --- !u!4 &1949279525 stripped
 Transform:
