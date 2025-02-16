@@ -4,6 +4,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Triggers the interaction button when the Tab key is pressed.
 /// </summary>
+namespace Interaction{
 public class InteractionButtonKeyTrigger : MonoBehaviour
 {
     [SerializeField] private Button _interactionButton;
@@ -15,4 +16,5 @@ public class InteractionButtonKeyTrigger : MonoBehaviour
             _interactionButton.onClick.Invoke();
         }
     }
+}
 }

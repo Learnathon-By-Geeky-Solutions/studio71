@@ -1,14 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+namespace UI
+{
+    /// <summary>
+    /// Handles the main menu.
+    /// </summary>      
 public class MainMenu : MonoBehaviour
 {
-    public void PlayGame()
+    public static void PlayGame()
     {
         SceneManager.LoadSceneAsync(1);
     }
-    public void QuitGame()
+    public static void QuitGame()
     {
         Application.Quit();
     }
+}
 }

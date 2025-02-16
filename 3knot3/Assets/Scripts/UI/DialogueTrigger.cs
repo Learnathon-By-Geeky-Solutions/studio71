@@ -1,5 +1,9 @@
 using UnityEngine;
-
+namespace UI.DialogueSystem
+{
+    /// <summary>
+    /// Triggers dialogue when interacted with.
+    /// </summary>
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private Message[] _messages;
@@ -24,4 +28,5 @@ public class Message{
 public class Actor{
     public string Name;
     public Sprite Sprite;
+}
 }

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UI.DialogueSystem; // Replace 'YourNamespace' with the actual namespace where the Npc class is defined
 
 namespace Interaction
 {
@@ -73,7 +74,7 @@ namespace Interaction
         /// <summary>
         /// Starts dialogue with an NPC.
         /// </summary>
-        private void TriggerNpcDialogue(GameObject npc)
+        private static void TriggerNpcDialogue(GameObject npc)
         {
             Debug.Log($"Starting dialogue with {npc.name}");
             if (npc.TryGetComponent(out Npc npcComponent))
@@ -85,7 +86,7 @@ namespace Interaction
         /// <summary>
         /// Handles picking up an interactable item.
         /// </summary>
-        private void HandleItemPickup(GameObject item)
+        private static void HandleItemPickup(GameObject item)
         {
             Debug.Log($"Picked up {item.name}");
             Destroy(item);

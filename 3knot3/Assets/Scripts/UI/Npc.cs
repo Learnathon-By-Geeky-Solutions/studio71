@@ -1,5 +1,6 @@
 using UnityEngine;
 
+namespace UI.DialogueSystem{
 /// <summary>
 /// Represents an NPC with a dialogue trigger.
 /// </summary>
@@ -11,4 +12,5 @@ public class Npc : MonoBehaviour
     {
         _dialogueTrigger?.StartDialogue();
     }
+}
 }

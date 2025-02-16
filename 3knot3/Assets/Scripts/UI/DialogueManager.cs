@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+namespace UI.DialogueSystem
+{
 
 public class DialogueManager : MonoBehaviour
 {
@@ -34,10 +36,6 @@ public void OpenDialogue(Message[] messages, Actor[] actors)
     activeMessageIndex = 0;
     currentActorId = currentMessages[activeMessageIndex].ActorId; // Reset actor ID to ensure proper transition
 
-    // // Clear UI to prevent previous dialogue from appearing
-    // messageText.text = "";
-    // actorNameText.text = "";
-    // actorImage.sprite = null;
 
     IsDialogueOpen = true;
 
@@ -121,4 +119,5 @@ public void OpenDialogue(Message[] messages, Actor[] actors)
     }
         
 
+}
 }
