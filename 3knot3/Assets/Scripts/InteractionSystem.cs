@@ -1,29 +1,27 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-/// <summary>
-/// Controls player interaction.
-/// </summary>
 namespace Interaction
 {
     public class InteractionSystem : MonoBehaviour
     {
         [SerializeField] private float _interactionRadius = 2f; // Interaction distance
-        [SerializeField] private GameObject interactionButton;  // UI Button
-        [SerializeField] private TextMeshProUGUI interactionText; // Button Text
-        
-        private Collider _currentTarget;
-        
+        [SerializeField] private GameObject _interactionButton;  // UI Button
+        [SerializeField] private TextMeshProUGUI _interactionText; // Button Text
 
-        void Update()
-        {  
-            DetectNearestInteractable();
+        private Collider _currentTarget;
+
+        private void Update()
+        {
+            FindNearestInteractable();
         }
 
-        private void DetectNearestInteractable()
-        {   
-            if (DialogueManager.isDialogueOpen) return; // Don't detect new objects during dialogue
+        /// <summary>
+        /// Detects and sets the nearest interactable object.
+        /// </summary>
+        private void FindNearestInteractable()
+        {
+            if (DialogueManager.IsDialogueOpen) return; // Don't detect new objects during dialogue
 
             Collider[] hits = Physics.OverlapSphere(transform.position, _interactionRadius);
             Collider nearest = null;
@@ -45,60 +43,55 @@ namespace Interaction
             if (nearest != null)
             {
                 _currentTarget = nearest;
-                interactionButton.SetActive(true); // Show UI button
+                _interactionButton?.SetActive(true); // Show UI button safely
 
-                if (_currentTarget.CompareTag("Npc"))
-                {
-                    interactionText.text = "Talk"; // Change text for NPCs
-                }
-                else if (_currentTarget.CompareTag("Interactable"))
-                {
-                    interactionText.text = "Pick Up Item"; // Change text for interactables
-                }
+                _interactionText.text = _currentTarget.CompareTag("Npc") ? "Talk" : "Pick Up Item";
             }
             else
             {
                 _currentTarget = null;
-                interactionButton.SetActive(false); // Hide UI button
+                _interactionButton?.SetActive(false); // Hide UI button safely
             }
         }
 
         public void Interact()
-        { 
-            interactionButton.SetActive(false); // Hide button when interaction starts
-            
-            if (_currentTarget != null)
+        {
+            if (_interactionButton != null) _interactionButton.SetActive(false); // Hide button when interaction starts
+
+            if (_currentTarget == null) return;
+
+            if (_currentTarget.CompareTag("Npc"))
             {
-                if (_currentTarget.CompareTag("Npc"))
-                {   
-                    
-                    StartDialogue(_currentTarget.gameObject);
-                }
-                else if (_currentTarget.CompareTag("Interactable"))
-                {   
-                    PickUpItem(_currentTarget.gameObject);
-                }
+                TriggerNpcDialogue(_currentTarget.gameObject);
+            }
+            else if (_currentTarget.CompareTag("Interactable"))
+            {
+                HandleItemPickup(_currentTarget.gameObject);
             }
         }
 
-        private void StartDialogue(GameObject npc)
+        /// <summary>
+        /// Starts dialogue with an NPC.
+        /// </summary>
+        private void TriggerNpcDialogue(GameObject npc)
         {
             Debug.Log($"Starting dialogue with {npc.name}");
-            Npc npcComponent = npc.GetComponent<Npc>();
-            if (npcComponent != null)
+            if (npc.TryGetComponent(out Npc npcComponent))
             {
                 npcComponent.TriggerDialogue();
             }
         }
 
-        private void PickUpItem(GameObject item)
+        /// <summary>
+        /// Handles picking up an interactable item.
+        /// </summary>
+        private void HandleItemPickup(GameObject item)
         {
             Debug.Log($"Picked up {item.name}");
             Destroy(item);
         }
 
-       
-        void OnDrawGizmosSelected()
+        private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, _interactionRadius);

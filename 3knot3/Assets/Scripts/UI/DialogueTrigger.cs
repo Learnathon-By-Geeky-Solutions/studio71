@@ -2,19 +2,26 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    public Message[] messages;
-    public Actor[] actors;
-    public void StartDialogue(){
-        FindFirstObjectByType<DialogueManager>().OpenDialogue(messages, actors);
+    [SerializeField] private Message[] _messages;
+    [SerializeField] private Actor[] _actors;
+
+    public void StartDialogue()
+    {
+        DialogueManager dialogueManager = FindFirstObjectByType<DialogueManager>();
+        if (dialogueManager != null)
+        {
+            dialogueManager.OpenDialogue(_messages, _actors);
+        }
     }
 }
+
 [System.Serializable]
 public class Message{
-    public int actorId;
-    public string message;
+    public int ActorId;
+    public string Dialogue;
 }
 [System.Serializable]
 public class Actor{
-    public string name;
-    public Sprite sprite;
+    public string Name;
+    public Sprite Sprite;
 }

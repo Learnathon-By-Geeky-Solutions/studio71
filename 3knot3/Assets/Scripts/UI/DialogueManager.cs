@@ -1,106 +1,124 @@
-using Microsoft.Unity.VisualStudio.Editor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class DialogueManager : MonoBehaviour
 {
-    public UnityEngine.UI.Image actorImage;
-    public TextMeshProUGUI actorName;
-    public TextMeshProUGUI messageText;
-    public RectTransform backgroundBox;
-    Message[] currentMessages;
-    Actor[] currentActors;
+    [Header("UI Elements")]
+    [SerializeField] private Image actorImage;
+    [SerializeField] private TextMeshProUGUI actorNameText;
+    [SerializeField] private TextMeshProUGUI messageText;
+    [SerializeField] private RectTransform dialogueBox;
 
-    int activeMessages = 0;
-    int currentActorId = -1; // Store the current actor ID
-    public static bool isDialogueOpen = false;
+    private Message[] currentMessages;
+    private Actor[] currentActors;
+    private int activeMessageIndex = 0;
+    private int currentActorId = -1;
+    
+    public static bool IsDialogueOpen { get; private set; } = false;
 
-    public void OpenDialogue(Message[] messages, Actor[] actors)
+    private void Start()
     {
-        currentMessages = messages;
-        currentActors = actors;
-        activeMessages = 0;
-        currentActorId = currentMessages[0].actorId;
-
-        Debug.Log("Opening dialogue with " + messages.Length + " messages and " + actors.Length + " actors");
-
-        LeanTween.scale(backgroundBox, Vector3.one, 0.5f).setEase(LeanTweenType.easeOutBack);
-        DisplayMessage();
+        // Start with dialogue box off-screen (hidden)
+        dialogueBox.localScale = Vector3.zero;
     }
 
-  void DisplayMessage()
+public void OpenDialogue(Message[] messages, Actor[] actors)
 {
-    if (activeMessages < currentMessages.Length)
-    {
-        Message messageToDisplay = currentMessages[activeMessages];
-        Actor actorToDisplay = currentActors[messageToDisplay.actorId];
+    if (messages == null || actors == null || messages.Length == 0) return;
 
-        // Check if the actor has changed
-        if (messageToDisplay.actorId != currentActorId)
+    currentMessages = messages;
+    currentActors = actors;
+    activeMessageIndex = 0;
+    currentActorId = currentMessages[activeMessageIndex].ActorId; // Reset actor ID to ensure proper transition
+
+    // // Clear UI to prevent previous dialogue from appearing
+    // messageText.text = "";
+    // actorNameText.text = "";
+    // actorImage.sprite = null;
+
+    IsDialogueOpen = true;
+
+    Debug.Log($"Opening dialogue with {messages.Length} messages and {actors.Length} actors");
+
+    // Animate dialogue box appearing
+    dialogueBox.DOScale(1, 0.5f).SetEase(Ease.OutBack);
+    DisplayMessage();
+}
+
+
+    private void DisplayMessage()
+    {
+        if (activeMessageIndex >= currentMessages.Length)
         {
-            currentActorId = messageToDisplay.actorId;
-            // Move the dialogue box out and back in from the left
-            LeanTween.moveX(backgroundBox, -backgroundBox.rect.width, 0.25f).setOnComplete(() =>
+            CloseDialogue();
+            return;
+        }
+
+        Message messageToDisplay = currentMessages[activeMessageIndex];
+        Actor actorToDisplay = currentActors[messageToDisplay.ActorId];
+
+        if (messageToDisplay.ActorId != currentActorId)
+        {
+            currentActorId = messageToDisplay.ActorId;
+            float originalX = dialogueBox.position.x;
+
+            // Animate transition when actor changes
+            dialogueBox.DOAnchorPosX(-dialogueBox.rect.width, 0.3f).OnComplete(() =>
             {
                 UpdateDialogueBox(actorToDisplay, messageToDisplay);
-                // Set the starting position just off-screen to the left
-                backgroundBox.anchoredPosition = new Vector2(-backgroundBox.rect.width, backgroundBox.anchoredPosition.y);
-                // Move it to the intended position
-                LeanTween.moveX(backgroundBox, 0, .8f).setEase(LeanTweenType.easeOutBack);
+                dialogueBox.DOMoveX(originalX, 0.5f).SetEase(Ease.OutSine);
             });
         }
         else
         {
             UpdateDialogueBox(actorToDisplay, messageToDisplay);
         }
-
-        isDialogueOpen = true;
     }
-    else
+
+    private void UpdateDialogueBox(Actor actor, Message message)
     {
-        Debug.Log("Dialogue finished");
-
-        LeanTween.scale(backgroundBox, Vector3.zero, 0.5f).setEase(LeanTweenType.easeInBack);
-        isDialogueOpen = false;
-    }
-}
-
-    void UpdateDialogueBox(Actor actorToDisplay, Message messageToDisplay)
-    {
-        actorImage.sprite = actorToDisplay.sprite;
-        actorName.text = actorToDisplay.name;
-        messageText.text = messageToDisplay.message;
-        StartCoroutine(TypeSentence(messageToDisplay.message));
+        actorImage.sprite = actor.Sprite;
+        actorNameText.text = actor.Name;
+        StartCoroutine(TypeText(message.Dialogue));
     }
 
-    IEnumerator TypeSentence(string sentence)
+    private IEnumerator TypeText(string text)
     {
         messageText.text = "";
-        foreach (char letter in sentence.ToCharArray())
+        foreach (char letter in text)
         {
             messageText.text += letter;
-            yield return new WaitForSeconds(0.05f); // Adjust speed here
+            yield return new WaitForSeconds(0.05f); // Adjust typing speed
         }
     }
 
     public void NextMessage()
     {
-        activeMessages++;
+        activeMessageIndex++;
+        StopAllCoroutines();
         DisplayMessage();
     }
 
-    void Start()
+    private void CloseDialogue()
     {
-        backgroundBox.transform.localScale = Vector3.zero;
+        Debug.Log("Dialogue finished");
+
+        dialogueBox.DOScale(0, 0.5f).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            IsDialogueOpen = false;
+        });
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isDialogueOpen)
+        if (Input.GetKeyDown(KeyCode.Space) && IsDialogueOpen)
         {
             NextMessage();
         }
     }
+        
+
 }

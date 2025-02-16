@@ -1,14 +1,14 @@
 using UnityEngine;
 
+/// <summary>
+/// Represents an NPC with a dialogue trigger.
+/// </summary>
 public class Npc : MonoBehaviour
 {
-     public DialogueTrigger trigger;
- 
-     public void TriggerDialogue()
+    [SerializeField] private DialogueTrigger _dialogueTrigger;
+
+    public void TriggerDialogue()
     {
-        if (trigger != null)
-        {
-            trigger.StartDialogue();
-        }
+        _dialogueTrigger?.StartDialogue();
     }
 }

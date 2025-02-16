@@ -349,9 +349,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actorImage: {fileID: 620345313}
-  actorName: {fileID: 524254165}
+  actorNameText: {fileID: 0}
   messageText: {fileID: 1584803973}
-  backgroundBox: {fileID: 541328770}
+  dialogueBox: {fileID: 0}
 --- !u!1 &617328738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,18 +1113,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69f585a3b8983843a5ea2d135779a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messages:
-  - actorId: 1
-    message: Crash done mama
-  - actorId: 0
-    message: Shei mama
-  - actorId: 1
-    message: Ghum dilam
-  actors:
-  - name: 'Noor Mohammad Sheikh:'
-    sprite: {fileID: 21300000, guid: 8d6400e95b6578146a6fc38e9a4c2ab1, type: 3}
-  - name: 'Lieutenant Matiur Rahman:'
-    sprite: {fileID: 21300000, guid: d0a6732b93474c04f94412a2b48f6de3, type: 3}
+  _messages: []
+  _actors: []
 --- !u!114 &1128473995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1137,7 +1127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d965361d70c9049802adabffb8f9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trigger: {fileID: 1128473994}
+  _dialogueTrigger: {fileID: 0}
 --- !u!65 &1128473996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1457,7 +1447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d965361d70c9049802adabffb8f9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trigger: {fileID: 1161922517}
+  _dialogueTrigger: {fileID: 1161922517}
 --- !u!114 &1161922517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1470,18 +1460,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69f585a3b8983843a5ea2d135779a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messages:
-  - actorId: 0
-    message: ' Matiur bachaa!!Amare bachaa'
-  - actorId: 1
-    message: Ami toh nijei control harai felsi
-  - actorId: 0
-    message: Twin tower urai deee taile
-  actors:
-  - name: 'Noor Mohammad Sheikh:'
-    sprite: {fileID: 21300000, guid: 8d6400e95b6578146a6fc38e9a4c2ab1, type: 3}
-  - name: 'Lieutenant Matiur Rahman:'
-    sprite: {fileID: 21300000, guid: d0a6732b93474c04f94412a2b48f6de3, type: 3}
+  _messages:
+  - ActorId: 0
+    Dialogue: Mama bachha amare
+  - ActorId: 1
+    Dialogue: Ami toh nijei crash kormu
+  - ActorId: 0
+    Dialogue: Taile twin tower urai de
+  _actors:
+  - Name: 'Nur Mohammad Sheikh:'
+    Sprite: {fileID: 21300000, guid: 8d6400e95b6578146a6fc38e9a4c2ab1, type: 3}
+  - Name: 'Lieutenant Matiur Rahman:'
+    Sprite: {fileID: 21300000, guid: d0a6732b93474c04f94412a2b48f6de3, type: 3}
 --- !u!1 &1210270444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1542,7 +1532,6 @@ GameObject:
   - component: {fileID: 1304813761}
   - component: {fileID: 1304813760}
   - component: {fileID: 1304813759}
-  - component: {fileID: 1304813763}
   m_Layer: 7
   m_Name: Interactable
   m_TagString: Interactable
@@ -1639,20 +1628,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1304813763
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1304813758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e69f585a3b8983843a5ea2d135779a8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  messages: []
-  actors: []
 --- !u!1 &1500899659
 GameObject:
   m_ObjectHideFlags: 0
@@ -2393,8 +2368,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionRadius: 2
-  interactionButton: {fileID: 2076280497}
-  interactionText: {fileID: 912263725}
+  _interactionButton: {fileID: 2076280497}
+  _interactionText: {fileID: 912263725}
 --- !u!114 &1881009019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2596,7 +2571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06cd2d05e6e1e274985000983c7e5db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionButton: {fileID: 2076280500}
+  _interactionButton: {fileID: 0}
 --- !u!4 &2135275296 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9191288921441140512, guid: 1fe64bf3235db9241a0c2a2e58c76fe7, type: 3}
