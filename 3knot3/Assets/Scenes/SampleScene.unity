@@ -349,9 +349,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actorImage: {fileID: 620345313}
-  actorNameText: {fileID: 0}
+  actorNameText: {fileID: 524254165}
   messageText: {fileID: 1584803973}
-  dialogueBox: {fileID: 0}
+  dialogueBox: {fileID: 541328770}
 --- !u!1 &617328738
 GameObject:
   m_ObjectHideFlags: 0
@@ -403,9 +403,9 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -1113,8 +1113,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69f585a3b8983843a5ea2d135779a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _messages: []
-  _actors: []
+  _messages:
+  - ActorId: 0
+    Dialogue: Hello
+  - ActorId: 1
+    Dialogue: Bye
+  - ActorId: 0
+    Dialogue: Yes
+  _actors:
+  - Name: 'Nur Mohammad Sheikh:'
+    Sprite: {fileID: 21300000, guid: 8d6400e95b6578146a6fc38e9a4c2ab1, type: 3}
+  - Name: 'Lieutenant Matiur Rahman:'
+    Sprite: {fileID: 21300000, guid: d0a6732b93474c04f94412a2b48f6de3, type: 3}
 --- !u!114 &1128473995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1127,7 +1137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d965361d70c9049802adabffb8f9b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dialogueTrigger: {fileID: 0}
+  _dialogueTrigger: {fileID: 1128473994}
 --- !u!65 &1128473996
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1792,7 +1802,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 23.4
+  m_fontSize: 46.8
   m_fontSizeBase: 27
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1985,15 +1995,9 @@ GameObject:
   - component: {fileID: 1881009010}
   - component: {fileID: 1881009009}
   - component: {fileID: 1881009013}
-  - component: {fileID: 1881009014}
-  - component: {fileID: 1881009017}
   - component: {fileID: 1881009016}
-  - component: {fileID: 1881009015}
-  - component: {fileID: 1881009019}
-  - component: {fileID: 1881009021}
-  - component: {fileID: 1881009022}
   - component: {fileID: 1881009018}
-  - component: {fileID: 1881009020}
+  - component: {fileID: 1881009019}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -2130,9 +2134,9 @@ MonoBehaviour:
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1881009015}
-        m_TargetAssemblyTypeName: Player.PlayerAttack, Assembly-CSharp
-        m_MethodName: OnFire
+      - m_Target: {fileID: 1881009019}
+        m_TargetAssemblyTypeName: Player.PlayerInputManager, Assembly-CSharp
+        m_MethodName: Attack
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2163,7 +2167,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1881009019}
-        m_TargetAssemblyTypeName: PlayerCrouch, Assembly-CSharp
+        m_TargetAssemblyTypeName: Player.PlayerInputManager, Assembly-CSharp
         m_MethodName: Crouch
         m_Mode: 0
         m_Arguments:
@@ -2182,8 +2186,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1881009020}
-        m_TargetAssemblyTypeName: Player.PlayerWeaponChange, Assembly-CSharp
+      - m_Target: {fileID: 1881009019}
+        m_TargetAssemblyTypeName: Player.PlayerInputManager, Assembly-CSharp
         m_MethodName: PrimaryWeapon
         m_Mode: 0
         m_Arguments:
@@ -2197,25 +2201,13 @@ MonoBehaviour:
     m_ActionId: 98e5c50b-5a88-4d37-ab7e-16e86b8fc5b8
     m_ActionName: 'Player/Previous[/Keyboard/1]'
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1881009018}
-        m_TargetAssemblyTypeName: Interaction.InteractionSystem, Assembly-CSharp
-        m_MethodName: LayerChange
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: ef0c98d7-bc7e-4eb8-ac74-8d87532aba1a
     m_ActionName: 'Player/Next[/Keyboard/2]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1881009021}
-        m_TargetAssemblyTypeName: Player.PlayerSprint, Assembly-CSharp
+      - m_Target: {fileID: 1881009019}
+        m_TargetAssemblyTypeName: Player.PlayerInputManager, Assembly-CSharp
         m_MethodName: Sprint
         m_Mode: 0
         m_Arguments:
@@ -2270,8 +2262,8 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1881009020}
-        m_TargetAssemblyTypeName: Player.PlayerWeaponChange, Assembly-CSharp
+      - m_Target: {fileID: 1881009019}
+        m_TargetAssemblyTypeName: Player.PlayerInputManager, Assembly-CSharp
         m_MethodName: SecondaryWeapon
         m_Mode: 0
         m_Arguments:
@@ -2286,8 +2278,8 @@ MonoBehaviour:
     m_ActionName: 'Player/Secondary Weapon[/Keyboard/2]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1881009022}
-        m_TargetAssemblyTypeName: Player.PlayerReload, Assembly-CSharp
+      - m_Target: {fileID: 1881009019}
+        m_TargetAssemblyTypeName: Player.PlayerInputManager, Assembly-CSharp
         m_MethodName: Reload
         m_Mode: 0
         m_Arguments:
@@ -2305,30 +2297,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &1881009014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881009006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44840ab284ba6d44e9890ed3d38c6a95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1881009015
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881009006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4f5b22021fc9a6438457bb82455f0c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1881009016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2342,19 +2310,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lineLength: 3
---- !u!114 &1881009017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881009006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53f061274d7b30048ba4f9c121b9d5c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotationSpeed: 5
 --- !u!114 &1881009018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2379,47 +2334,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1881009006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd9f78fc03f671543b20c9a96c020e5a, type: 3}
+  m_Script: {fileID: 11500000, guid: f178459c459ccc14c983dc9604ef4e51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _moveSpeed: 5
+  _rotationSpeed: 5
   _crouchModifier: 0.3
---- !u!114 &1881009020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881009006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ad2f2e1482b772438712f4cdba1b440, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1881009021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881009006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0691a5496a33f1946b1d132e325c600e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   _sprintModifier: 1.5
---- !u!114 &1881009022
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1881009006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4154fb2f6206b747b20d367b6ab21fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1949279525 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 470348036605633570, guid: 41810b06532436447b18476e94ed14eb, type: 3}
@@ -2571,7 +2492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06cd2d05e6e1e274985000983c7e5db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactionButton: {fileID: 0}
+  _interactionButton: {fileID: 2076280500}
 --- !u!4 &2135275296 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9191288921441140512, guid: 1fe64bf3235db9241a0c2a2e58c76fe7, type: 3}
