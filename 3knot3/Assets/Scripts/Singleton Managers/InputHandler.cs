@@ -79,7 +79,7 @@ namespace SingletonManagers
 
         public void ReloadAction(InputAction.CallbackContext context)
         {
-            if (!context.performed)
+            if (context.performed)
             {
                 OnReload?.Invoke();
             }
