@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using SingletonManagers;
 /// <summary>
 /// Manages all Player Input.
 /// </summary>
 namespace Player
 {
-    public class PlayerInputManager : MonoBehaviour
+    public class PlayerController : MonoBehaviour
     {
         // Movement related variables
         [SerializeField] private float _moveSpeed = 5f;
@@ -47,7 +48,12 @@ namespace Player
         }
         private void OnDisable()
         {
-            
+            InputHandler.Instance.OnCrouch -= Crouch;
+            InputHandler.Instance.OnSprint -= Sprint;
+            InputHandler.Instance.OnPrimaryWeapon -= PrimaryWeapon;
+            InputHandler.Instance.OnSecondaryWeapon -= SecondaryWeapon;
+            InputHandler.Instance.OnAttack -= Attack;
+            InputHandler.Instance.OnReload -= Reload;
         }
         private void Awake()
         {

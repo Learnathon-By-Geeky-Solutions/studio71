@@ -1,37 +1,40 @@
 using UnityEngine;
 
-public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
+namespace Singleton
 {
-    private static T _instance;
-    private static readonly object _lock = new object();
-
-    public static T Instance => _instance;
-
-    protected virtual void Awake()
+    public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
     {
-        // Ensure that this instance is the only one
-        if (_instance == null)
-        {
-            _instance = this as T;
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject); // Destroy duplicate
-        }
-    }
+        private static T _instance;
+        private static readonly object _lock = new object();
 
-    public static void Initialize(T instance)
-    {
-        lock (_lock)
+        public static T Instance => _instance;
+
+        protected virtual void Awake()
         {
+            // Ensure that this instance is the only one
             if (_instance == null)
             {
-                _instance = instance;
+                _instance = this as T;
             }
-
-            else
+            else if (_instance != this)
             {
-                Debug.Log($"An instance of {typeof(T).Name} has already been initialized.");
+                Destroy(gameObject); // Destroy duplicate
+            }
+        }
+
+        public static void Initialize(T instance)
+        {
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = instance;
+                }
+
+                else
+                {
+                    Debug.Log($"An instance of {typeof(T).Name} has already been initialized.");
+                }
             }
         }
     }
