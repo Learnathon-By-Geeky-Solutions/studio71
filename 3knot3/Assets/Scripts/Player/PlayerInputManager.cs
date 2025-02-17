@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 /// <summary>
 /// Manages all Player Input.
@@ -10,7 +11,6 @@ namespace Player
         // Movement related variables
         [SerializeField] private float _moveSpeed = 5f;
         private float _currentMoveSpeed = 1f;
-        private InputAction _moveAction;
 
 
         //Look around related variables
@@ -22,7 +22,7 @@ namespace Player
         //Crouch related variables
         private CapsuleCollider _playerCollider;
         private bool _isCrouching;
-        [Min(0.1f)]
+        [Range(0.1f,1f)]
         [SerializeField] private float _crouchModifier = 1f;
 
 
@@ -34,12 +34,24 @@ namespace Player
 
         //Weapon variable
         private Weapon.Gun _equippedGun;
+
+
+        private void OnEnable()
+        {
+            InputHandler.Instance.OnCrouch += Crouch;
+            InputHandler.Instance.OnSprint += Sprint;
+            InputHandler.Instance.OnPrimaryWeapon += PrimaryWeapon;
+            InputHandler.Instance.OnSecondaryWeapon += SecondaryWeapon;
+            InputHandler.Instance.OnAttack += Attack;
+            InputHandler.Instance.OnReload += Reload;
+        }
+        private void OnDisable()
+        {
+            
+        }
         private void Awake()
         {
             //Movement variable initialization
-            PlayerInput _playerInput = GetComponent<PlayerInput>();
-            _moveAction = _playerInput.actions.FindAction("Move");
-            if (_playerInput == null) { print($"Input System is missing on {gameObject.name}"); }
             _currentMoveSpeed = _moveSpeed;
 
 
@@ -94,14 +106,11 @@ namespace Player
 
         private void MovePlayer()
         {
-            Vector2 Direction = _moveAction.ReadValue<Vector2>();
-            transform.position += new Vector3(Direction.x, 0, Direction.y) * _currentMoveSpeed * Time.deltaTime;
+            transform.position += _currentMoveSpeed * Time.deltaTime * new Vector3(InputHandler.Instance.MoveDirection.x, 0, InputHandler.Instance.MoveDirection.y);
         }
         private void LookAround()
         {
-            if (Mouse.current == null) return;
-            Vector2 MousePosition = Mouse.current.position.ReadValue();
-            Ray ray = _mainCamera.ScreenPointToRay(MousePosition);                  // Ray from screen mouse position to world
+            Ray ray = _mainCamera.ScreenPointToRay(InputHandler.Instance.MousePosition);                  // Ray from screen mouse position to world
 
             if (_groundPlane.Raycast(ray, out float Distance))                        // Checks is ray hit the ground
             {
@@ -117,84 +126,81 @@ namespace Player
 
             }
         }
-        public void Crouch(InputAction.CallbackContext context)
+        private void Crouch()
         {
-            if (context.performed)
-            {
-                if (!_isCrouching)
-                {
-                    _playerCollider.height /= 2;
-                    _playerCollider.center = new Vector3(_playerCollider.center.x, -.5f, _playerCollider.center.z);
-                    _isCrouching = true;
-                    _currentMoveSpeed = _moveSpeed * _crouchModifier;
-                }
-                else
-                {
-                    _playerCollider.height *= 2;
-                    _playerCollider.center = new Vector3(_playerCollider.center.x, 0, _playerCollider.center.z);
-                    _isCrouching = false;
-                    if (Keyboard.current.shiftKey.isPressed)
-                    {
-                        _currentMoveSpeed = _moveSpeed * _sprintModifier;
-                    }
-                    else
-                    {
-                        _currentMoveSpeed /= _crouchModifier;
-                    }
-                }
-            }
+                  
+             if (!_isCrouching)
+             {
+                 _playerCollider.height /= 2;
+                 _playerCollider.center = new Vector3(_playerCollider.center.x, -.5f, _playerCollider.center.z);
+                 _isCrouching = true;
+                 _currentMoveSpeed = _moveSpeed * _crouchModifier;
+             }
+             else
+             {
+                 _playerCollider.height *= 2;
+                 _playerCollider.center = new Vector3(_playerCollider.center.x, 0, _playerCollider.center.z);
+                 _isCrouching = false;
+                 if (Keyboard.current.shiftKey.isPressed)
+                 {
+                     _currentMoveSpeed = _moveSpeed * _sprintModifier;
+                 }
+                 else
+                 {
+                     _currentMoveSpeed /= _crouchModifier;
+                 }
+             }
+            
         }
-        public void Sprint(InputAction.CallbackContext context)
+        private void Sprint(bool isPressed)
         {
-            if (context.performed && !_isCrouching)
+            if (isPressed && !_isCrouching)
             {
                 _currentMoveSpeed = _moveSpeed * _sprintModifier;
                 _isSprinting = true;
                 _equippedGun.StopShooting();
             }
-            else if (context.canceled && !_isCrouching)
+            else if (/*context.canceled && */!_isCrouching)
             {
                 _currentMoveSpeed /= _sprintModifier;
                 _isSprinting = false;
             }
         }
-        public void Attack(InputAction.CallbackContext trigger)
+        private void Attack(bool isPressed)
         {
 
             if (!_isSprinting)
             {
-                if (trigger.started || trigger.performed)
+                if (isPressed)
                 {
                     _equippedGun.StartShooting();
                 }
-                else if (trigger.canceled)
+                else
                 {
                     _equippedGun.StopShooting();
                 }
             }
         }
-        public void PrimaryWeapon(InputAction.CallbackContext context)
+        private void PrimaryWeapon()
         {
-            if (context.performed && !_equippedGun.IsShooting)
+            if (!_equippedGun.IsShooting)
             {
                 _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
             }
         }
-        public void SecondaryWeapon(InputAction.CallbackContext context)
+        private void SecondaryWeapon()
         {
-            if (context.performed && !_equippedGun.IsShooting)
+            if (!_equippedGun.IsShooting)
             {
                 _equippedGun = gameObject.GetComponentInChildren<Weapon.SemiAutomaticGun>();
             }
         }
-        public void Reload(InputAction.CallbackContext context)
+        private void Reload()
         {
-            if (context.performed)
-            {
-                _equippedGun.StopShooting();
-                _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size;
-            }
-
+         
+             _equippedGun.StopShooting();
+             _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size;
+            
         }
     }
 }
