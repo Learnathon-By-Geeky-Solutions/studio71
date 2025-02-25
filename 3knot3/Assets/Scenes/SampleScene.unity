@@ -1074,7 +1074,19 @@ MonoBehaviour:
     m_ActionId: 93b96960-1fea-4d92-a8c7-0138bb140da2
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1011247108}
+        m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
+        m_MethodName: InteractAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: f2b2c8c1-2e7b-435d-9bdf-921d745ae81e
     m_ActionName: 'Player/Interact[/Keyboard/tab]'
   - m_PersistentCalls:

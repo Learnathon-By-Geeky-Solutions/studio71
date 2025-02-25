@@ -20,6 +20,7 @@ namespace SingletonManagers
         public event OnActionEvent OnSecondaryWeapon;
         public event OnActionEvent OnCrouch;
         public event OnActionEventBool OnSprint;
+        public event OnActionEvent OnInteract;
 
         private void Start()
         {
@@ -82,6 +83,14 @@ namespace SingletonManagers
             if (context.performed)
             {
                 OnReload?.Invoke();
+            }
+        }
+
+        public void InteractAction(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnInteract?.Invoke();
             }
         }
     }

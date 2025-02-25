@@ -166,7 +166,7 @@ namespace Player
                 _isSprinting = true;
                 _equippedGun.StopShooting();
             }
-            else if (/*context.canceled && */!_isCrouching)
+            else if (!_isCrouching)
             {
                 _currentMoveSpeed /= _sprintModifier;
                 _isSprinting = false;

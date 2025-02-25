@@ -1,20 +1,33 @@
+using SingletonManagers;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
 /// Triggers the interaction button when the Tab key is pressed.
 /// </summary>
-namespace Interaction{
-public class InteractionButtonKeyTrigger : MonoBehaviour
+namespace Interaction
 {
-    [SerializeField] private Button _interactionButton;
-
-    private void Update()
+    public class InteractionButtonKeyTrigger : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && _interactionButton != null)
+        [SerializeField] private Button _interactionButton;
+
+        private void OnEnable()
+        {
+            InputHandler.Instance.OnInteract += Interact;
+        }
+
+        private void OnDisable()
+        {
+            InputHandler.Instance.OnInteract -= Interact;
+        }
+        private void Interact()
         {
             _interactionButton.onClick.Invoke();
         }
+
+
+
+
     }
 }
-}
+
