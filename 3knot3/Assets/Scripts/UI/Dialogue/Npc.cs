@@ -1,8 +1,10 @@
 using UnityEngine;
 
+
 /// <summary>
 /// Represents an NPC with a dialogue trigger.
 /// </summary>
+namespace dialogue{
  public class Npc : MonoBehaviour
     {
         [SerializeField] private TextAsset inkJSON;
@@ -37,3 +39,4 @@ using UnityEngine;
             dialogueManager.StartDialogue(inkJSON);
         }
     }
+}

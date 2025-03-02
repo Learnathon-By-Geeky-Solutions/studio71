@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using dialogue;
 // Replace 'YourNamespace' with the actual namespace where the Npc class is defined
 
 namespace Interaction

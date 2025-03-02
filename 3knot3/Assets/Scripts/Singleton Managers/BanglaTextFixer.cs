@@ -2,16 +2,19 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using Singleton;
 
- public class BanglaTextFixer : MonoBehaviour
+ public class BanglaTextFixer : SingletonPersistent<BanglaTextFixer>
     {
-        public static BanglaTextFixer Instance { get; private set; }
+       
+    
+        public new static BanglaTextFixer Instance { get; private set; }
 
         public string CharacterPrefixFix;
         public List<ReplaceCharacterData> CharacterToReplace;
         public string CharacterToIgnore;
 
-        private void Awake()
+        protected override void Awake()
         {
             if (Instance == null)
             {

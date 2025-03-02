@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using TMPro;
 using System.Collections;
 using DG.Tweening;
-
+using SingletonManagers;
+namespace dialogue{
 public class InkDialogueManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI dialogueText;
@@ -60,7 +61,11 @@ public class InkDialogueManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        
+        InputHandler.Instance.OnInteract += LetsContinueStory;
+    }
+    private void OnDisable()
+    {
+        InputHandler.Instance.OnInteract -= LetsContinueStory;
     }
     void LetsContinueStory()
     {
@@ -248,4 +253,5 @@ public class InkDialogueManager : MonoBehaviour
         IsDialogueOpen = false;
         yield return new WaitForSeconds(animationDuration);
     }
+}
 }
