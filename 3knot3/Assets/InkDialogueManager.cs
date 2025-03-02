@@ -58,9 +58,13 @@ public class InkDialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         if (choicePanel != null) choicePanel.SetActive(false);
     }
-    void Update()
+    private void OnEnable()
     {
-        if (IsDialogueOpen && canContinueToNextLine && Input.GetKeyDown(KeyCode.Tab))
+        
+    }
+    void LetsContinueStory()
+    {
+        if (IsDialogueOpen && canContinueToNextLine)
         {
             ContinueStory();
         }
