@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-using UI.DialogueSystem; // Replace 'YourNamespace' with the actual namespace where the Npc class is defined
+// Replace 'YourNamespace' with the actual namespace where the Npc class is defined
 
 namespace Interaction
 {
@@ -22,7 +22,7 @@ namespace Interaction
         /// </summary>
         private void FindNearestInteractable()
         {
-            if (DialogueManager.IsDialogueOpen) return; // Don't detect new objects during dialogue
+            if (InkDialogueManager.IsDialogueOpen) return; // Don't detect new objects during dialogue
 
             Collider[] hits = Physics.OverlapSphere(transform.position, _interactionRadius);
             Collider nearest = null;
@@ -75,14 +75,23 @@ namespace Interaction
         /// Starts dialogue with an NPC.
         /// </summary>
         private static void TriggerNpcDialogue(GameObject npc)
-        {
-            Debug.Log($"Starting dialogue with {npc.name}");
-            if (npc.TryGetComponent(out Npc npcComponent))
-            {
-                npcComponent.TriggerDialogue();
-            }
-        }
+{
+    if (npc == null)
+    {
+        Debug.LogError("Attempted to trigger dialogue with null NPC");
+        return;
+    }
 
+    var npcComponent = npc.GetComponent<Npc>();
+    if (npcComponent == null)
+    {
+        Debug.LogError($"No Npc component found on GameObject {npc.name}");
+        return;
+    }
+
+    Debug.Log($"Starting dialogue with {npc.name}");
+    npcComponent.TriggerDialogue();
+}
         /// <summary>
         /// Handles picking up an interactable item.
         /// </summary>
