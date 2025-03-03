@@ -6,6 +6,7 @@ using TMPro;
 using System.Collections;
 using DG.Tweening;
 using SingletonManagers;
+using TextProcessing;
 namespace dialogue{
 public class InkDialogueManager : MonoBehaviour
 {
