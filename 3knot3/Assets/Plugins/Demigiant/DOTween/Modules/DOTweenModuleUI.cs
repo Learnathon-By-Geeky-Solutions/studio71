@@ -32,7 +32,31 @@ namespace DG.Tweening
             t.SetTarget(target);
             return t;
         }
+         public static TweenerCore<Color, Color, ColorOptions> DOFade(this Text target, float endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
+         public static TweenerCore<Color, Color, ColorOptions> DOFade(this Image target, float endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
 
+         public static TweenerCore<Color, Color, ColorOptions> DOFade(this Outline target, float endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.effectColor, x => target.effectColor = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
+          public static TweenerCore<Color, Color, ColorOptions> DOFade(this Graphic target, float endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
         #endregion
 
         #region Graphic
@@ -50,12 +74,7 @@ namespace DG.Tweening
         /// <summary>Tweens an Graphic's alpha color to the given value.
         /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Graphic target, float endValue, float duration)
-        {
-            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
-            return t;
-        }
+      
 
         #endregion
 
@@ -74,13 +93,7 @@ namespace DG.Tweening
         /// <summary>Tweens an Image's alpha color to the given value.
         /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Image target, float endValue, float duration)
-        {
-            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
-            return t;
-        }
-
+       
         /// <summary>Tweens an Image's fillAmount to the given value.
         /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach (0 to 1)</param><param name="duration">The duration of the tween</param>
@@ -108,9 +121,33 @@ namespace DG.Tweening
                     target.color = c.color;
                     continue;
                 }
-                float colorDuration = i == len - 1
-                    ? duration - s.Duration(false) // Verifies that total duration is correct
-                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
+              float colorDuration;
+
+// Determine if this is the last element
+bool isLastElement = i == len - 1;
+
+// Calculate the base duration for the current color
+if (isLastElement)
+{
+    // If it's the last color, adjust the duration to ensure the total duration is correct
+    colorDuration = duration - s.Duration(false);
+}
+else
+{
+    // Calculate the time difference for the current color
+    float timeDifference;
+    if (i == 0)
+    {
+        timeDifference = c.time;
+    }
+    else
+    {
+        timeDifference = c.time - colors[i - 1].time;
+    }
+
+    // Calculate the duration based on the time difference
+    colorDuration = duration * timeDifference;
+}
                 s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
             }
             s.SetTarget(target);
@@ -180,12 +217,7 @@ namespace DG.Tweening
         /// <summary>Tweens a Outline's effectColor alpha to the given value.
         /// Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Outline target, float endValue, float duration)
-        {
-            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.effectColor, x => target.effectColor = x, endValue, duration);
-            t.SetTarget(target);
-            return t;
-        }
+       
 
         /// <summary>Tweens a Outline's effectDistance to the given value.
         /// Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
@@ -514,12 +546,7 @@ namespace DG.Tweening
         /// <summary>Tweens a Text's alpha color to the given value.
         /// Also stores the Text as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Color, Color, ColorOptions> DOFade(this Text target, float endValue, float duration)
-        {
-            TweenerCore<Color, Color, ColorOptions> t = DOTween.ToAlpha(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
-            return t;
-        }
+       
 
         /// <summary>Tweens a Text's text to the given value.
         /// Also stores the Text as the tween's target so it can be used for filtered operations</summary>
