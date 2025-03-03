@@ -57,6 +57,12 @@ namespace DG.Tweening
             t.SetTarget(target);
             return t;
         }
+          public static TweenerCore<Color, Color, ColorOptions> DOColor(this Text target, Color endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
         #endregion
 
         #region Graphic
@@ -75,6 +81,12 @@ namespace DG.Tweening
         /// Also stores the image as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
       
+ public static TweenerCore<Color, Color, ColorOptions> DOColor(this Outline target, Color endValue, float duration)
+        {
+            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.effectColor, x => target.effectColor = x, endValue, duration);
+            t.SetTarget(target);
+            return t;
+        }
 
         #endregion
 
@@ -207,13 +219,7 @@ else
         /// <summary>Tweens a Outline's effectColor to the given value.
         /// Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Outline target, Color endValue, float duration)
-        {
-            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.effectColor, x => target.effectColor = x, endValue, duration);
-            t.SetTarget(target);
-            return t;
-        }
-
+       
         /// <summary>Tweens a Outline's effectColor alpha to the given value.
         /// Also stores the Outline as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
@@ -382,37 +388,7 @@ else
                 .SetTarget(target).SetOptions(snapping);
         }
 
-        /// <summary>Shakes a RectTransform's anchoredPosition with the given values.
-        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="duration">The duration of the tween</param>
-        /// <param name="strength">The shake strength</param>
-        /// <param name="vibrato">Indicates how much will the shake vibrate</param>
-        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
-        /// Setting it to 0 will shake along a single direction.</param>
-        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        /// <param name="randomnessMode">Randomness mode</param>
-        public static Tweener DOShakeAnchorPos(this RectTransform target, float duration, float strength = 100, int vibrato = 10, float randomness = 90, bool snapping = false, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
-        {
-            return DOTween.Shake(() => target.anchoredPosition, x => target.anchoredPosition = x, duration, strength, vibrato, randomness, true, fadeOut, randomnessMode)
-                .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
-        }
-        /// <summary>Shakes a RectTransform's anchoredPosition with the given values.
-        /// Also stores the RectTransform as the tween's target so it can be used for filtered operations</summary>
-        /// <param name="duration">The duration of the tween</param>
-        /// <param name="strength">The shake strength on each axis</param>
-        /// <param name="vibrato">Indicates how much will the shake vibrate</param>
-        /// <param name="randomness">Indicates how much the shake will be random (0 to 180 - values higher than 90 kind of suck, so beware). 
-        /// Setting it to 0 will shake along a single direction.</param>
-        /// <param name="snapping">If TRUE the tween will smoothly snap all values to integers</param>
-        /// <param name="fadeOut">If TRUE the shake will automatically fadeOut smoothly within the tween's duration, otherwise it will not</param>
-        /// <param name="randomnessMode">Randomness mode</param>
-        public static Tweener DOShakeAnchorPos(this RectTransform target, float duration, Vector2 strength, int vibrato = 10, float randomness = 90, bool snapping = false, bool fadeOut = true, ShakeRandomnessMode randomnessMode = ShakeRandomnessMode.Full)
-        {
-            return DOTween.Shake(() => target.anchoredPosition, x => target.anchoredPosition = x, duration, strength, vibrato, randomness, fadeOut, randomnessMode)
-                .SetTarget(target).SetSpecialStartupMode(SpecialStartupMode.SetShake).SetOptions(snapping);
-        }
-
+       
         #region Special
 
         /// <summary>Tweens a RectTransform's anchoredPosition to the given value, while also applying a jump effect along the Y axis.
@@ -513,12 +489,7 @@ else
         /// <summary>Tweens a Text's color to the given value.
         /// Also stores the Text as the tween's target so it can be used for filtered operations</summary>
         /// <param name="endValue">The end value to reach</param><param name="duration">The duration of the tween</param>
-        public static TweenerCore<Color, Color, ColorOptions> DOColor(this Text target, Color endValue, float duration)
-        {
-            TweenerCore<Color, Color, ColorOptions> t = DOTween.To(() => target.color, x => target.color = x, endValue, duration);
-            t.SetTarget(target);
-            return t;
-        }
+      
 
         /// <summary>
         /// Tweens a Text's text from one integer to another, with options for thousands separators
