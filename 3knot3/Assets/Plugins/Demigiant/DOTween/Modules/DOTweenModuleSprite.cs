@@ -51,9 +51,20 @@ namespace DG.Tweening
                     target.color = c.color;
                     continue;
                 }
-                float colorDuration = i == len - 1
-                    ? duration - s.Duration(false) // Verifies that total duration is correct
-                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
+                float colorDuration;
+
+// Determine the base duration for the current color
+if (i == len - 1)
+{
+    // If it's the last color, adjust the duration to ensure the total duration is correct
+    colorDuration = duration - s.Duration(false);
+}
+else
+{
+    // Calculate the duration based on the position of the color
+    float timeDifference = i == 0 ? c.time : c.time - colors[i - 1].time;
+    colorDuration = duration * timeDifference;
+}
                 s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
             }
             s.SetTarget(target);
