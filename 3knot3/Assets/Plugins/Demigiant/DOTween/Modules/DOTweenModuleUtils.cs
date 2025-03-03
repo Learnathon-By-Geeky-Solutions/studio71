@@ -82,6 +82,110 @@ namespace DG.Tweening
         // ███ INTERNAL CLASSES ████████████████████████████████████████████████████████████████████████████████████████████████
         // █████████████████████████████████████████████████████████████████████████████████████████████████████████████████████
 
+        public static class Physics
+        {
+            // Called via DOTweenExternalCommand callback
+            public static void SetOrientationOnPath(PathOptions options, Tween t, Quaternion newRot, Transform trans)
+            {
+#if false // PHYSICS_MARKER
+                if (options.isRigidbody) ((Rigidbody)t.target).rotation = newRot;
+                else trans.rotation = newRot;
+#else
+                trans.rotation = newRot;
+#endif
+            }
 
+            // Returns FALSE if the DOTween's Physics2D Module is disabled, or if there's no Rigidbody2D attached
+            public static bool HasRigidbody2D(Component target)
+            {
+#if false // PHYSICS2D_MARKER
+
+                return target.GetComponent<Rigidbody2D>() != null;
+#else
+                return false;
+#endif
+            }
+
+            #region Called via Reflection
+
+
+            // Called via Reflection by DOTweenPathInspector
+            // Returns FALSE if the DOTween's Physics Module is disabled, or if there's no rigidbody attached
+#if UNITY_2018_1_OR_NEWER
+            [UnityEngine.Scripting.Preserve]
+#endif
+            public static bool HasRigidbody(Component target)
+            {
+#if false // PHYSICS_MARKER
+
+                return target.GetComponent<Rigidbody>() != null;
+#else
+                return false;
+#endif
+            }
+
+            // Called via Reflection by DOTweenPath
+#if UNITY_2018_1_OR_NEWER
+            [UnityEngine.Scripting.Preserve]
+#endif
+            public static TweenerCore<Vector3, Path, PathOptions> CreateDOTweenPathTween(
+    MonoBehaviour target, bool tweenRigidbody, bool isLocal, Path path, float duration, PathMode pathMode
+)
+            {
+                TweenerCore<Vector3, Path, PathOptions> t = null;
+
+                if (tweenRigidbody)
+                {
+                    t = TryCreateRigidbodyTween(target, isLocal, path, duration, pathMode);
+                }
+
+                if (t == null)
+                {
+                    t = CreateTransformTween(target, isLocal, path, duration, pathMode);
+                }
+
+                return t;
+            }
+
+            private static TweenerCore<Vector3, Path, PathOptions> TryCreateRigidbodyTween(
+                MonoBehaviour target, bool isLocal, Path path, float duration, PathMode pathMode
+            )
+            {
+#if false // PHYSICS_MARKER
+
+    Rigidbody rBody = target.GetComponent<Rigidbody>();
+    if (rBody != null)
+    {
+        return isLocal
+            ? rBody.DOLocalPath(path, duration, pathMode)
+            : rBody.DOPath(path, duration, pathMode);
+    }
+#endif
+
+#if false // PHYSICS2D_MARKER
+
+    Rigidbody2D rBody2D = target.GetComponent<Rigidbody2D>();
+    if (rBody2D != null)
+    {
+        return isLocal
+            ? rBody2D.DOLocalPath(path, duration, pathMode)
+            : rBody2D.DOPath(path, duration, pathMode);
+    }
+#endif
+
+                return null;
+            }
+
+            private static TweenerCore<Vector3, Path, PathOptions> CreateTransformTween(
+                MonoBehaviour target, bool isLocal, Path path, float duration, PathMode pathMode
+            )
+            {
+                return isLocal
+                    ? target.transform.DOLocalPath(path, duration, pathMode)
+                    : target.transform.DOPath(path, duration, pathMode);
+            }
+
+            #endregion
+        }
     }
 }
