@@ -134,12 +134,11 @@ public class InkDialogueManager : MonoBehaviour
             string tagKey = splitTag[0].Trim();
             string tagValue = splitTag[1].Trim();
 
-            if (tagKey == "id" && int.TryParse(tagValue, out int characterId))
+            if (tagKey == "id" && int.TryParse(tagValue, out int characterId) && (currentCharacterId != characterId))
             {
-                if (currentCharacterId != characterId)
-                {
+                
                     TransitionToNewCharacter(characterId);
-                }
+                
             }
         }
     }
