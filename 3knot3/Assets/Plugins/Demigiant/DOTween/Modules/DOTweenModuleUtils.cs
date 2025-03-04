@@ -69,7 +69,7 @@ namespace DG.Tweening
         // Fires OnApplicationPause in DOTweenComponent even when Editor is paused (otherwise it's only fired at runtime)
 #if UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_5 || UNITY_2017_1
         static void PlaymodeStateChanged()
-#else
+        #else
         static void PlaymodeStateChanged(UnityEditor.PlayModeStateChange state)
 #endif
         {
@@ -99,7 +99,6 @@ namespace DG.Tweening
             public static bool HasRigidbody2D(Component target)
             {
 #if false // PHYSICS2D_MARKER
-
                 return target.GetComponent<Rigidbody2D>() != null;
 #else
                 return false;
@@ -117,7 +116,6 @@ namespace DG.Tweening
             public static bool HasRigidbody(Component target)
             {
 #if false // PHYSICS_MARKER
-
                 return target.GetComponent<Rigidbody>() != null;
 #else
                 return false;
@@ -129,60 +127,38 @@ namespace DG.Tweening
             [UnityEngine.Scripting.Preserve]
 #endif
             public static TweenerCore<Vector3, Path, PathOptions> CreateDOTweenPathTween(
-    MonoBehaviour target, bool tweenRigidbody, bool isLocal, Path path, float duration, PathMode pathMode
-)
-            {
+                MonoBehaviour target, bool tweenRigidbody, bool isLocal, Path path, float duration, PathMode pathMode
+            ){
                 TweenerCore<Vector3, Path, PathOptions> t = null;
-
-                if (tweenRigidbody)
-                {
-                    t = TryCreateRigidbodyTween(target, isLocal, path, duration, pathMode);
-                }
-
-                if (t == null)
-                {
-                    t = CreateTransformTween(target, isLocal, path, duration, pathMode);
-                }
-
-                return t;
-            }
-
-            private static TweenerCore<Vector3, Path, PathOptions> TryCreateRigidbodyTween(
-                MonoBehaviour target, bool isLocal, Path path, float duration, PathMode pathMode
-            )
-            {
+                bool rBodyFoundAndTweened = false;
 #if false // PHYSICS_MARKER
-
-    Rigidbody rBody = target.GetComponent<Rigidbody>();
-    if (rBody != null)
-    {
-        return isLocal
-            ? rBody.DOLocalPath(path, duration, pathMode)
-            : rBody.DOPath(path, duration, pathMode);
-    }
+                if (tweenRigidbody) {
+                    Rigidbody rBody = target.GetComponent<Rigidbody>();
+                    if (rBody != null) {
+                        rBodyFoundAndTweened = true;
+                        t = isLocal
+                            ? rBody.DOLocalPath(path, duration, pathMode)
+                            : rBody.DOPath(path, duration, pathMode);
+                    }
+                }
 #endif
-
 #if false // PHYSICS2D_MARKER
-
-    Rigidbody2D rBody2D = target.GetComponent<Rigidbody2D>();
-    if (rBody2D != null)
-    {
-        return isLocal
-            ? rBody2D.DOLocalPath(path, duration, pathMode)
-            : rBody2D.DOPath(path, duration, pathMode);
-    }
+                if (!rBodyFoundAndTweened && tweenRigidbody) {
+                    Rigidbody2D rBody2D = target.GetComponent<Rigidbody2D>();
+                    if (rBody2D != null) {
+                        rBodyFoundAndTweened = true;
+                        t = isLocal
+                            ? rBody2D.DOLocalPath(path, duration, pathMode)
+                            : rBody2D.DOPath(path, duration, pathMode);
+                    }
+                }
 #endif
-
-                return null;
-            }
-
-            private static TweenerCore<Vector3, Path, PathOptions> CreateTransformTween(
-                MonoBehaviour target, bool isLocal, Path path, float duration, PathMode pathMode
-            )
-            {
-                return isLocal
-                    ? target.transform.DOLocalPath(path, duration, pathMode)
-                    : target.transform.DOPath(path, duration, pathMode);
+                if (!rBodyFoundAndTweened) {
+                    t = isLocal
+                        ? target.transform.DOLocalPath(path, duration, pathMode)
+                        : target.transform.DOPath(path, duration, pathMode);
+                }
+                return t;
             }
 
             #endregion

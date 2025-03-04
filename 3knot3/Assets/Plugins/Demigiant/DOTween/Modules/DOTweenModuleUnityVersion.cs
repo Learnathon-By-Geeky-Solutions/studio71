@@ -6,7 +6,7 @@ using UnityEngine;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 //#if UNITY_2018_1_OR_NEWER && (NET_4_6 || NET_STANDARD_2_0)
-
+//using Task = System.Threading.Tasks.Task;
 //#endif
 
 #pragma warning disable 1591
@@ -35,33 +35,9 @@ namespace DG.Tweening
                     target.color = c.color;
                     continue;
                 }
-                float colorDuration;
-
-// Check if this is the last element
-bool isLastElement = i == len - 1;
-
-// Calculate the duration for the last element
-if (isLastElement)
-{
-    // If it's the last color, adjust the duration to ensure the total duration is correct
-    colorDuration = duration - s.Duration(false);
-}
-else
-{
-    // Calculate the time difference for the current color
-    float timeDifference;
-    if (i == 0)
-    {
-        timeDifference = c.time;
-    }
-    else
-    {
-        timeDifference = c.time - colors[i - 1].time;
-    }
-
-    // Calculate the duration based on the time difference
-    colorDuration = duration * timeDifference;
-}
+                float colorDuration = i == len - 1
+                    ? duration - s.Duration(false) // Verifies that total duration is correct
+                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
                 s.Append(target.DOColor(c.color, colorDuration).SetEase(Ease.Linear));
             }
             s.SetTarget(target);
@@ -84,33 +60,9 @@ else
                     target.SetColor(property, c.color);
                     continue;
                 }
-                float colorDuration;
-
-// Determine if this is the last element
-bool isLastElement = i == len - 1;
-
-// Calculate the duration for the last element
-if (isLastElement)
-{
-    // If it's the last color, adjust the duration to ensure the total duration is correct
-    colorDuration = duration - s.Duration(false);
-}
-else
-{
-    // Calculate the time difference for the current color
-    float timeDifference;
-    if (i == 0)
-    {
-        timeDifference = c.time;
-    }
-    else
-    {
-        timeDifference = c.time - colors[i - 1].time;
-    }
-
-    // Calculate the duration based on the time difference
-    colorDuration = duration * timeDifference;
-}
+                float colorDuration = i == len - 1
+                    ? duration - s.Duration(false) // Verifies that total duration is correct
+                    : duration * (i == 0 ? c.time : c.time - colors[i - 1].time);
                 s.Append(target.DOColor(c.color, property, colorDuration).SetEase(Ease.Linear));
             }
             s.SetTarget(target);
