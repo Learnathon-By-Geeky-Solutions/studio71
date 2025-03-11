@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7553930282481081817
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6554770100403829764}
+  m_Layer: 0
+  m_Name: Firepoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6554770100403829764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7553930282481081817}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.098, z: 0.7688}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8444777621952922230}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8448481626351933316
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55,6 +86,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1353872574428956, guid: 0562e703df862c44aba6149b49337594, type: 3}
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4197694032778738, guid: 0562e703df862c44aba6149b49337594, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6554770100403829764}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1428701504022370, guid: 0562e703df862c44aba6149b49337594, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1873813102738229898}
   m_SourcePrefab: {fileID: 100100000, guid: 0562e703df862c44aba6149b49337594, type: 3}
+--- !u!4 &8444777621952922230 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4197694032778738, guid: 0562e703df862c44aba6149b49337594, type: 3}
+  m_PrefabInstance: {fileID: 8448481626351933316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8447092791057330406 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1428701504022370, guid: 0562e703df862c44aba6149b49337594, type: 3}
+  m_PrefabInstance: {fileID: 8448481626351933316}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1873813102738229898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447092791057330406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 274ab6787e78a8e47b25fea6ca162c99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Fire_Rate: 6
+  Rotation: {fileID: 0}
+  Fire_Point: {fileID: 6554770100403829764}
+  Prefab_Bullet: {fileID: 5293540161763519841, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
+  <Magazine_Size>k__BackingField: 30

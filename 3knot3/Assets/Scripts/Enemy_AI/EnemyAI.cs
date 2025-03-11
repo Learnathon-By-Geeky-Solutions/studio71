@@ -15,7 +15,7 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] public float minShootingDistance = 3f;
     [SerializeField] public float moveSpeed = 3f;
     [SerializeField] private float fireRate = 1.5f;
-    [SerializeField] private float reloadTime = 2f;
+    [SerializeField] public float reloadTime = 2f;
     [SerializeField] private float fieldOfView = 60f;
 
     private float nextFireTime;

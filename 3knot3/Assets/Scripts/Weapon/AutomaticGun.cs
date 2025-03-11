@@ -23,7 +23,7 @@ namespace Weapon
 
         protected override void Shoot()
         {
-            Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
+            Instantiate(Prefab_Bullet, Fire_Point.position, Rotation.rotation);
         }
     }
 }

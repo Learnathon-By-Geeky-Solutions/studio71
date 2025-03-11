@@ -36,7 +36,9 @@ namespace Player
         //Weapon variable
         private Weapon.Gun _equippedGun;
 
-
+        //Player Animator
+        private Animator _playerAnimator;
+        private string _currentAnimation;
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -83,6 +85,9 @@ namespace Player
 
             //Weapon initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
+
+            //Animator Initialization
+            _playerAnimator = GetComponent<Animator>();
         }
         private void Start()
         {
@@ -207,6 +212,15 @@ namespace Player
              _equippedGun.StopShooting();
              _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size;
             
+        }
+
+        void ChangeAnimationState(string newState)
+        {
+            if (_currentAnimation == newState) return;
+
+            _playerAnimator.Play(newState);
+
+            _currentAnimation = newState;
         }
     }
 }
