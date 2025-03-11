@@ -668,6 +668,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 723495013797310181}
+  - {fileID: 8444777621952922230}
   m_Father: {fileID: 723680575219129043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &720910091700183557
@@ -912,12 +913,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'Elbow_R'\n\tTransform 'Clavicle_L'\n\tTransform
-    'Elbow_L'\n\tTransform 'UpperLeg_L'\n\tTransform 'UpperLeg_R'\n\tTransform 'Spine_03'\n\tTransform
-    'Hand_L'\n\tTransform 'Shoulder_L'\n\tTransform 'Clavicle_R'\n\tTransform 'Ankle_L'\n\tand
-    more ...\n\tFrom animation clip 'mixamo.com'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -1274,7 +1270,6 @@ Transform:
   - {fileID: 723716256236070059}
   - {fileID: 726543018183471395}
   - {fileID: 723653773591287783}
-  - {fileID: 8444777621952922230}
   m_Father: {fileID: 723794008222272333}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &721115540356801211
@@ -2276,8 +2271,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8447092791057330406}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000033701777, y: -0.000000081956365, z: 0.00000004649436, w: -1}
-  m_LocalPosition: {x: -0.081368364, y: -0.08194132, z: -0.06082636}
+  m_LocalRotation: {x: -0.002486423, y: -0.04387982, z: 0.056519262, w: -0.9974337}
+  m_LocalPosition: {x: 0.0066997074, y: -0.08206391, z: -0.029505664}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2285,7 +2280,7 @@ Transform:
   - {fileID: 8444691153594886300}
   - {fileID: 8444427201789507456}
   - {fileID: 2463273368200846822}
-  m_Father: {fileID: 723680575219129043}
+  m_Father: {fileID: 723716256236070059}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8451250290279613124
 MeshFilter:
@@ -2375,8 +2370,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Fire_Rate: 2
+  Rotation: {fileID: 726546441728292921}
   Fire_Point: {fileID: 2463273368200846822}
-  Prefab_Bullet: {fileID: 740028438637745972, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
+  Prefab_Bullet: {fileID: 6052056476345000131, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
   <Magazine_Size>k__BackingField: 30
 --- !u!1 &8447110652130627876
 GameObject:
