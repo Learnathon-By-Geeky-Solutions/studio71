@@ -8,11 +8,19 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD:3knot3/Assets/Prefabs/Bullet.prefab
   - component: {fileID: 5333302650237124914}
   - component: {fileID: 2445788155002538148}
   - component: {fileID: 687052170521405277}
   - component: {fileID: 4482683749319885716}
   - component: {fileID: 2024564234385553199}
+=======
+  - component: {fileID: 2519375836561487378}
+  - component: {fileID: 8993627645080252208}
+  - component: {fileID: 8481251148106862585}
+  - component: {fileID: 5710666245156616134}
+  - component: {fileID: -3458262946050139882}
+>>>>>>> Sarwar:3knot3/Assets/Resources/BulletPrefab.prefab
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -109,13 +117,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD:3knot3/Assets/Prefabs/Bullet.prefab
 --- !u!114 &2024564234385553199
+=======
+--- !u!114 &-3458262946050139882
+>>>>>>> Sarwar:3knot3/Assets/Resources/BulletPrefab.prefab
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD:3knot3/Assets/Prefabs/Bullet.prefab
   m_GameObject: {fileID: 5293540161763519841}
+=======
+  m_GameObject: {fileID: 3476140743508376580}
+>>>>>>> Sarwar:3knot3/Assets/Resources/BulletPrefab.prefab
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6507c166ca670a41962ab4f51b76b96, type: 3}
