@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 95309819}
   m_Layer: 6
-  m_Name: F_POINT
+  m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -660,7 +660,7 @@ Transform:
   m_GameObject: {fileID: 1575202960}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.11, y: 1.4, z: 17.9}
+  m_LocalPosition: {x: 5.11, y: 1.4, z: 52.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1119,7 +1119,7 @@ GameObject:
   - component: {fileID: 728383492}
   - component: {fileID: 5866666021186370964}
   m_Layer: 6
-  m_Name: Walk With Rifle
+  m_Name: Enemy_AI
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2466,18 +2466,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 919132148809039187}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0506e1211d220e4d802445a4e5cddad, type: 3}
+  m_Script: {fileID: 11500000, guid: 527ba6a2f9e9788458360e21aa461adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1575202965}
-  detectionRange: 15.3
-  shootingRange: 7.78
-  minShootingDistance: 4.16
-  moveSpeed: 4
+  firePoint: {fileID: 95309819}
+  bulletPrefab: {fileID: 3476140743508376580, guid: 4f6143296c4fcee4897dfb4161bc620d, type: 3}
+  detectionRange: 32.2
+  shootingRange: 15.84
+  minShootingDistance: 10.39
+  moveSpeed: 3.88
   fireRate: 1.5
   fieldOfView: 60
-  bulletPrefab: {fileID: 3476140743508376580, guid: 4f6143296c4fcee4897dfb4161bc620d, type: 3}
-  firePoint: {fileID: 95309819}
+  alertDelay: 5
 --- !u!1 &5977617568748901938
 GameObject:
   m_ObjectHideFlags: 0
