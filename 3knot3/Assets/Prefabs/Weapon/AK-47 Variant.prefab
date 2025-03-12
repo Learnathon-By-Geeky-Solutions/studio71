@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 274ab6787e78a8e47b25fea6ca162c99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Fire_Rate: 30
+  Fire_Rate: 10
   Rotation: {fileID: 0}
   Fire_Point: {fileID: 6554770100403829764}
   Prefab_Bullet: {fileID: 6052056476345000131, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}

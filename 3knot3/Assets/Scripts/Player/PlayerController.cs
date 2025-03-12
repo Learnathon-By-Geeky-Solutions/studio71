@@ -39,6 +39,7 @@ namespace Player
         //Player Animator
         private Animator _playerAnimator;
         private string _currentAnimation;
+
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -118,6 +119,7 @@ namespace Player
         private void MovePlayer()
         {
             transform.position += _currentMoveSpeed * Time.deltaTime * new Vector3(InputHandler.Instance.MoveDirection.x, 0, InputHandler.Instance.MoveDirection.y);
+            
         }
         private void LookAround()
         {
