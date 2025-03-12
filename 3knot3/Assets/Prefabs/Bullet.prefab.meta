@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream
 guid: 54d35b9227f700248bf23454ee96cb64
+=======
+<<<<<<<< HEAD:3knot3/Assets/Prefabs/Bullet.prefab.meta
+guid: 972e3979742bf684c85265cc982a1037
+>>>>>>> Stashed changes
 PrefabImporter:
   externalObjects: {}
   userData: 
