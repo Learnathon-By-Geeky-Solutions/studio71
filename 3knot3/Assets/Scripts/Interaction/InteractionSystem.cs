@@ -1,6 +1,8 @@
 using TMPro;
+using System.Collections;
 using UnityEngine;
 using dialogue;
+using Player;
 // Replace 'YourNamespace' with the actual namespace where the Npc class is defined
 
 namespace Interaction
@@ -11,8 +13,16 @@ namespace Interaction
         [SerializeField] private GameObject _interactionButton;  // UI Button
         [SerializeField] private TextMeshProUGUI _interactionText; // Button Text
 
-        private Collider _currentTarget;
+        public Collider _currentTarget { get; private set; }
 
+
+        //PlayerAnimation Variable
+        PlayerAnimation _playerAnimation;
+
+        private void Awake()
+        {
+            _playerAnimation = GetComponent<PlayerAnimation>();
+        }
         private void Update()
         {
             FindNearestInteractable();
@@ -56,7 +66,7 @@ namespace Interaction
             }
         }
 
-        public void Interact()
+        private void Interact()
         {
             if (_interactionButton != null) _interactionButton.SetActive(false); // Hide button when interaction starts
 
@@ -68,7 +78,10 @@ namespace Interaction
             }
             else if (_currentTarget.CompareTag("Interactable"))
             {
-                HandleItemPickup(_currentTarget.gameObject);
+                StartCoroutine(DelayedAction(_playerAnimation._animationLengths["Pick Up"], () =>
+                {
+                    HandleItemPickup(_currentTarget.gameObject);
+                }));
             }
         }
 
@@ -102,6 +115,12 @@ namespace Interaction
             Destroy(item);
         }
 
+
+        private static IEnumerator DelayedAction(float delay, System.Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
+        }
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.yellow;

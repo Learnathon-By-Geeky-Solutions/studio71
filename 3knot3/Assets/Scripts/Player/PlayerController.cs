@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SingletonManagers;
+using System.Collections;
 /// <summary>
 /// Manages all Player Input.
 /// </summary>
@@ -36,6 +37,9 @@ namespace Player
         //Weapon variable
         private Weapon.Gun _equippedGun;
 
+        
+        //PlayerAnimation Variable
+        PlayerAnimation _playerAnimation;
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -84,6 +88,9 @@ namespace Player
 
             //Weapon initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
+
+            //Animation Initialization
+            _playerAnimation=GetComponent<PlayerAnimation>();
         }
         private void Start()
         {
@@ -177,8 +184,7 @@ namespace Player
         private void Attack(bool isPressed)
         {
 
-            if (!_isSprinting)
-            {
+            if (_isSprinting || _playerAnimation.IsBusy) return;       
                 if (isPressed)
                 {
                     _equippedGun.StartShooting();
@@ -187,7 +193,7 @@ namespace Player
                 {
                     _equippedGun.StopShooting();
                 }
-            }
+            
         }
         private void PrimaryWeapon()
         {
@@ -204,17 +210,24 @@ namespace Player
             }
         }
         private void Reload()
-        {
-         
+        {        
              _equippedGun.StopShooting();
-             _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size;
-            
+
+            StartCoroutine(DelayedAction(_playerAnimation._animationLengths["Reload"], () =>
+            { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; }));            
         }
         private void Grenade()
         {
             _equippedGun.StopShooting();
             //Code of Grenade here
             print("GRENADE");
+        }
+
+
+        private static IEnumerator DelayedAction(float delay, System.Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
         }
     }
 }
