@@ -869,7 +869,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 60, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 8272229551386841446}
+  m_DefaultState: {fileID: -5008916233547530991}
 --- !u!1102 &7791478256191592842
 AnimatorState:
   serializedVersion: 6
@@ -877,7 +877,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Grenade
+  m_Name: Grenade Throw
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

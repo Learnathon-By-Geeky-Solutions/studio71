@@ -1,5 +1,7 @@
 using UnityEngine;
 using SingletonManagers;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace Player
 {
@@ -7,23 +9,36 @@ namespace Player
     {
         private Animator _playerAnimator;
         private string _currentAnimation;
+        private Dictionary<string, float> _animationLengths = new Dictionary<string, float>();
+
 
         private bool _isCrouching = false;
         private void Awake()
         {
             _playerAnimator = GetComponent<Animator>();
             if ( _playerAnimator == null) { print($"Animator not found on {gameObject.name}"); }
+            CacheAnimationLength();
+
+        }
+        private void CacheAnimationLength()
+        {
+            foreach (AnimationClip clip in _playerAnimator.runtimeAnimatorController.animationClips)
+            {
+                _animationLengths[clip.name] = clip.length;
+            }
         }
 
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += CrouchAnimation;
+            InputHandler.Instance.OnReload += ReloadAnimation;
         }
 
         // Update is called once per frame
         private void OnDisable()
         {
             InputHandler.Instance.OnCrouch -= CrouchAnimation;
+            InputHandler.Instance.OnReload -= ReloadAnimation;
         }
         private void MoveAnimation()
         {
@@ -40,7 +55,10 @@ namespace Player
         }
 
 
-
+        private void ReloadAnimation()
+        {
+            PlayAnimationAndReturn("Reload","Idle",0.1f);
+        }
 
 
 
@@ -50,6 +68,21 @@ namespace Player
 
             _playerAnimator.CrossFade(newAnimation, SmoothFrame);
             _currentAnimation = newAnimation;
+        }
+        private void PlayAnimationAndReturn(string animationName,string returnAnimation,float SmoothFrame)
+        {
+            if (!_animationLengths.ContainsKey(animationName))
+            {
+                Debug.LogWarning($"Animation '{animationName}' not found!");
+                return;
+            }
+            _playerAnimator.CrossFade(animationName,SmoothFrame);
+            StartCoroutine(ReturnAnimation(animationName, returnAnimation,SmoothFrame));
+        }
+        private IEnumerator ReturnAnimation(string animationName,string returnAnimation,float SmoothFrame)
+        {
+            yield return new WaitForSeconds(_animationLengths[animationName]);
+            _playerAnimator.CrossFade(returnAnimation, SmoothFrame, 1);
         }
 
     }
