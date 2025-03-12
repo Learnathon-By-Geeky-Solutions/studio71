@@ -32,6 +32,7 @@ namespace Player
         {
             InputHandler.Instance.OnCrouch += CrouchAnimation;
             InputHandler.Instance.OnReload += ReloadAnimation;
+            InputHandler.Instance.OnGrenade += GrenadeAnimation;
         }
 
         // Update is called once per frame
@@ -39,6 +40,7 @@ namespace Player
         {
             InputHandler.Instance.OnCrouch -= CrouchAnimation;
             InputHandler.Instance.OnReload -= ReloadAnimation;
+            InputHandler.Instance.OnGrenade -= GrenadeAnimation;
         }
         private void MoveAnimation()
         {
@@ -57,11 +59,12 @@ namespace Player
 
         private void ReloadAnimation()
         {
-            PlayAnimationAndReturn("Reload","Idle",0.1f);
+            PlayAnimationAndReturn("Reload","Idle",0.1f,1);
         }
-
-
-
+        private void GrenadeAnimation()
+        {
+            PlayAnimationAndReturn("Grenade Throw", "Idle", .1f,1);
+        }
         private void PlayAnimation(string newAnimation,float SmoothFrame)
         {
             if (_playerAnimator == null || newAnimation == _currentAnimation) return;
@@ -69,7 +72,7 @@ namespace Player
             _playerAnimator.CrossFade(newAnimation, SmoothFrame);
             _currentAnimation = newAnimation;
         }
-        private void PlayAnimationAndReturn(string animationName,string returnAnimation,float SmoothFrame)
+        private void PlayAnimationAndReturn(string animationName,string returnAnimation,float SmoothFrame,int WorkingLayer)
         {
             if (!_animationLengths.ContainsKey(animationName))
             {
@@ -77,12 +80,12 @@ namespace Player
                 return;
             }
             _playerAnimator.CrossFade(animationName,SmoothFrame);
-            StartCoroutine(ReturnAnimation(animationName, returnAnimation,SmoothFrame));
+            StartCoroutine(ReturnAnimation(animationName, returnAnimation,SmoothFrame,WorkingLayer));
         }
-        private IEnumerator ReturnAnimation(string animationName,string returnAnimation,float SmoothFrame)
+        private IEnumerator ReturnAnimation(string animationName,string returnAnimation,float SmoothFrame,int WorkingLayer)
         {
             yield return new WaitForSeconds(_animationLengths[animationName]);
-            _playerAnimator.CrossFade(returnAnimation, SmoothFrame, 1);
+            _playerAnimator.CrossFade(returnAnimation, SmoothFrame, WorkingLayer);
         }
 
     }

@@ -97,6 +97,7 @@ namespace SingletonManagers
 
         public void InteractAction(InputAction.CallbackContext context)
         {
+            
             if (context.performed)
             {
                 OnInteract?.Invoke();

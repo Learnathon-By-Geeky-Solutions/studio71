@@ -212,6 +212,7 @@ namespace Player
         }
         private void Grenade()
         {
+            _equippedGun.StopShooting();
             //Code of Grenade here
             print("GRENADE");
         }
