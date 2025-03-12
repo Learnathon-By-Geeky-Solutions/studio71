@@ -36,10 +36,6 @@ namespace Player
         //Weapon variable
         private Weapon.Gun _equippedGun;
 
-        //Player Animator
-        private Animator _playerAnimator;
-        private string _currentAnimation;
-
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -48,6 +44,7 @@ namespace Player
             InputHandler.Instance.OnSecondaryWeapon += SecondaryWeapon;
             InputHandler.Instance.OnAttack += Attack;
             InputHandler.Instance.OnReload += Reload;
+            InputHandler.Instance.OnGrenade += Grenade;
         }
         private void OnDisable()
         {
@@ -57,6 +54,7 @@ namespace Player
             InputHandler.Instance.OnSecondaryWeapon -= SecondaryWeapon;
             InputHandler.Instance.OnAttack -= Attack;
             InputHandler.Instance.OnReload -= Reload;
+            InputHandler.Instance.OnGrenade-= Grenade;
         }
         private void Awake()
         {
@@ -86,9 +84,6 @@ namespace Player
 
             //Weapon initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
-
-            //Animator Initialization
-            _playerAnimator = GetComponent<Animator>();
         }
         private void Start()
         {
@@ -119,7 +114,7 @@ namespace Player
         private void MovePlayer()
         {
             transform.position += _currentMoveSpeed * Time.deltaTime * new Vector3(InputHandler.Instance.MoveDirection.x, 0, InputHandler.Instance.MoveDirection.y);
-            
+            //print(InputHandler.Instance.MoveDirection);
         }
         private void LookAround()
         {
@@ -145,15 +140,15 @@ namespace Player
              if (!_isCrouching)
              {
                  _playerCollider.height /= 2;
-                 _playerCollider.center = new Vector3(_playerCollider.center.x, -.5f, _playerCollider.center.z);
+                 _playerCollider.center = new Vector3(_playerCollider.center.x, .5f, _playerCollider.center.z);
                  _isCrouching = true;
                  _currentMoveSpeed = _moveSpeed * _crouchModifier;
              }
              else
              {
                  _playerCollider.height *= 2;
-                 _playerCollider.center = new Vector3(_playerCollider.center.x, 0, _playerCollider.center.z);
-                 _isCrouching = false;
+                 _playerCollider.center = new Vector3(_playerCollider.center.x, 0.93f, _playerCollider.center.z);
+                _isCrouching = false;
                  if (Keyboard.current.shiftKey.isPressed)
                  {
                      _currentMoveSpeed = _moveSpeed * _sprintModifier;
@@ -215,14 +210,10 @@ namespace Player
              _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size;
             
         }
-
-        void ChangeAnimationState(string newState)
+        private void Grenade()
         {
-            if (_currentAnimation == newState) return;
-
-            _playerAnimator.Play(newState);
-
-            _currentAnimation = newState;
+            //Code of Grenade here
+            print("GRENADE");
         }
     }
 }
