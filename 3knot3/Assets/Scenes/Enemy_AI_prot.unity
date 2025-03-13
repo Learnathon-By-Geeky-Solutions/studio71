@@ -1045,7 +1045,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5215540016411575538, guid: cf0806e88fac2d74cbd9fd8b6c8b31d1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.14
+      value: -4.5
       objectReference: {fileID: 0}
     - target: {fileID: 5215540016411575538, guid: cf0806e88fac2d74cbd9fd8b6c8b31d1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1120,8 +1120,8 @@ MonoBehaviour:
   animator: {fileID: 0}
   firePoint: {fileID: 1380974144073720851}
   grenadeThrowPoint: {fileID: 1380974144073720851}
-  detectionRange: 33.7
-  attackRange: 15.1
+  detectionRange: 43
+  attackRange: 20.6
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -1142,7 +1142,7 @@ MonoBehaviour:
   canThrowGrenade: 1
   alertCountdown: 3
   currentAlertTime: 3
-  patrolRadius: 22.4
+  patrolRadius: 60
   startPosition: {x: 0, y: 0, z: 0}
   playerInDetectionRange: 0
   playerInAttackRange: 0
