@@ -29,7 +29,7 @@ namespace Player
 
 
         //Sprint related variables
-        private bool _isSprinting;
+        public bool _isSprinting { get; private set; }
         [Min(1f)]
         [SerializeField] private float _sprintModifier = 1f;
 
@@ -39,7 +39,7 @@ namespace Player
 
         
         //PlayerAnimation Variable
-        PlayerAnimation _playerAnimation;
+        private PlayerAnimation _playerAnimation;
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -121,7 +121,6 @@ namespace Player
         private void MovePlayer()
         {
             transform.position += _currentMoveSpeed * Time.deltaTime * new Vector3(InputHandler.Instance.MoveDirection.x, 0, InputHandler.Instance.MoveDirection.y);
-            //print(InputHandler.Instance.MoveDirection);
         }
         private void LookAround()
         {
@@ -150,6 +149,7 @@ namespace Player
                  _playerCollider.center = new Vector3(_playerCollider.center.x, .5f, _playerCollider.center.z);
                  _isCrouching = true;
                  _currentMoveSpeed = _moveSpeed * _crouchModifier;
+                _isSprinting = false;
              }
              else
              {
@@ -159,6 +159,7 @@ namespace Player
                  if (Keyboard.current.shiftKey.isPressed)
                  {
                      _currentMoveSpeed = _moveSpeed * _sprintModifier;
+                    _isSprinting = true;
                  }
                  else
                  {
