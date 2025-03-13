@@ -716,9 +716,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5215540016411575538}
-  - component: {fileID: 5040027363882491617}
   - component: {fileID: 7513518096679223944}
-  - component: {fileID: 4973009560414384719}
   - component: {fileID: 1918528883532719747}
   - component: {fileID: 756178675113421813}
   m_Layer: 6
@@ -746,28 +744,6 @@ Transform:
   - {fileID: 171325688045885637}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5040027363882491617
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2908617686280616072}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 1d7fc8e9bd66ed844aa9b8d43b27fbe8, type: 3}
-  m_Controller: {fileID: 9100000, guid: e5a95c9b8577dda4e95582a8140c9e27, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!195 &7513518096679223944
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -790,33 +766,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!54 &4973009560414384719
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2908617686280616072}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!136 &1918528883532719747
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -854,6 +803,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firePoint: {fileID: 2270614272387293684}
   bulletPrefab: {fileID: 3476140743508376580, guid: 4f6143296c4fcee4897dfb4161bc620d, type: 3}
+  grenadePrefab: {fileID: 0}
+  throwPoint: {fileID: 0}
   detectionRange: 32.2
   shootingRange: 15.84
   minShootingDistance: 10.39
@@ -861,6 +812,13 @@ MonoBehaviour:
   fireRate: 1.5
   reloadTime: 2
   fieldOfView: 60
+  maxHealth: 100
+  recoveryThreshold: 30
+  recoveryRate: 10
+  grenadeCooldown: 5
+  maxGrenades: 3
+  coverPoint: {fileID: 0}
+  maxAmmo: 10
 --- !u!1 &3038401109736658641
 GameObject:
   m_ObjectHideFlags: 0
