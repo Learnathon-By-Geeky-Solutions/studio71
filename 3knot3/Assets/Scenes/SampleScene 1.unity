@@ -201,7 +201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &704748359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +408,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
   m_PrefabInstance: {fileID: 1399076769}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &901122282 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1518386116251268264, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+  m_PrefabInstance: {fileID: 1399076769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 953506fa19243b847b4af347e1c0b47f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &906766000 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 55187961724345795, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
@@ -530,7 +541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1128473995
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -760,7 +771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1161922512
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -892,7 +903,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bd4ece9ced4f8441b919c0c1397ea47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _player: {fileID: 0}
+  _player: {fileID: 901122273}
   _offset: {x: 1.5, y: 9, z: -6}
   _rotation: {x: 55, y: 10, z: 0}
 --- !u!4 &1210270446
@@ -1153,6 +1164,10 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 816361914697085323, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1518386116251268264, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: _interactionText
       value: 
@@ -1161,13 +1176,21 @@ PrefabInstance:
       propertyPath: _interactionButton
       value: 
       objectReference: {fileID: 315722830}
+    - target: {fileID: 1689038584940517072, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1689038584940517072, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: _sprintModifier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7060925450600628464, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: Rotation
       value: 
       objectReference: {fileID: 901122273}
     - target: {fileID: 7060925450600628464, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: Fire_Rate
-      value: 25
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7060925450600628464, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: Prefab_Bullet
@@ -1176,6 +1199,34 @@ PrefabInstance:
     - target: {fileID: 8386838594985647551, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: _lineLength
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1226,6 +1277,18 @@ PrefabInstance:
     - target: {fileID: 3966313495588588610, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150607958765920849, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 901122282}
+    - target: {fileID: 6150607958765920849, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 6150607958765920849, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Interaction.InteractionSystem, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6407621206204152637, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
       propertyPath: m_Pivot.x
@@ -1671,6 +1734,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 2edab13f-047d-4b2f-acf5-d8c2db83eaa3
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2041741044}
+        m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
+        m_MethodName: GrenadeAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 813a636d-9a73-4899-b1ca-623d2b6a4964
+    m_ActionName: 'Player/Greande[/Keyboard/g]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
