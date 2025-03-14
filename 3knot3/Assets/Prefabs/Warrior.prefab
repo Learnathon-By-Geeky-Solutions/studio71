@@ -2385,7 +2385,7 @@ MonoBehaviour:
   Fire_Rate: 2
   Rotation: {fileID: 726546441728292921}
   Fire_Point: {fileID: 2463273368200846822}
-  Prefab_Bullet: {fileID: 6052056476345000131, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
+  Prefab_Bullet: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
   <Magazine_Size>k__BackingField: 30
 --- !u!1 &8447110652130627876
 GameObject:
