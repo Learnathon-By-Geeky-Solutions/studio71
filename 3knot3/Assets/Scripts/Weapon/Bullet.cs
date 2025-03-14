@@ -12,7 +12,7 @@ namespace Weapon
         [SerializeField] private LayerMask hitLayers;
         private void Start()
         {
-            Destroy(gameObject, _maxLifeTime);
+            Destroy(transform.parent.gameObject, _maxLifeTime);
         }
         private void Update()
         {
