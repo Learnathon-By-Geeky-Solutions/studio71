@@ -17,7 +17,6 @@ public class EnemyAI : MonoBehaviour
     // References
     public Transform player;
     public NavMeshAgent navMeshAgent;
-    public Animator animator;
     public Transform firePoint;
     public Transform grenadeThrowPoint;
     
@@ -64,7 +63,6 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
         
         // Store starting position for patrol radius
         startPosition = transform.position;
