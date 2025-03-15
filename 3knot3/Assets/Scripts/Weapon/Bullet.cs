@@ -1,4 +1,5 @@
 using UnityEngine;
+using HealthSystem;
 /// <summary>
 /// Implementation of bullets fired by weapons.
 /// </summary>

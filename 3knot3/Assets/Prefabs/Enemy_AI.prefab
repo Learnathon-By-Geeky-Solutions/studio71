@@ -1351,8 +1351,8 @@ GameObject:
   - component: {fileID: 7513518096679223944}
   - component: {fileID: 1918528883532719747}
   - component: {fileID: 8000808689464795806}
-  - component: {fileID: 6913362504841912585}
   - component: {fileID: 2086562077767859406}
+  - component: {fileID: 6979429463109292937}
   m_Layer: 6
   m_Name: Enemy_AI
   m_TagString: Enemy
@@ -1445,49 +1445,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6913362504841912585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2908617686280616072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c78ec69cb502fe448d24d553a196c72, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  navMeshAgent: {fileID: 7513518096679223944}
-  firePoint: {fileID: 2270614272387293684}
-  grenadeThrowPoint: {fileID: 2270614272387293684}
-  detectionRange: 43
-  attackRange: 20.6
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  maxHealth: 100
-  currentHealth: 80
-  recoveryThreshold: 30
-  recoveryRate: 10
-  bulletPrefab: {fileID: 6052056476345000131, guid: 54d35b9227f700248bf23454ee96cb64, type: 3}
-  fireRate: 1
-  maxAmmo: 30
-  currentAmmo: 0
-  reloadTime: 2
-  isReloading: 0
-  grenadePrefab: {fileID: 1207142880592337251, guid: 34881f261669ade428f4526bdbcd60ca, type: 3}
-  maxGrenades: 3
-  currentGrenades: 0
-  grenadeThrowCooldown: 5
-  canThrowGrenade: 1
-  alertCountdown: 3
-  currentAlertTime: 3
-  patrolRadius: 60
-  startPosition: {x: 0, y: 0, z: 0}
-  playerInDetectionRange: 0
-  playerInAttackRange: 0
-  playerInLineOfSight: 0
 --- !u!114 &2086562077767859406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1500,6 +1457,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4824ef691003dac47b8baf873347b220, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6979429463109292937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908617686280616072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c78ec69cb502fe448d24d553a196c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  navMeshAgent: {fileID: 0}
+  firePoint: {fileID: 0}
+  grenadeThrowPoint: {fileID: 0}
+  detectionRange: 15
+  attackRange: 8
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  maxHealth: 100
+  currentHealth: 0
+  recoveryThreshold: 30
+  recoveryRate: 10
+  bulletPrefab: {fileID: 0}
+  fireRate: 1
+  maxAmmo: 30
+  currentAmmo: 0
+  reloadTime: 2
+  isReloading: 0
+  grenadePrefab: {fileID: 0}
+  maxGrenades: 3
+  currentGrenades: 0
+  grenadeThrowCooldown: 5
+  canThrowGrenade: 1
+  alertCountdown: 3
+  currentAlertTime: 0
+  patrolRadius: 10
+  startPosition: {x: 0, y: 0, z: 0}
+  playerInDetectionRange: 0
+  playerInAttackRange: 0
+  playerInLineOfSight: 0
 --- !u!1 &3038401109736658641
 GameObject:
   m_ObjectHideFlags: 0

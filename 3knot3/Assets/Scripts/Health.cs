@@ -1,24 +1,32 @@
 using UnityEngine;
 
-public class Health : MonoBehaviour
+namespace HealthSystem
 {
-    [SerializeField] private int _maxHealth = 0;
-    private int _currentHealth = 0;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Awake()
-    {
-        _currentHealth=_maxHealth;
-    }
 
-    private void Update()
+
+    public class Health : MonoBehaviour
     {
-        if (_currentHealth == 0)
+        [SerializeField] private int _maxHealth = 0;
+
+        private int _currentHealth = 0;
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        void Awake()
         {
-            Destroy(gameObject);
+            _currentHealth = _maxHealth;
         }
-    }
-    public void TakeDmg(int DmgAmount)
-    {
-        _currentHealth -= DmgAmount;
+
+        private void Update()
+        {
+            if (_currentHealth == 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+
+        public void TakeDmg(int DmgAmount)
+        {
+            _currentHealth -= DmgAmount;
+        }
     }
 }
