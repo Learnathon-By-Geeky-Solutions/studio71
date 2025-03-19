@@ -1756,6 +1756,7 @@ GameObject:
   m_Component:
   - component: {fileID: 17726033687933404}
   - component: {fileID: 1605979983397022802}
+  - component: {fileID: 330062146946218064}
   m_Layer: 0
   m_Name: MachineGunner
   m_TagString: Untagged
@@ -1834,6 +1835,44 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &330062146946218064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962181833536635275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48dc32fafb423fd4981aa7069cb06651, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alertDetectionRange: 40
+  suppressiveFireRange: 30
+  precisionFireRange: 20
+  firingArc: 120
+  targetLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  gunPivot: {fileID: 17726033687933404}
+  rotationSpeed: 3
+  magazineSize: 100
+  reloadTime: 4.5
+  heatGeneration: 1
+  heatThreshold: 50
+  coolingRate: 10
+  muzzlePoint: {fileID: 17726033687933404}
+  muzzleFlash: {fileID: 198217647695368876, guid: 31a254077dcab2d4eb6e0d233f4274c2, type: 3}
+  gunAudioSource: {fileID: 0}
+  fireSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  overheatedSound: {fileID: 0}
+  scanAngle: 60
+  scanSpeed: 20
+  showDebugGizmos: 1
 --- !u!1 &2064021729287202506
 GameObject:
   m_ObjectHideFlags: 0
