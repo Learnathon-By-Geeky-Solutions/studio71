@@ -25,9 +25,6 @@ namespace Interaction
             _interactionButton.onClick.Invoke();
         }
 
-
-
-
     }
 }
 

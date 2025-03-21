@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SingletonManagers;
+using System.Collections;
 /// <summary>
 /// Manages all Player Input.
 /// </summary>
@@ -28,7 +29,7 @@ namespace Player
 
 
         //Sprint related variables
-        private bool _isSprinting;
+        public bool _isSprinting { get; private set; }
         [Min(1f)]
         [SerializeField] private float _sprintModifier = 1f;
 
@@ -36,9 +37,9 @@ namespace Player
         //Weapon variable
         private Weapon.Gun _equippedGun;
 
-        //Player Animator
-        private Animator _playerAnimator;
-        private string _currentAnimation;
+        
+        //PlayerAnimation Variable
+        private PlayerAnimation _playerAnimation;
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -47,6 +48,7 @@ namespace Player
             InputHandler.Instance.OnSecondaryWeapon += SecondaryWeapon;
             InputHandler.Instance.OnAttack += Attack;
             InputHandler.Instance.OnReload += Reload;
+            InputHandler.Instance.OnGrenade += Grenade;
         }
         private void OnDisable()
         {
@@ -56,6 +58,7 @@ namespace Player
             InputHandler.Instance.OnSecondaryWeapon -= SecondaryWeapon;
             InputHandler.Instance.OnAttack -= Attack;
             InputHandler.Instance.OnReload -= Reload;
+            InputHandler.Instance.OnGrenade-= Grenade;
         }
         private void Awake()
         {
@@ -86,8 +89,8 @@ namespace Player
             //Weapon initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
 
-            //Animator Initialization
-            _playerAnimator = GetComponent<Animator>();
+            //Animation Initialization
+            _playerAnimation=GetComponent<PlayerAnimation>();
         }
         private void Start()
         {
@@ -143,18 +146,20 @@ namespace Player
              if (!_isCrouching)
              {
                  _playerCollider.height /= 2;
-                 _playerCollider.center = new Vector3(_playerCollider.center.x, -.5f, _playerCollider.center.z);
+                 _playerCollider.center = new Vector3(_playerCollider.center.x, .5f, _playerCollider.center.z);
                  _isCrouching = true;
                  _currentMoveSpeed = _moveSpeed * _crouchModifier;
+                _isSprinting = false;
              }
              else
              {
                  _playerCollider.height *= 2;
-                 _playerCollider.center = new Vector3(_playerCollider.center.x, 0, _playerCollider.center.z);
-                 _isCrouching = false;
+                 _playerCollider.center = new Vector3(_playerCollider.center.x, 0.93f, _playerCollider.center.z);
+                _isCrouching = false;
                  if (Keyboard.current.shiftKey.isPressed)
                  {
                      _currentMoveSpeed = _moveSpeed * _sprintModifier;
+                    _isSprinting = true;
                  }
                  else
                  {
@@ -180,8 +185,7 @@ namespace Player
         private void Attack(bool isPressed)
         {
 
-            if (!_isSprinting)
-            {
+            if (_isSprinting || _playerAnimation.IsBusy) return;       
                 if (isPressed)
                 {
                     _equippedGun.StartShooting();
@@ -190,7 +194,7 @@ namespace Player
                 {
                     _equippedGun.StopShooting();
                 }
-            }
+            
         }
         private void PrimaryWeapon()
         {
@@ -207,20 +211,24 @@ namespace Player
             }
         }
         private void Reload()
-        {
-         
+        {        
              _equippedGun.StopShooting();
-             _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size;
-            
+
+            StartCoroutine(DelayedAction(_playerAnimation._animationLengths["Reload"], () =>
+            { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; }));            
+        }
+        private void Grenade()
+        {
+            _equippedGun.StopShooting();
+            //Code of Grenade here
+            print("GRENADE");
         }
 
-        void ChangeAnimationState(string newState)
+
+        private static IEnumerator DelayedAction(float delay, System.Action action)
         {
-            if (_currentAnimation == newState) return;
-
-            _playerAnimator.Play(newState);
-
-            _currentAnimation = newState;
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
         }
     }
 }
