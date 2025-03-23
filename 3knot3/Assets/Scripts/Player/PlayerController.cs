@@ -223,8 +223,7 @@ namespace Player
         private void Grenade()
         {
             _equippedGun.StopShooting();
-            //Code of Grenade here
-            StartCoroutine(DelayedAction(2f,
+            StartCoroutine(DelayedAction(1.5f,
                 () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
         }
 

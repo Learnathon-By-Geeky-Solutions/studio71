@@ -109,8 +109,10 @@ MonoBehaviour:
   explosionEffect: {fileID: 0}
   hitLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 768
   _GrenadeDMG: 90
+  forwardForce: 8
+  upwardForce: 5
 --- !u!54 &4431451908295853537
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ namespace Weapon
             if (Prefab_Bullet == null) { print($"BulletPrefab not Assigned for {gameObject.name}"); }
             if (Rotation == null) { print($"Player Rotation not assigned for {gameObject.name}"); }
         }
-        protected abstract void Shoot();
+        public abstract void Shoot();
 
         public void StartShooting() => IsShooting = true;
         public void StopShooting() => IsShooting = false;

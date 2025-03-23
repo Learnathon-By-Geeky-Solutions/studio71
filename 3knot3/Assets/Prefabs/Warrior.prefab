@@ -963,6 +963,8 @@ MonoBehaviour:
   _rotationSpeed: 5
   _crouchModifier: 0.304
   _sprintModifier: 2
+  _grenade: {fileID: 0}
+  _throwPoint: {fileID: 0}
 --- !u!136 &7348640931027012126
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2401,7 +2403,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0.8896321, y: 1.2909399, z: -0.024173765}
   m_RotationAtRest: {x: 6.9001646, y: 112.698875, z: 90.0011}
   m_TranslationOffsets:
-  - {x: 0.09000003, y: 0.07000005, z: -0.010000037}
+  - {x: 0.09000015, y: 0.07000017, z: -0.010000229}
   m_RotationOffsets:
   - {x: -6.900174, y: 67.30114, z: -89.99894}
   m_AffectTranslationX: 1
@@ -2411,7 +2413,7 @@ ParentConstraint:
   m_AffectRotationY: 1
   m_AffectRotationZ: 1
   m_Active: 1
-  m_IsLocked: 0
+  m_IsLocked: 1
   m_Sources:
   - sourceTransform: {fileID: 726657489492370677}
     weight: 1

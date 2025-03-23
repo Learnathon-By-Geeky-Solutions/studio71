@@ -23,8 +23,9 @@ namespace Weapon
         private void OnTriggerEnter(Collider other)
         {
             if (((1 << other.gameObject.layer) & hitLayers) == 0) return;
-            print($"Hit {other.gameObject.name}");
-            other.gameObject.GetComponent<Health>().TakeDmg(_bulletDmg);
+            Health health = other.GetComponent<Health>();
+            if (health != null)
+                health.TakeDmg(_bulletDmg);
             Destroy(transform.parent.gameObject);
 
         }
