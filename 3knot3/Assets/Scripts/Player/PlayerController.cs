@@ -36,6 +36,8 @@ namespace Player
 
         //Weapon variable
         private Weapon.Gun _equippedGun;
+        [SerializeField] private GameObject _grenade;
+        [SerializeField] Transform _throwPoint;
 
         
         //PlayerAnimation Variable
@@ -222,7 +224,8 @@ namespace Player
         {
             _equippedGun.StopShooting();
             //Code of Grenade here
-            print("GRENADE");
+            StartCoroutine(DelayedAction(2f,
+                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
         }
 
 

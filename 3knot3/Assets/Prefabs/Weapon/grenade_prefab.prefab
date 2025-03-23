@@ -105,7 +105,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionDelay: 3
   explosionRadius: 5
-  explosionForce: 700
+  explosionForce: 683.4
   explosionEffect: {fileID: 0}
   hitLayers:
     serializedVersion: 2
