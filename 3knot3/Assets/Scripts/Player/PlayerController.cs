@@ -124,7 +124,8 @@ namespace Player
         }
         private void LookAround()
         {
-            Ray ray = _mainCamera.ScreenPointToRay(InputHandler.Instance.MousePosition);                  // Ray from screen mouse position to world
+            if (_playerAnimation.IsThrowingGrenade) return;
+            Ray ray = _mainCamera.ScreenPointToRay(InputHandler.Instance.MousePosition);  // Ray from screen mouse position to world
 
             if (_groundPlane.Raycast(ray, out float Distance))                        // Checks is ray hit the ground
             {

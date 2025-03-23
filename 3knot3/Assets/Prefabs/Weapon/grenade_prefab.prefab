@@ -107,6 +107,10 @@ MonoBehaviour:
   explosionRadius: 5
   explosionForce: 700
   explosionEffect: {fileID: 0}
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  _GrenadeDMG: 90
 --- !u!54 &4431451908295853537
 Rigidbody:
   m_ObjectHideFlags: 0

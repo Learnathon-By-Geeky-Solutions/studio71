@@ -668,7 +668,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 723495013797310181}
-  - {fileID: 8444777621952922230}
   m_Father: {fileID: 723680575219129043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &720910091700183557
@@ -895,6 +894,7 @@ Transform:
   m_Children:
   - {fileID: 723802009646094505}
   - {fileID: 726401964282882577}
+  - {fileID: 8444777621952922230}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &816361914697085323
@@ -962,7 +962,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _rotationSpeed: 5
   _crouchModifier: 0.304
-  _sprintModifier: 1.5
+  _sprintModifier: 2
 --- !u!136 &7348640931027012126
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2269,6 +2269,7 @@ GameObject:
   - component: {fileID: 8460620712381622974}
   - component: {fileID: 8492159820540780332}
   - component: {fileID: 7060925450600628464}
+  - component: {fileID: 1864749132391485537}
   m_Layer: 0
   m_Name: AK-47
   m_TagString: Untagged
@@ -2284,8 +2285,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8447092791057330406}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.002486423, y: -0.04387982, z: 0.056519262, w: -0.9974337}
-  m_LocalPosition: {x: 0.0066997074, y: -0.08206391, z: -0.029505664}
+  m_LocalRotation: {x: 1, y: -0, z: -0, w: 0}
+  m_LocalPosition: {x: 0.7996321, y: 1.36094, z: -0.034173787}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2293,7 +2294,7 @@ Transform:
   - {fileID: 8444691153594886300}
   - {fileID: 8444427201789507456}
   - {fileID: 2463273368200846822}
-  m_Father: {fileID: 723716256236070059}
+  m_Father: {fileID: 726546441728292921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8451250290279613124
 MeshFilter:
@@ -2387,6 +2388,33 @@ MonoBehaviour:
   Fire_Point: {fileID: 2463273368200846822}
   Prefab_Bullet: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
   <Magazine_Size>k__BackingField: 30
+--- !u!1773428102 &1864749132391485537
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447092791057330406}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0.8896321, y: 1.2909399, z: -0.024173765}
+  m_RotationAtRest: {x: 6.9001646, y: 112.698875, z: 90.0011}
+  m_TranslationOffsets:
+  - {x: 0.09000003, y: 0.07000005, z: -0.010000037}
+  m_RotationOffsets:
+  - {x: -6.900174, y: 67.30114, z: -89.99894}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_Active: 1
+  m_IsLocked: 0
+  m_Sources:
+  - sourceTransform: {fileID: 726657489492370677}
+    weight: 1
 --- !u!1 &8447110652130627876
 GameObject:
   m_ObjectHideFlags: 0
