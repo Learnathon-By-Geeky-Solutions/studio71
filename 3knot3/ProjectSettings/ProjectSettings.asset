@@ -837,7 +837,7 @@ PlayerSettings:
     ReservedCFE: DOTWEEN
     Standalone: INK_RUNTIME;INK_EDITOR;DOTWEEN
     VisionOS: DOTWEEN
-    WebGL: DOTWEEN
+    WebGL: DOTWEEN;INK_RUNTIME;INK_EDITOR
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN
     iPhone: DOTWEEN
