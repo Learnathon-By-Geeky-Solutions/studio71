@@ -83,6 +83,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8015868920595504398, guid: 0562e703df862c44aba6149b49337594, type: 3}
+      propertyPath: Fire_Point
+      value: 
+      objectReference: {fileID: 6554770100403829764}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 1353872574428956, guid: 0562e703df862c44aba6149b49337594, type: 3}
@@ -90,35 +94,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4197694032778738, guid: 0562e703df862c44aba6149b49337594, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6554770100403829764}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1428701504022370, guid: 0562e703df862c44aba6149b49337594, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1873813102738229898}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0562e703df862c44aba6149b49337594, type: 3}
 --- !u!4 &8444777621952922230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4197694032778738, guid: 0562e703df862c44aba6149b49337594, type: 3}
   m_PrefabInstance: {fileID: 8448481626351933316}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8447092791057330406 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1428701504022370, guid: 0562e703df862c44aba6149b49337594, type: 3}
-  m_PrefabInstance: {fileID: 8448481626351933316}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1873813102738229898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8447092791057330406}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 274ab6787e78a8e47b25fea6ca162c99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Fire_Rate: 10
-  Rotation: {fileID: 0}
-  Fire_Point: {fileID: 6554770100403829764}
-  Prefab_Bullet: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
-  <Magazine_Size>k__BackingField: 30
