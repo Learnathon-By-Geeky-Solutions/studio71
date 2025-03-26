@@ -9,18 +9,10 @@
 - zubEpty
 
 ## Project Description
-Add your project description here.
+Top down 2.5D Shooter game based on Liberation War 1971.
 
-## Getting Started
-1. Clone the repository
-2. Install dependencies
-3. Start development
-
-## Development Guidelines
-1. Create feature branches
-2. Make small, focused commits
-3. Write descriptive commit messages
-4. Create pull requests for review
+##itch.io link:
+https://sarwar2arnob.itch.io/3knot3
 
 ## Resources
 - [Project Documentation](docs/)
