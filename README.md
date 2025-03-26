@@ -9,18 +9,9 @@
 - zubEpty
 
 ## Project Description
-Add your project description here.
+2.5d Top down shooter game.
 
-## Getting Started
-1. Clone the repository
-2. Install dependencies
-3. Start development
-
-## Development Guidelines
-1. Create feature branches
-2. Make small, focused commits
-3. Write descriptive commit messages
-4. Create pull requests for review
+Demo : https://sarwar2arnob.itch.io/3knot3
 
 ## Resources
 - [Project Documentation](docs/)
