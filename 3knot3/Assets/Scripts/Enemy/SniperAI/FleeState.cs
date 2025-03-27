@@ -4,45 +4,50 @@ namespace sniperAI
 {
     public class FleeState : SniperState
     {
-        private float fleeDistance = 15f;
+        private Vector3 fleeDirection;
         private float fleeSpeed = 5f;
+        private float safeDistance;
 
-        public FleeState(SniperAI sniperAI) : base(sniperAI) { }
+        public FleeState(SniperAI sniper) : base(sniper) 
+        {
+            safeDistance = sniper.fleeDistance;
+        }
 
         public override void EnterState()
         {
-            Debug.Log("Sniper: FLEEING!");
-            DeploySmokeGrenade();
-            StartFleeing();
+            Debug.Log("Entering Flee State");
+            
+            // Calculate flee direction away from player
+            if (sniper.playerTarget != null)
+            {
+                fleeDirection = (sniper.transform.position - sniper.playerTarget.position).normalized;
+            }
+            else
+            {
+                fleeDirection = Random.insideUnitSphere.normalized;
+            }
+
+            // Deploy smoke grenade effect
+            Debug.Log("Deploying smoke grenade!");
         }
 
         public override void UpdateState()
         {
-            if (IsAtSafeDistance())
+            // Move away
+            sniper.transform.position += fleeDirection * fleeSpeed * Time.deltaTime;
+
+            // Check if reached safe distance
+            if (sniper.playerTarget == null || 
+                Vector3.Distance(sniper.transform.position, sniper.playerTarget.position) >= safeDistance)
             {
-                sniperAI.ChangeState(sniperAI.repositioningState);
+                sniper.CurrentState = sniper.repositioningState;
+                sniper.CurrentState.EnterState();
             }
         }
 
         public override void ExitState()
         {
-            Debug.Log("Sniper: Safe distance reached.");
-        }
-
-        private void DeploySmokeGrenade()
-        {
-            Debug.Log("Sniper: Smoke grenade deployed!");
-        }
-
-        private void StartFleeing()
-        {
-            // Implement fleeing movement (e.g., away from player)
-        }
-
-        private bool IsAtSafeDistance()
-        {
-            // Check if sniper is far enough from player
-            return true; // Placeholder
+            Debug.Log("Exiting Flee State");
         }
     }
 }

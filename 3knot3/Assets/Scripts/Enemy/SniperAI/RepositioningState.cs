@@ -4,42 +4,33 @@ namespace sniperAI
 {
     public class RepositioningState : SniperState
     {
-        private Vector3[] preDefinedPositions;
         private int currentPosIndex = 0;
         private float moveSpeed = 3f;
 
-        public RepositioningState(SniperAI sniperAI) : base(sniperAI) { }
+        public RepositioningState(SniperAI sniper) : base(sniper) { }
 
         public override void EnterState()
         {
-            Debug.Log("Sniper: Repositioning...");
-            preDefinedPositions = GetPredefinedPositions();
-            MoveToNextPosition();
+            Debug.Log("Entering Repositioning State");
+            currentPosIndex = (currentPosIndex + 1) % sniper.repositionPoints.Length;
         }
 
         public override void UpdateState()
         {
-            if (Vector3.Distance(sniperAI.transform.position, preDefinedPositions[currentPosIndex]) < 0.1f)
+            Vector3 targetPos = sniper.repositionPoints[currentPosIndex];
+            sniper.transform.position = Vector3.MoveTowards(
+                sniper.transform.position,
+                targetPos,
+                moveSpeed * Time.deltaTime
+            );
+
+            if (Vector3.Distance(sniper.transform.position, targetPos) < 0.1f)
             {
-                sniperAI.ChangeState(sniperAI.hiddenState);
+                sniper.CurrentState = sniper.hiddenState; // Access through SniperAI
+                sniper.CurrentState.EnterState();
             }
         }
 
-        public override void ExitState()
-        {
-            Debug.Log("Sniper: Repositioned successfully.");
-        }
-
-        private Vector3[] GetPredefinedPositions()
-        {
-            // Define sniper's alternate positions (e.g., waypoints)
-            return new Vector3[] { /* positions here */ };
-        }
-
-        private void MoveToNextPosition()
-        {
-            currentPosIndex = (currentPosIndex + 1) % preDefinedPositions.Length;
-            // Implement movement logic (NavMeshAgent, Transform, etc.)
-        }
+        public override void ExitState() { }
     }
 }

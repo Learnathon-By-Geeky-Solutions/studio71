@@ -4,46 +4,38 @@ namespace sniperAI
 {
     public class AimingState : SniperState
     {
-        private float aimTimer = 0f;
-        private bool hasAimed = false;
+        private float aimTimer;
+        private Transform player;
 
-        public AimingState(SniperAI sniperAI) : base(sniperAI) { }
+        public AimingState(SniperAI sniper) : base(sniper) 
+        {
+            player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        }
 
         public override void EnterState()
         {
-            Debug.Log("Sniper: Entering Aiming State");
+            Debug.Log($"{sniper.gameObject.name}: Aiming at player");
             aimTimer = 0f;
-            hasAimed = false;
-            ShowScopeGlint(); // Visual feedback
         }
 
         public override void UpdateState()
         {
-            if (!hasAimed)
+            if (!player)
             {
-                aimTimer += Time.deltaTime;
-                if (aimTimer >= sniperAI.aimTime)
-                {
-                    hasAimed = true;
-                    sniperAI.ChangeState(sniperAI.firingState);
-                }
+                sniper.CurrentState = sniper.hiddenState;
+                return;
+            }
+
+            sniper.transform.LookAt(player);
+            aimTimer += Time.deltaTime;
+
+            if (aimTimer >= sniper.aimTime)
+            {
+                sniper.CurrentState = sniper.firingState;
+                sniper.CurrentState.EnterState();
             }
         }
 
-        public override void ExitState()
-        {
-            Debug.Log("Sniper: Exiting Aiming State");
-            HideScopeGlint();
-        }
-
-        private void ShowScopeGlint()
-        {
-            Debug.Log("Sniper: Scope glint visible!");
-        }
-
-        private void HideScopeGlint()
-        {
-            Debug.Log("Sniper: Scope glint hidden.");
-        }
+        public override void ExitState() { }
     }
 }

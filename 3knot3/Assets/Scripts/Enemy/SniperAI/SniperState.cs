@@ -1,14 +1,12 @@
-using UnityEngine;
-
 namespace sniperAI
 {
     public abstract class SniperState
     {
-        protected SniperAI sniperAI;
+        protected readonly SniperAI sniper;
 
         public SniperState(SniperAI sniperAI)
         {
-            this.sniperAI = sniperAI;
+            this.sniper = sniperAI;
         }
 
         public abstract void EnterState();

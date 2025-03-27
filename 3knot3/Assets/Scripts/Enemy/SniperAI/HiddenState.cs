@@ -1,49 +1,56 @@
 using UnityEngine;
+using System.Linq; // Required for .Any()
 
 namespace sniperAI
 {
     public class HiddenState : SniperState
     {
-        private float scanTimer = 0f;
-        private float scanInterval = 3f;
+        private float scanTimer;
+        private const float SCAN_INTERVAL = 1f;
 
-        public HiddenState(SniperAI sniperAI) : base(sniperAI) { }
+        public HiddenState(SniperAI sniper) : base(sniper) { }
 
         public override void EnterState()
         {
-            Debug.Log("Sniper: Entering Hidden State");
+            Debug.Log($"{sniper.gameObject.name}: Entering Hidden State");
+            scanTimer = 0f;
         }
 
         public override void UpdateState()
         {
             scanTimer += Time.deltaTime;
-            if (scanTimer >= scanInterval)
+            if (scanTimer >= SCAN_INTERVAL)
             {
-                ScanForPlayer();
                 scanTimer = 0f;
+                Collider[] hits = Physics.OverlapSphere(
+                    sniper.transform.position,
+                    sniper.detectionRadius
+                );
+
+                if (hits.Any(c => c.CompareTag("Player")))
+                {
+                    // Verify line of sight
+                    GameObject player = GameObject.FindGameObjectWithTag("Player");
+                    if (player != null && HasClearLineOfSight(player.transform))
+                    {
+                        sniper.CurrentState = sniper.aimingState;
+                        sniper.CurrentState.EnterState();
+                    }
+                }
             }
-
-            // If player is detected within optimal range, switch to Aiming
-            if (PlayerDetected())
-            {
-                sniperAI.ChangeState(sniperAI.aimingState);
-            }
         }
 
-        public override void ExitState()
+        private bool HasClearLineOfSight(Transform target)
         {
-            Debug.Log("Sniper: Exiting Hidden State");
+            Vector3 direction = target.position - sniper.transform.position;
+            return !Physics.Raycast(
+                sniper.transform.position,
+                direction.normalized,
+                direction.magnitude,
+                LayerMask.GetMask("Wall")
+            );
         }
 
-        private bool PlayerDetected()
-        {
-            // Implement player detection logic (Raycast, OverlapSphere, etc.)
-            return false; // Placeholder
-        }
-
-        private void ScanForPlayer()
-        {
-            Debug.Log("Sniper: Scanning for player...");
-        }
+        public override void ExitState() { }
     }
 }
