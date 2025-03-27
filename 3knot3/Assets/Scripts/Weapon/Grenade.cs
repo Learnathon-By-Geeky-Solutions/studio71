@@ -1,13 +1,13 @@
 using HealthSystem;
 using UnityEngine;
+using SingletonManagers;
 
 public class Grenade : MonoBehaviour
 {
     [Header("Explosion Settings")]
-    public float explosionDelay = 3f;
-    public float explosionRadius = 5f;
-    public float explosionForce = 700f;
-    public GameObject explosionEffect;
+    [SerializeField] private float explosionDelay = 3f;
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionForce = 700f;
     [SerializeField] private LayerMask hitLayers;
     [SerializeField] private int _GrenadeDMG = 0;
 
@@ -47,9 +47,8 @@ public class Grenade : MonoBehaviour
 
     private void Explode()
     {
-        if (explosionEffect)
-            Instantiate(explosionEffect, transform.position, Quaternion.identity);
-
+        
+        ParticleManager.Instance.PlayParticle("Grenade Explosion",transform.position,Quaternion.identity);
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider other in colliders)
         {
