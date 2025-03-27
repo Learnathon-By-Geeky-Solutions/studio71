@@ -1,0 +1,122 @@
+name: Unity Game CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+  UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+  UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
+jobs:
+  # Check code quality and run tests
+  code-quality:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Run static code analysis
+    - name: Run Unity Code Analysis
+      uses: game-ci/unity-test-runner@v3
+      with:
+        projectPath: .
+        testMode: EditMode
+        customParameters: -nographics
+
+    # Optional: Run code coverage
+    - name: Code Coverage
+      uses: codecov/codecov-action@v3
+      with:
+        flags: unittests
+
+  # Build for multiple platforms
+  build:
+    name: Build for ${{ matrix.targetPlatform }}
+    needs: code-quality
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64
+          - StandaloneLinux64
+          - StandaloneOSX
+          - WebGL
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    # Cache Unity Library folder
+    - uses: actions/cache@v3
+      with:
+        path: Library
+        key: Library-${{ matrix.targetPlatform }}
+        restore-keys: Library-
+
+    # Build Unity project
+    - name: Build Unity Project
+      uses: game-ci/unity-builder@v3
+      with:
+        targetPlatform: ${{ matrix.targetPlatform }}
+        projectPath: 3knot3
+        buildName: MyGame
+        versioning: Semantic
+
+    # Upload build artifacts
+    - name: Upload Build
+      uses: actions/upload-artifact@v3
+      with:
+        name: MyGame-${{ matrix.targetPlatform }}
+        path: build/${{ matrix.targetPlatform }}
+
+  # Deploy to itch.io or other platforms
+  deploy:
+    name: Deploy to Distribution Platforms
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+
+    # Download all build artifacts
+    - uses: actions/download-artifact@v3
+
+    # Deploy to itch.io
+    - name: Deploy to itch.io
+      uses: josephbmanley/butler-publish-itchio-action@master
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.ITCH_IO_API_KEY }}
+        CHANNEL: windows
+        ITCH_GAME: 3knot3
+        ITCH_USER: sarwar2arnob
+        PACKAGE: MyGame-StandaloneWindows64
+
+  # Create GitHub Release
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v3
+
+    # Download build artifacts
+    - uses: actions/download-artifact@v3
+
+    # Create GitHub Release
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          MyGame-StandaloneWindows64/*
+          MyGame-StandaloneLinux64/*
+          MyGame-StandaloneOSX/*
+          MyGame-WebGL/*
+        tag_name: v${{ github.sha }}

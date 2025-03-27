@@ -16,7 +16,7 @@ namespace Weapon
             Shoot();
         }
 
-        protected override void Shoot()
+        public override void Shoot()
         {
             if (!IsShooting||CurrentMagazineSize <= 0) return;          
                 Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);

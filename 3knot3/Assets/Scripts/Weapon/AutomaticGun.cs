@@ -21,7 +21,7 @@ namespace Weapon
             }
         }
 
-        protected override void Shoot()
+        public override void Shoot()
         {
             Instantiate(Prefab_Bullet, Fire_Point.position, Rotation.rotation);
         }

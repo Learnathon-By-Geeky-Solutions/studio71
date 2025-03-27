@@ -36,6 +36,8 @@ namespace Player
 
         //Weapon variable
         private Weapon.Gun _equippedGun;
+        [SerializeField] private GameObject _grenade;
+        [SerializeField] Transform _throwPoint;
 
         
         //PlayerAnimation Variable
@@ -124,7 +126,8 @@ namespace Player
         }
         private void LookAround()
         {
-            Ray ray = _mainCamera.ScreenPointToRay(InputHandler.Instance.MousePosition);                  // Ray from screen mouse position to world
+            if (_playerAnimation.IsThrowingGrenade) return;
+            Ray ray = _mainCamera.ScreenPointToRay(InputHandler.Instance.MousePosition);  // Ray from screen mouse position to world
 
             if (_groundPlane.Raycast(ray, out float Distance))                        // Checks is ray hit the ground
             {
@@ -220,8 +223,8 @@ namespace Player
         private void Grenade()
         {
             _equippedGun.StopShooting();
-            //Code of Grenade here
-            print("GRENADE");
+            StartCoroutine(DelayedAction(1.5f,
+                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
         }
 
 

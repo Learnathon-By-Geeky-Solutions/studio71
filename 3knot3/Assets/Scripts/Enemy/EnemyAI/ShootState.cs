@@ -20,7 +20,6 @@ namespace patrolEnemy
 
         public void Enter()
         {
-            Debug.Log("Entering Shoot State");
 
             // Reset timers
             shootTimer = 0f;

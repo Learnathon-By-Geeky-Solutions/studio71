@@ -1,32 +1,75 @@
+using HealthSystem;
 using UnityEngine;
+using SingletonManagers;
 
 public class Grenade : MonoBehaviour
 {
-    public float explosionDelay = 3f;
-    public float explosionRadius = 5f;
-    public float explosionForce = 700f;
-    public GameObject explosionEffect;
+    [Header("Explosion Settings")]
+    [SerializeField] private float explosionDelay = 3f;
+    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionForce = 700f;
+    [SerializeField] private LayerMask hitLayers;
+    [SerializeField] private int _GrenadeDMG = 0;
+
+    [Header("Throw Settings")]
+    [SerializeField] private float forwardForce = 5f; // Forward force multiplier
+    [SerializeField] private float upwardForce = 2f; // Upward force multiplier
+
+    private Rigidbody _rigidbody;
+    private Transform player; // Reference to the player
 
     private void Start()
     {
-        Invoke("Explode", explosionDelay);
+        _rigidbody = GetComponent<Rigidbody>();
+        player = GameObject.FindGameObjectWithTag("Player")?.transform; // Find player by tag
+
+        if (player == null)
+        {
+            Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
+            return;
+        }
+
+        ThrowGrenade();
+
+        // Schedule explosion
+        Invoke(nameof(Explode), explosionDelay);
+    }
+
+    private void ThrowGrenade()
+    {
+        if (_rigidbody != null && player != null)
+        {
+            // Use player's forward direction instead of grenade's local forward
+            Vector3 throwDirection = (player.forward * forwardForce) + (Vector3.up * upwardForce);
+            _rigidbody.AddForce(throwDirection, ForceMode.Impulse);
+        }
     }
 
     private void Explode()
     {
-        if (explosionEffect)
-            Instantiate(explosionEffect, transform.position, Quaternion.identity);
-
+        
+        ParticleManager.Instance.PlayParticle("Grenade Explosion",transform.position,Quaternion.identity);
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
-        foreach (Collider nearby in colliders)
+        foreach (Collider other in colliders)
         {
-            Rigidbody rb = nearby.GetComponent<Rigidbody>();
+            if (((1 << other.gameObject.layer) & hitLayers) == 0) continue; // Correct bitmask check
+            Debug.Log($"Hit {other.gameObject.name}");
+
+            Rigidbody rb = other.GetComponent<Rigidbody>();
             if (rb != null)
-            {
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
-            }
+
+            Health health = other.GetComponent<Health>();
+            if (health != null)
+                health.TakeDmg(_GrenadeDMG);
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject); // Destroy grenade after explosion
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }
