@@ -17,6 +17,7 @@ namespace Player
 
         //Bools to check different state.
         public bool IsBusy {get; private set;}
+        public bool IsThrowingGrenade { get; private set; }
         private bool _isPickingUp=false;
         private bool _isDead = false;
         private bool _isCrouching = false;
@@ -139,6 +140,7 @@ namespace Player
         {
             if (IsBusy||_isDead) return;
             IsBusy = true;
+            IsThrowingGrenade = true;
             PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", .1f,1);
         }
         private void DeathAnimation()
@@ -226,6 +228,10 @@ namespace Player
             yield return new WaitForSeconds(_animationLengths[animationName]);
             _playerAnimator.CrossFade(returnAnimation, SmoothFrame, WorkingLayer);
             IsBusy = false;
+            if(animationName=="Grenade Throw")
+            {
+                IsThrowingGrenade = false;
+            }
         }
         private static IEnumerator DelayedAction(float delay, System.Action action)
         {

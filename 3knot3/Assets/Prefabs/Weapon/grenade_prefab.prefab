@@ -105,8 +105,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionDelay: 3
   explosionRadius: 5
-  explosionForce: 700
-  explosionEffect: {fileID: 0}
+  explosionForce: 683.4
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  _GrenadeDMG: 90
+  forwardForce: 6
+  upwardForce: 5
 --- !u!54 &4431451908295853537
 Rigidbody:
   m_ObjectHideFlags: 0
