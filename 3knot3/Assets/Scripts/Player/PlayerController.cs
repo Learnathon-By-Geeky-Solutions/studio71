@@ -36,6 +36,7 @@ namespace Player
 
         //Weapon variable
         private Weapon.Gun _equippedGun;
+        private GameObject _equippedGunMagazine;
         [SerializeField] private GameObject _grenade;
         [SerializeField] Transform _throwPoint;
 
@@ -90,6 +91,7 @@ namespace Player
 
             //Weapon initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
+            _equippedGunMagazine = _equippedGun.transform.Find("Mag")?.gameObject;
 
             //Animation Initialization
             _playerAnimation=GetComponent<PlayerAnimation>();
@@ -216,14 +218,16 @@ namespace Player
         private void Reload()
         {        
              _equippedGun.StopShooting();
-
-            StartCoroutine(DelayedAction(_playerAnimation._animationLengths["Reload"], () =>
-            { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; }));            
+            StartCoroutine(DelayedAction(1f, () => { _equippedGunMagazine.SetActive(false); }));
+            StartCoroutine(DelayedAction(2f, () =>
+            { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; _equippedGunMagazine.SetActive(true); }));            
         }
         private void Grenade()
         {
+            if (_playerAnimation.IsThrowingGrenade) return; // Prevents throwing if grenade animation is already playing
+            _playerAnimation.IsThrowingGrenade = true;
             _equippedGun.StopShooting();
-            StartCoroutine(DelayedAction(1.5f,
+            StartCoroutine(DelayedAction(1.7f,
                 () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
         }
 

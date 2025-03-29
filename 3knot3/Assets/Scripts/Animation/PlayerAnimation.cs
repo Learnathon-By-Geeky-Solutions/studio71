@@ -17,7 +17,7 @@ namespace Player
 
         //Bools to check different state.
         public bool IsBusy {get; private set;}
-        public bool IsThrowingGrenade { get; private set; }
+        public bool IsThrowingGrenade;
         private bool _isPickingUp=false;
         private bool _isDead = false;
         private bool _isCrouching = false;
@@ -138,10 +138,11 @@ namespace Player
         }
         private void GrenadeAnimation()
         {
-            if (IsBusy||_isDead) return;
+            if (IsBusy || _isDead) return;
             IsBusy = true;
-            IsThrowingGrenade = true;
-            PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", .1f,1);
+            PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", 0.1f, 1);
+            StartCoroutine(DelayedAction(_animationLengths["Grenade Throw"], () => { IsThrowingGrenade = false; }));
+
         }
         private void DeathAnimation()
         {

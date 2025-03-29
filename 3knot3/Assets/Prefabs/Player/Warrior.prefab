@@ -2184,7 +2184,7 @@ GameObject:
   - component: {fileID: 8450928302615916250}
   - component: {fileID: 8461917223753500724}
   m_Layer: 0
-  m_Name: SM_Wep_Preset_B_Rifle_01_Trigger
+  m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2406,7 +2406,7 @@ GameObject:
   - component: {fileID: 8451414851655980886}
   - component: {fileID: 8461263490830381798}
   m_Layer: 0
-  m_Name: SM_Wep_Preset_B_Rifle_01_Slide
+  m_Name: Slide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2492,7 +2492,7 @@ GameObject:
   - component: {fileID: 8451354405803297058}
   - component: {fileID: 8461632597173313000}
   m_Layer: 0
-  m_Name: SM_Wep_Preset_B_Rifle_01_Mag
+  m_Name: Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
