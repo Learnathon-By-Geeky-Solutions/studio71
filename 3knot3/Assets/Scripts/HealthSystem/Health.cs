@@ -17,15 +17,13 @@ namespace HealthSystem
         {
             _currentHealth = _maxHealth;
         }
-
         private void Update()
         {
-            if (_currentHealth == 0)
+            if (gameObject.CompareTag("Enemy") && _currentHealth <= 0)
             {
                 Destroy(gameObject);
             }
         }
-
         public void TakeDmg(int DmgAmount)
         {
             _currentHealth -= DmgAmount;

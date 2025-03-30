@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SingletonManagers;
 using System.Collections;
+using System.Collections.Generic;
 /// <summary>
 /// Manages all Player Input.
 /// </summary>
@@ -34,13 +35,20 @@ namespace Player
         [SerializeField] private float _sprintModifier = 1f;
 
 
-        //Weapon variable
+        //Gun variables
         private Weapon.Gun _equippedGun;
         private GameObject _equippedGunMagazine;
-        [SerializeField] private GameObject _grenade;
-        [SerializeField] Transform _throwPoint;
 
-        
+        //Grenade variables
+        [SerializeField] private GameObject _grenade;
+        [SerializeField] private Transform _throwPoint;
+        private LineRenderer _lineRenderer;
+        [SerializeField] private int _resolution = 30; // Number of points in trajectory
+        [SerializeField] private float _timeStep = 0.05f; // Simulation time step
+        [SerializeField] private LayerMask _collisionMask; // Stops drawing when hitting obstacles
+
+        private bool _showingTrajectory = false; // To track visibility
+
         //PlayerAnimation Variable
         private PlayerAnimation _playerAnimation;
         private void OnEnable()
@@ -89,10 +97,13 @@ namespace Player
             _isSprinting = false;
 
 
-            //Weapon initialization
+            //Gun variable initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
             _equippedGunMagazine = _equippedGun.transform.Find("Mag")?.gameObject;
 
+            //Grenade Variable initialization
+            _lineRenderer = GetComponentInChildren<LineRenderer>();
+            _lineRenderer.enabled = false;
             //Animation Initialization
             _playerAnimation=GetComponent<PlayerAnimation>();
         }
@@ -119,6 +130,8 @@ namespace Player
         {
             MovePlayer();
             LookAround();
+            DrawTrajectory();
+            
         }
 
 
@@ -230,7 +243,47 @@ namespace Player
             StartCoroutine(DelayedAction(1.7f,
                 () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
         }
+        private void DrawTrajectory()
+        {
+            if (!InputHandler.Instance.GrenadeThrowStart)
+            {
+                _lineRenderer.enabled = false;
+                _showingTrajectory = false;
+                return;
+            }
+            _lineRenderer.enabled = true;
+            _showingTrajectory = true;
 
+            List<Vector3> points = new List<Vector3>();
+            Vector3 startPosition = _throwPoint.position;
+            Vector3 startVelocity = (transform.forward * 5) + (Vector3.up * 6); // Use the same force as the real throw
+
+            points.Add(startPosition); // Ensure there's always at least one point
+
+            for (float t = 0; t < _resolution * _timeStep; t += _timeStep)
+            {
+                Vector3 point = startPosition + startVelocity * t + 0.5f * Physics.gravity * t * t;
+                points.Add(point);
+
+                // Ensure we have at least 2 points before checking for collisions
+                if (points.Count > 1)
+                {
+                    Vector3 lastPoint = points[^2];
+                    Vector3 direction = (point - lastPoint).normalized;
+                    float distance = (point - lastPoint).magnitude;
+
+                    if (Physics.Raycast(lastPoint, direction, out RaycastHit hit, distance, _collisionMask))
+                    {
+                        points.Add(hit.point);
+                        break;
+                    }
+                }
+            }
+
+            _lineRenderer.positionCount = points.Count;
+            _lineRenderer.SetPositions(points.ToArray());
+            
+        }
 
         private static IEnumerator DelayedAction(float delay, System.Action action)
         {

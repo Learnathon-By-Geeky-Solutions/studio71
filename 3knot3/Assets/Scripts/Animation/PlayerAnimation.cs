@@ -5,6 +5,7 @@ using System.Collections;
 using Interaction;
 
 using UnityEngine.UIElements;
+using HealthSystem;
 
 namespace Player
 {
@@ -17,7 +18,7 @@ namespace Player
 
         //Bools to check different state.
         public bool IsBusy {get; private set;}
-        public bool IsThrowingGrenade;
+        public bool IsThrowingGrenade { get; set; }
         private bool _isPickingUp=false;
         private bool _isDead = false;
         private bool _isCrouching = false;
@@ -26,10 +27,10 @@ namespace Player
         private Weapon.Gun _equippedGun;
 
 
-        //Reference to Controller and interaction system to work with them.
+        //Reference to Other Player Scripts to work with them.
         private InteractionSystem _interactionSystem;
         private PlayerController _playerController;
-
+        private Health _PlayerHealth;
         /// <summary>
         /// Initialize Variables for animation.
         /// </summary>
@@ -51,6 +52,8 @@ namespace Player
             //Player Controller Initialization
             _playerController=GetComponent<PlayerController>();
 
+            //Health System Initialization
+            _PlayerHealth = gameObject.GetComponent<Health>();
             _isDead = false;
 
         }
@@ -81,7 +84,10 @@ namespace Player
             EightWayLocomotion();
             if (_isPickingUp || _isDead) return;            
                 MoveAnimation();
-
+            if (_PlayerHealth.CurrentHealth <= 0)
+            {
+                DeathAnimation();
+            }
         }
 
         /// <summary>
