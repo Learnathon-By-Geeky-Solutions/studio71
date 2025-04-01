@@ -248,11 +248,11 @@ namespace Player
             if (!InputHandler.Instance.GrenadeThrowStart)
             {
                 _lineRenderer.enabled = false;
-                _showingTrajectory = false;
+                //_showingTrajectory = false;
                 return;
             }
             _lineRenderer.enabled = true;
-            _showingTrajectory = true;
+            //_showingTrajectory = true;
 
             List<Vector3> points = new List<Vector3>();
             Vector3 startPosition = _throwPoint.position;
