@@ -3749,6 +3749,14 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 901122273}
+    - target: {fileID: 4040341763762528744, guid: 4e26fdeb0d519004ca1211402a95c709, type: 3}
+      propertyPath: followSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4040341763762528744, guid: 4e26fdeb0d519004ca1211402a95c709, type: 3}
+      propertyPath: movementOffsetMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7079689535837160020, guid: 4e26fdeb0d519004ca1211402a95c709, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
