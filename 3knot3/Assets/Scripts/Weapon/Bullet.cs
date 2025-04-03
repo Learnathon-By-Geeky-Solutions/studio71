@@ -14,6 +14,7 @@ namespace Weapon
         [SerializeField] private LayerMask hitLayers;
         private void Start()
         {
+
             Destroy(transform.parent.gameObject, _maxLifeTime);
         }
         private void Update()
@@ -30,7 +31,8 @@ namespace Weapon
             {
                 health.TakeDmg(_bulletDmg);
                 ParticleManager.Instance.PlayParticle("Blood Splatter", hitPoint, Quaternion.identity);
-            }else { }
+            }
+            else ParticleManager.Instance.PlayParticle("Terrain Hit", hitPoint, Quaternion.Euler(0, transform.eulerAngles.y + 180, 0));
             Destroy(transform.parent.gameObject);
 
         }
