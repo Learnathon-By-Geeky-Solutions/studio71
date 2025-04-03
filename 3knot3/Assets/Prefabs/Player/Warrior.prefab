@@ -966,6 +966,11 @@ MonoBehaviour:
   _sprintModifier: 2
   _grenade: {fileID: 0}
   _throwPoint: {fileID: 0}
+  _resolution: 30
+  _timeStep: 0.05
+  _collisionMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!136 &7348640931027012126
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2142,6 +2147,37 @@ Transform:
   - {fileID: 726371382790150935}
   m_Father: {fileID: 723692983391102909}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5396577339497754613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3626021565138828119}
+  m_Layer: 0
+  m_Name: Shell Eject Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3626021565138828119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5396577339497754613}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0213, y: 0.1218, z: 0.2053}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8444777621952922230}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5565798134732955241
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,7 +2324,7 @@ Transform:
   m_GameObject: {fileID: 8447092791057330406}
   serializedVersion: 2
   m_LocalRotation: {x: 0.61113685, y: 0.5639665, z: 0.35569793, w: 0.42653552}
-  m_LocalPosition: {x: 0.8896322, y: 1.2909398, z: -0.024173565}
+  m_LocalPosition: {x: 0.8896322, y: 1.2909398, z: -0.024173737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2296,6 +2332,7 @@ Transform:
   - {fileID: 8444691153594886300}
   - {fileID: 8444427201789507456}
   - {fileID: 2463273368200846822}
+  - {fileID: 3626021565138828119}
   m_Father: {fileID: 726546441728292921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8451250290279613124
@@ -2366,6 +2403,7 @@ MonoBehaviour:
   Fire_Rate: 2
   Rotation: {fileID: 726546441728292921}
   Fire_Point: {fileID: 2463273368200846822}
+  ShellEject_Point: {fileID: 3626021565138828119}
   Prefab_Bullet: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
   <Magazine_Size>k__BackingField: 30
 --- !u!1773428102 &1864749132391485537

@@ -1,4 +1,5 @@
 using UnityEngine;
+using SingletonManagers;
 /// <summary>
 /// Implementation for Automatic Gun.
 /// </summary>
@@ -13,17 +14,16 @@ namespace Weapon
         }
         private void Update()
         {
-            if (IsShooting && (Time.time >= _nextFireTime)&&CurrentMagazineSize>0)
-            {
-                Shoot();
-                _nextFireTime = Time.time + 1f / Fire_Rate;
-                CurrentMagazineSize -= 1;
-            }
+            if (!IsShooting || (!(Time.time >= _nextFireTime)) || CurrentMagazineSize <= 0) return;
+            Shoot();
+            _nextFireTime = Time.time + 1f / Fire_Rate;
+            CurrentMagazineSize -= 1;
         }
 
         public override void Shoot()
         {
             Instantiate(Prefab_Bullet, Fire_Point.position, Rotation.rotation);
+            ParticleManager.Instance.PlayParticle("Gunshot", Fire_Point.position, Quaternion.identity);
         }
     }
 }

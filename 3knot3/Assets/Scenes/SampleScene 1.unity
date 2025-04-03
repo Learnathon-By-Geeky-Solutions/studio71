@@ -1063,7 +1063,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8982425208330698527, guid: bd9d7b08803f344418e55989c18328be, type: 3}
       propertyPath: m_Name
-      value: Particle Manager (1)
+      value: Particle Manager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

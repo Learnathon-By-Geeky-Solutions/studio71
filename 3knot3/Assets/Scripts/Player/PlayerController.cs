@@ -47,8 +47,6 @@ namespace Player
         [SerializeField] private float _timeStep = 0.05f; // Simulation time step
         [SerializeField] private LayerMask _collisionMask; // Stops drawing when hitting obstacles
 
-        private bool _showingTrajectory = false; // To track visibility
-
         //PlayerAnimation Variable
         private PlayerAnimation _playerAnimation;
         private void OnEnable()

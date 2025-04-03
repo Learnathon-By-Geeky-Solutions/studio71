@@ -1,5 +1,6 @@
 using UnityEngine;
 using HealthSystem;
+using SingletonManagers;
 /// <summary>
 /// Implementation of bullets fired by weapons.
 /// </summary>
@@ -23,9 +24,13 @@ namespace Weapon
         private void OnTriggerEnter(Collider other)
         {
             if (((1 << other.gameObject.layer) & hitLayers) == 0) return;
+            Vector3 hitPoint = transform.position;
             Health health = other.GetComponent<Health>();
-            if (health != null)
+            if (health != null && health.CurrentHealth > 0)
+            {
                 health.TakeDmg(_bulletDmg);
+                ParticleManager.Instance.PlayParticle("Blood Splatter", hitPoint, Quaternion.identity);
+            }else { }
             Destroy(transform.parent.gameObject);
 
         }
