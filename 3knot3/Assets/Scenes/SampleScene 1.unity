@@ -1021,6 +1021,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5049032292931498884, guid: bd9d7b08803f344418e55989c18328be, type: 3}
+      propertyPath: particlePrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5049032292931498884, guid: bd9d7b08803f344418e55989c18328be, type: 3}
+      propertyPath: particlePrefabs.Array.data[2].name
+      value: Blood Splatter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5049032292931498884, guid: bd9d7b08803f344418e55989c18328be, type: 3}
+      propertyPath: particlePrefabs.Array.data[3].name
+      value: Blood Splatter
+      objectReference: {fileID: 0}
+    - target: {fileID: 5049032292931498884, guid: bd9d7b08803f344418e55989c18328be, type: 3}
+      propertyPath: particlePrefabs.Array.data[2].prefab
+      value: 
+      objectReference: {fileID: 198157190901592544, guid: bfdd002af60979e4d9fab865212ee890, type: 3}
+    - target: {fileID: 5049032292931498884, guid: bd9d7b08803f344418e55989c18328be, type: 3}
+      propertyPath: particlePrefabs.Array.data[3].prefab
+      value: 
+      objectReference: {fileID: 198157190901592544, guid: bfdd002af60979e4d9fab865212ee890, type: 3}
     - target: {fileID: 8980047027779174002, guid: bd9d7b08803f344418e55989c18328be, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1222,6 +1242,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953506fa19243b847b4af347e1c0b47f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &904465952 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3626021565138828119, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+  m_PrefabInstance: {fileID: 1399076769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &906766000 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 55187961724345795, guid: 3e610f81cae80c64fafd8430c4a9b06b, type: 3}
@@ -2084,6 +2109,10 @@ PrefabInstance:
       propertyPath: Prefab_Bullet
       value: 
       objectReference: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
+    - target: {fileID: 7060925450600628464, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: ShellEject_Point
+      value: 
+      objectReference: {fileID: 904465952}
     - target: {fileID: 8386838594985647551, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: _lineLength
       value: 3
