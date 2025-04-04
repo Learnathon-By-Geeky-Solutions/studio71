@@ -144,7 +144,7 @@ namespace Player
         }
         private void GrenadeAnimation()
         {
-            if (IsBusy || _isDead) return;
+            if (IsBusy || _isDead || _playerController.GrenadeCount<=0) return;
             IsBusy = true;
             PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", 0.1f, 1);
             StartCoroutine(DelayedAction(_animationLengths["Grenade Throw"], () => { IsThrowingGrenade = false; }));

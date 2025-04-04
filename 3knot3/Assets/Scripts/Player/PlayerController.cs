@@ -42,12 +42,11 @@ namespace Player
         //Grenade variables
         [SerializeField] private GameObject _grenade;
         [SerializeField] private Transform _throwPoint;
+        public int GrenadeCount = 0;
         private LineRenderer _lineRenderer;
         [SerializeField] private int _resolution = 30; // Number of points in trajectory
         [SerializeField] private float _timeStep = 0.05f; // Simulation time step
         [SerializeField] private LayerMask _collisionMask; // Stops drawing when hitting obstacles
-
-        private bool _showingTrajectory = false; // To track visibility
 
         //PlayerAnimation Variable
         private PlayerAnimation _playerAnimation;
@@ -76,7 +75,6 @@ namespace Player
             //Movement variable initialization
             _currentMoveSpeed = _moveSpeed;
 
-
             //Look around variable initialization
             _mainCamera = Camera.main;
             if (_mainCamera == null)
@@ -87,15 +85,12 @@ namespace Player
             }
             _groundPlane = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0)); //Plane where the ray is hitting.
 
-
             //Crouch variable initialization
             _isCrouching = false;
             _playerCollider = GetComponent<CapsuleCollider>();
 
-
             //Sprint variable initialization
             _isSprinting = false;
-
 
             //Gun variable initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
@@ -104,6 +99,7 @@ namespace Player
             //Grenade Variable initialization
             _lineRenderer = GetComponentInChildren<LineRenderer>();
             _lineRenderer.enabled = false;
+
             //Animation Initialization
             _playerAnimation=GetComponent<PlayerAnimation>();
         }
@@ -237,23 +233,21 @@ namespace Player
         }
         private void Grenade()
         {
-            if (_playerAnimation.IsThrowingGrenade) return; // Prevents throwing if grenade animation is already playing
+            if (_playerAnimation.IsThrowingGrenade || GrenadeCount<=0) return; // Prevents throwing if grenade animation is already playing
             _playerAnimation.IsThrowingGrenade = true;
             _equippedGun.StopShooting();
             StartCoroutine(DelayedAction(1.7f,
-                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
+                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation);GrenadeCount -= 1; }));
         }
         private void DrawTrajectory()
         {
             if (!InputHandler.Instance.GrenadeThrowStart)
             {
                 _lineRenderer.enabled = false;
-                //_showingTrajectory = false;
                 return;
             }
+            if (GrenadeCount <= 0) return;
             _lineRenderer.enabled = true;
-            //_showingTrajectory = true;
-
             List<Vector3> points = new List<Vector3>();
             Vector3 startPosition = _throwPoint.position;
             Vector3 startVelocity = (transform.forward * 5) + (Vector3.up * 6); // Use the same force as the real throw
