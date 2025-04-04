@@ -31,8 +31,11 @@ namespace Weapon
             {
                 health.TakeDmg(_bulletDmg);
                 ParticleManager.Instance.PlayParticle("Blood Splatter", hitPoint, Quaternion.identity);
+                AudioManager.Instance.PlaySound("bloodHit", hitPoint);
             }
-            else ParticleManager.Instance.PlayParticle("Terrain Hit", hitPoint, Quaternion.Euler(0, transform.eulerAngles.y + 180, 0));
+            else {ParticleManager.Instance.PlayParticle("Terrain Hit", hitPoint, Quaternion.Euler(0, transform.eulerAngles.y + 180, 0));
+                AudioManager.Instance.PlaySound("terrainHit", hitPoint);
+            }
             Destroy(transform.parent.gameObject);
 
         }

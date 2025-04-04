@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using SingletonManagers;
 using DG.Tweening; // Make sure to import DOTween
 
 public class ButtonScaleOnHover : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -17,7 +18,7 @@ public class ButtonScaleOnHover : MonoBehaviour, IPointerEnterHandler, IPointerE
     
     // Called when the mouse enters the button area
     public void OnPointerEnter(PointerEventData eventData)
-    {
+    {   AudioManager.Instance.PlaySound("button_hover");
         // Scale up the button using DOTween
         transform.DOScale(originalScale * hoverScale, tweenDuration);
     }

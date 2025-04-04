@@ -50,6 +50,17 @@ namespace Player
 
         //PlayerAnimation Variable
         private PlayerAnimation _playerAnimation;
+
+        // Movement Sounds
+        [Header("Movement Sounds")]
+        [SerializeField] private string walkSound = "walking";
+        [SerializeField] private string crouchSound = "crouching";
+        [SerializeField] private string sprintSound = "sprinting";
+
+        
+        private bool isPlayingMovementSound = false;
+        private string currentMovementSound = "";
+
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -127,7 +138,7 @@ namespace Player
             MovePlayer();
             LookAround();
             DrawTrajectory();
-            
+            UpdateMovementSounds();
         }
 
 
@@ -225,9 +236,11 @@ namespace Player
             }
         }
         private void Reload()
-        {        
+        {     
+            AudioManager.Instance.PlaySound("reload_start", transform.position);   
              _equippedGun.StopShooting();
             StartCoroutine(DelayedAction(1f, () => { _equippedGunMagazine.SetActive(false); }));
+            
             StartCoroutine(DelayedAction(2f, () =>
             { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; _equippedGunMagazine.SetActive(true); }));            
         }
@@ -235,6 +248,7 @@ namespace Player
         {
             if (_playerAnimation.IsThrowingGrenade || GrenadeCount<=0) return; // Prevents throwing if grenade animation is already playing
             _playerAnimation.IsThrowingGrenade = true;
+            AudioManager.Instance.PlaySound("grenadeThrow", transform.position);
             _equippedGun.StopShooting();
             StartCoroutine(DelayedAction(1.7f,
                 () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation);GrenadeCount -= 1; }));
@@ -284,5 +298,44 @@ namespace Player
             yield return new WaitForSeconds(delay);
             action?.Invoke();
         }
+
+        private void UpdateMovementSounds()
+        {
+            // Only play sounds if we're actually moving
+            if (InputHandler.Instance.MoveDirection.magnitude > 0.1f)
+            {
+                string soundToPlay;
+                
+                // Determine which sound to play based on movement state
+                if (_isCrouching)
+                    soundToPlay = crouchSound;
+                else if (_isSprinting)
+                    soundToPlay = sprintSound;
+                else
+                    soundToPlay = walkSound;
+                
+                // Start playing sound if not already playing the right one
+                if (!isPlayingMovementSound || currentMovementSound != soundToPlay)
+                {
+                    // Stop any current movement sound
+                    if (isPlayingMovementSound)
+                        AudioManager.Instance.StopSound(currentMovementSound);
+                    
+                    // Start new movement sound
+                    AudioManager.Instance.PlaySound(soundToPlay, transform.position);
+                    isPlayingMovementSound = true;
+                    currentMovementSound = soundToPlay;
+                }
+            }
+            else if (isPlayingMovementSound)
+            {
+                // Stop sound when player stops moving
+                AudioManager.Instance.StopSound(currentMovementSound);
+                isPlayingMovementSound = false;
+                currentMovementSound = "";
+            }
+        }
+
+        
     }
 }
