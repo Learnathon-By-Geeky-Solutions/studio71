@@ -41,12 +41,17 @@ public class EnemyAI_Animation : MonoBehaviour
             return; // Exit early if reloading
         }
         
-        else if (_enemyAI.idleState.isWaiting)
+        if (_enemyAI.idleState.isWaiting)
         {
             PlayAnimation(ALERT_ANIM);
             return;
         }
 
+        if (_enemyAI.shootState.isRepositioning)
+        {
+            PlayAnimation(RUN_ANIM);
+            return;
+        }
         string stateName = _enemyAI.GetCurrentStateName();
         if (string.IsNullOrEmpty(stateName)) return;
 
