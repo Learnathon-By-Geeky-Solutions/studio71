@@ -69,8 +69,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
-  m_sharedMaterial: {fileID: 7334919071555189158, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
+  m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -94,7 +94,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58.15
+  m_fontSize: 49.05
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656b6167696c6b72616d6b6d6b6d
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -425,8 +425,8 @@ MonoBehaviour:
   m_text: This tutorial/guide will show you how to create a great Dialogue system
     - from a simple U
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
-  m_sharedMaterial: {fileID: 7334919071555189158, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
+  m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656b6167696c6b72616d6b6d6b6d
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -699,8 +699,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
-  m_sharedMaterial: {fileID: 7334919071555189158, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
+  m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58.15
+  m_fontSize: 49.05
   m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -746,7 +746,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656b6167696c6b72616d6b6d6b6d
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -837,8 +837,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
-  m_sharedMaterial: {fileID: 7334919071555189158, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
+  m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -862,7 +862,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 62.8
+  m_fontSize: 52.95
   m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656b6167696c6b72616d6b6d6b6d
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1338,8 +1338,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
-  m_sharedMaterial: {fileID: 7334919071555189158, guid: 68aa677a835633247a27821c19b9f3bb, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
+  m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1385,7 +1385,7 @@ MonoBehaviour:
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
-  m_ActiveFontFeatures: 6e72656b
+  m_ActiveFontFeatures: 6e72656b6167696c6b72616d6b6d6b6d
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
@@ -1419,6 +1419,7 @@ GameObject:
   - component: {fileID: 5920475783675877497}
   - component: {fileID: 5194567508535607948}
   - component: {fileID: 1743500327788995936}
+  - component: {fileID: 5054035377281920937}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1440,6 +1441,7 @@ RectTransform:
   m_Children:
   - {fileID: 2069992903231039878}
   - {fileID: 8154188276958035947}
+  - {fileID: 8930741020592848212}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1510,6 +1512,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5054035377281920937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7480975842570837617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccba5ee9d91647742bc94cf266f803a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunReference: {fileID: 0}
+  bulletIconContainer: {fileID: 8930741020592848212}
+  bulletIconPrefab: {fileID: 1231797726514437416, guid: 8cbaf3a3f2218a84098c56c7f1dec2d0, type: 3}
+  spacingBetweenIcons: 2
+  iconSize: {x: 20, y: 20}
 --- !u!1 &8734258668322891059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1657,3 +1676,65 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionButton: {fileID: 6150607958765920849}
+--- !u!1 &8828532176314862408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8930741020592848212}
+  - component: {fileID: 8276932837469865800}
+  m_Layer: 5
+  m_Name: Bullet Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8930741020592848212
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8828532176314862408}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6407621206204152637}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -80, y: -50}
+  m_SizeDelta: {x: 630, y: 100}
+  m_Pivot: {x: 1, y: 1}
+--- !u!114 &8276932837469865800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8828532176314862408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 3
+  m_Spacing: 2
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
