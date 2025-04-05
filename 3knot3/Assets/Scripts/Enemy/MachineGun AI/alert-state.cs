@@ -2,14 +2,20 @@ using UnityEngine;
 
 namespace MachineGunAI
 {
-// Alert State Implementation
+    // Alert State Implementation
     public class AlertState : IMachineGunnerState
     {
         private MachineGunnerAI gunner;
-        private float alertDuration = 1.5f; // Time to stay in alert state before transitioning
+        private float alertDuration = 1.5f;
         private float alertTimer = 0f;
         private float targetCheckInterval = 0.2f;
         private float lastCheckTime = 0f;
+
+        // Timers for smooth transitions
+        private float suppressiveFireEnterDelay = 0.2f;
+        private float suppressiveFireEnterTimer = 0f;
+        private float precisionFireEnterDelay = 0.2f;
+        private float precisionFireEnterTimer = 0f;
 
         public AlertState(MachineGunnerAI gunner)
         {
@@ -18,13 +24,11 @@ namespace MachineGunAI
 
         public void OnEnter()
         {
-            // Reset alert timer
-            alertTimer = 0f;
-
             Debug.Log("Machine Gunner entered Alert State");
-
-            // Optional: Play alert sound or animation
-            // gunner.GunAudioSource.PlayOneShot(gunner.AlertSound);
+            alertTimer = 0f;
+            suppressiveFireEnterTimer = 0f;
+            precisionFireEnterTimer = 0f;
+            lastCheckTime = Time.time; // Initialize lastCheckTime
         }
 
         public void UpdateState()
@@ -32,11 +36,10 @@ namespace MachineGunAI
             // Rotate towards the target
             if (gunner.Target != null)
             {
-                gunner.RotateToward(gunner.Target.position, 1.5f); // Faster rotation in alert state
+                gunner.RotateToward(gunner.Target.position, 1.5f);
             }
             else
             {
-                // If no target, rotate towards last known position
                 gunner.RotateToward(gunner.LastKnownTargetPosition, 1.5f);
             }
 
@@ -48,40 +51,62 @@ namespace MachineGunAI
                 // Check if we've lost the target
                 if (gunner.Target == null)
                 {
-                    // Try to re-detect or return to idle
                     if (!gunner.DetectTargetInAlertRange())
                     {
-                        // Return to idle if we can't find the target
                         gunner.TransitionToState(gunner.idleState);
                         return;
                     }
                 }
 
-                // Check if target is in suppressive fire range
-                if (gunner.IsTargetInSuppressiveRange())
+                // Check if target is out of alert range
+                if (!gunner.IsTargetInAlertRange())
                 {
-                    // If we can see the target directly, go to precision fire
-                    if (gunner.HasLineOfSightToTarget() && gunner.IsTargetInPrecisionRange())
-                    {
-                        gunner.TransitionToState(gunner.precisionFireState);
-                        return;
-                    }
-                    // Otherwise, go to suppressive fire
-                    else
-                    {
-                        gunner.TransitionToState(gunner.suppressiveFireState);
-                        return;
-                    }
+                    gunner.TransitionToState(gunner.idleState);
+                    return;
                 }
+
+                // Check for transitions to more aggressive states
+                HandleCombatTransitions();
             }
 
             // Update alert timer
             alertTimer += Time.deltaTime;
-
-            // If we've been in alert state too long without a valid target, return to idle
             if (alertTimer >= alertDuration && gunner.Target == null)
             {
                 gunner.TransitionToState(gunner.idleState);
+            }
+        }
+
+        private void HandleCombatTransitions()
+        {
+            // Check for precision fire range and line of sight
+            if (gunner.IsTargetInPrecisionRange() && gunner.HasLineOfSightToTarget())
+            {
+                precisionFireEnterTimer += Time.deltaTime;
+                if (precisionFireEnterTimer >= precisionFireEnterDelay)
+                {
+                    gunner.TransitionToState(gunner.precisionFireState);
+                    return;
+                }
+            }
+            else
+            {
+                precisionFireEnterTimer = 0f;
+            }
+
+            // If not in precision range, check for suppressive fire range
+            if (gunner.IsTargetInSuppressiveRange())
+            {
+                suppressiveFireEnterTimer += Time.deltaTime;
+                if (suppressiveFireEnterTimer >= suppressiveFireEnterDelay)
+                {
+                    gunner.TransitionToState(gunner.suppressiveFireState);
+                    return;
+                }
+            }
+            else
+            {
+                suppressiveFireEnterTimer = 0f;
             }
         }
 

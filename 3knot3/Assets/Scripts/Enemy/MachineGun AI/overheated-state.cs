@@ -32,10 +32,8 @@ namespace MachineGunAI
             playedOverheatFX = false;
 
             // Play overheat sound effect
-            if (gunner.GunAudioSource && gunner.OverheatedSound)
-            {
-                gunner.GunAudioSource.PlayOneShot(gunner.OverheatedSound);
-            }
+           
+            
 
             // Optionally create or activate steam/smoke particle effect
             // steamFX = gunner.GetComponentInChildren<ParticleSystem>();
