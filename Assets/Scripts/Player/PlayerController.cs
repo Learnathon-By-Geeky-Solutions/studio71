@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using SingletonManagers;
 using System.Collections;
+using System.Collections.Generic;
 /// <summary>
 /// Manages all Player Input.
 /// </summary>
@@ -34,14 +35,32 @@ namespace Player
         [SerializeField] private float _sprintModifier = 1f;
 
 
-        //Weapon variable
+        //Gun variables
         private Weapon.Gun _equippedGun;
-        [SerializeField] private GameObject _grenade;
-        [SerializeField] Transform _throwPoint;
+        private GameObject _equippedGunMagazine;
 
-        
+        //Grenade variables
+        [SerializeField] private GameObject _grenade;
+        [SerializeField] private Transform _throwPoint;
+        public int GrenadeCount = 0;
+        private LineRenderer _lineRenderer;
+        [SerializeField] private int _resolution = 30; // Number of points in trajectory
+        [SerializeField] private float _timeStep = 0.05f; // Simulation time step
+        [SerializeField] private LayerMask _collisionMask; // Stops drawing when hitting obstacles
+
         //PlayerAnimation Variable
         private PlayerAnimation _playerAnimation;
+
+        // Movement Sounds
+        [Header("Movement Sounds")]
+        [SerializeField] private string walkSound = "walking";
+        [SerializeField] private string crouchSound = "crouching";
+        [SerializeField] private string sprintSound = "sprinting";
+
+        
+        private bool isPlayingMovementSound = false;
+        private string currentMovementSound = "";
+
         private void OnEnable()
         {
             InputHandler.Instance.OnCrouch += Crouch;
@@ -67,7 +86,6 @@ namespace Player
             //Movement variable initialization
             _currentMoveSpeed = _moveSpeed;
 
-
             //Look around variable initialization
             _mainCamera = Camera.main;
             if (_mainCamera == null)
@@ -78,18 +96,20 @@ namespace Player
             }
             _groundPlane = new Plane(Vector3.up, new Vector3(0, transform.position.y, 0)); //Plane where the ray is hitting.
 
-
             //Crouch variable initialization
             _isCrouching = false;
             _playerCollider = GetComponent<CapsuleCollider>();
 
-
             //Sprint variable initialization
             _isSprinting = false;
 
-
-            //Weapon initialization
+            //Gun variable initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
+            _equippedGunMagazine = _equippedGun.transform.Find("Mag")?.gameObject;
+
+            //Grenade Variable initialization
+            _lineRenderer = GetComponentInChildren<LineRenderer>();
+            _lineRenderer.enabled = false;
 
             //Animation Initialization
             _playerAnimation=GetComponent<PlayerAnimation>();
@@ -117,6 +137,8 @@ namespace Player
         {
             MovePlayer();
             LookAround();
+            DrawTrajectory();
+            UpdateMovementSounds();
         }
 
 
@@ -214,24 +236,106 @@ namespace Player
             }
         }
         private void Reload()
-        {        
+        {     
+            AudioManager.Instance.PlaySound("reload_start", transform.position);   
              _equippedGun.StopShooting();
-
-            StartCoroutine(DelayedAction(_playerAnimation._animationLengths["Reload"], () =>
-            { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; }));            
+            StartCoroutine(DelayedAction(1f, () => { _equippedGunMagazine.SetActive(false); }));
+            
+            StartCoroutine(DelayedAction(2f, () =>
+            { _equippedGun.CurrentMagazineSize = _equippedGun.Magazine_Size; _equippedGunMagazine.SetActive(true); }));            
         }
         private void Grenade()
         {
+            if (_playerAnimation.IsThrowingGrenade || GrenadeCount<=0) return; // Prevents throwing if grenade animation is already playing
+            _playerAnimation.IsThrowingGrenade = true;
+            AudioManager.Instance.PlaySound("grenadeThrow", transform.position);
             _equippedGun.StopShooting();
-            StartCoroutine(DelayedAction(1.5f,
-                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation); }));
+            StartCoroutine(DelayedAction(1.7f,
+                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation);GrenadeCount -= 1; }));
         }
+        private void DrawTrajectory()
+        {
+            if (!InputHandler.Instance.GrenadeThrowStart)
+            {
+                _lineRenderer.enabled = false;
+                return;
+            }
+            if (GrenadeCount <= 0) return;
+            _lineRenderer.enabled = true;
+            List<Vector3> points = new List<Vector3>();
+            Vector3 startPosition = _throwPoint.position;
+            Vector3 startVelocity = (transform.forward * 5) + (Vector3.up * 6); // Use the same force as the real throw
 
+            points.Add(startPosition); // Ensure there's always at least one point
+
+            for (float t = 0; t < _resolution * _timeStep; t += _timeStep)
+            {
+                Vector3 point = startPosition + startVelocity * t + 0.5f * Physics.gravity * t * t;
+                points.Add(point);
+
+                // Ensure we have at least 2 points before checking for collisions
+                if (points.Count > 1)
+                {
+                    Vector3 lastPoint = points[^2];
+                    Vector3 direction = (point - lastPoint).normalized;
+                    float distance = (point - lastPoint).magnitude;
+
+                    if (Physics.Raycast(lastPoint, direction, out RaycastHit hit, distance, _collisionMask))
+                    {
+                        points.Add(hit.point);
+                        break;
+                    }
+                }
+            }
+
+            _lineRenderer.positionCount = points.Count;
+            _lineRenderer.SetPositions(points.ToArray());
+            
+        }
 
         private static IEnumerator DelayedAction(float delay, System.Action action)
         {
             yield return new WaitForSeconds(delay);
             action?.Invoke();
         }
+
+        private void UpdateMovementSounds()
+        {
+            // Only play sounds if we're actually moving
+            if (InputHandler.Instance.MoveDirection.magnitude > 0.1f)
+            {
+                string soundToPlay;
+                
+                // Determine which sound to play based on movement state
+                if (_isCrouching)
+                    soundToPlay = crouchSound;
+                else if (_isSprinting)
+                    soundToPlay = sprintSound;
+                else
+                    soundToPlay = walkSound;
+                
+                // Start playing sound if not already playing the right one
+                if (!isPlayingMovementSound || currentMovementSound != soundToPlay)
+                {
+                    // Stop any current movement sound
+                    if (isPlayingMovementSound)
+                        AudioManager.Instance.StopSound(currentMovementSound);
+                    
+                    // Start new movement sound
+                    AudioManager.Instance.PlaySound(soundToPlay, transform.position);
+                    isPlayingMovementSound = true;
+                    currentMovementSound = soundToPlay;
+                }
+            }
+            else if (isPlayingMovementSound)
+            {
+                // Stop sound when player stops moving
+                AudioManager.Instance.StopSound(currentMovementSound);
+                isPlayingMovementSound = false;
+                currentMovementSound = "";
+            }
+        }
+
+        
     }
 }

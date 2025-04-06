@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Singleton;
@@ -13,6 +15,7 @@ namespace SingletonManagers
         private InputAction MoveInput;
         public Vector2 MoveDirection { get; private set; }
         public Vector2 MousePosition { get; private set; }
+        public bool GrenadeThrowStart { get; private set; }
 
         public event OnActionEventBool OnAttack;
         public event OnActionEvent OnReload;
@@ -91,7 +94,14 @@ namespace SingletonManagers
         {
             if (context.performed)
             {
+                GrenadeThrowStart = true;
+            }
+            else if (context.canceled)
+            {
+                StartCoroutine(DelayedAction(1.7f,
+                    () => { GrenadeThrowStart = false; }));
                 OnGrenade?.Invoke();
+
             }
         }
 
@@ -102,6 +112,11 @@ namespace SingletonManagers
             {
                 OnInteract?.Invoke();
             }
+        }
+        private static IEnumerator DelayedAction(float delay, System.Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
         }
     }
 }
