@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using Weapon;
 
 namespace patrolEnemy
 {
@@ -62,8 +61,6 @@ namespace patrolEnemy
         public bool playerInDetectionRange = false;
         public bool playerInAttackRange = false;
         public bool playerInLineOfSight = false;
-
-        [SerializeField] private Gun _equippedGun;
 
         void Start()
         {
@@ -169,7 +166,7 @@ namespace patrolEnemy
             if (currentAmmo <= 0 || isReloading) return;
 
             // Instantiate bullet
-            _equippedGun.Shoot();
+            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
             // Decrease ammo
             currentAmmo--;

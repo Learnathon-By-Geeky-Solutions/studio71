@@ -4,12 +4,11 @@ using UnityEngine;
 
 namespace MachineGunAI
 {
-// Main Machine Gunner AI Controller
+    // Main Machine Gunner AI Controller
     public class MachineGunnerAI : MonoBehaviour
     {
         // Current state
         private IMachineGunnerState currentState;
-
         // State instances
         [HideInInspector] public IdleState idleState;
         [HideInInspector] public AlertState alertState;
@@ -17,9 +16,9 @@ namespace MachineGunAI
         [HideInInspector] public PrecisionFireState precisionFireState;
         [HideInInspector] public ReloadState reloadState;
         [HideInInspector] public OverheatedState overheatedState;
-
         // Detection and targeting
-        [Header("Detection")] [SerializeField] private float alertDetectionRange = 40f;
+        [Header("Detection")]
+        [SerializeField] private float alertDetectionRange = 40f;
         [SerializeField] private float suppressiveFireRange = 30f;
         [SerializeField] private float precisionFireRange = 20f;
         [SerializeField] private float firingArc = 120f;
@@ -27,29 +26,24 @@ namespace MachineGunAI
         [SerializeField] private LayerMask obstacleLayers;
         [SerializeField] private Transform gunPivot;
         [SerializeField] private float rotationSpeed = 3f;
-
         // Weapon parameters
-        [Header("Weapon")] [SerializeField] private int magazineSize = 100;
+        [Header("Weapon")]
+        [SerializeField] private int magazineSize = 100;
         [SerializeField] private float reloadTime = 4.5f;
         [SerializeField] private float heatGeneration = 1.0f;
         [SerializeField] private float heatThreshold = 50f;
         [SerializeField] private float coolingRate = 10f;
         [SerializeField] private Transform muzzlePoint;
-        [SerializeField] private ParticleSystem muzzleFlash;
-        [SerializeField] private AudioSource gunAudioSource;
-        [SerializeField] private AudioClip fireSound;
-        [SerializeField] private AudioClip reloadSound;
-        [SerializeField] private AudioClip overheatedSound;
-
+        [SerializeField] private GameObject bulletPrefab; // Bullet prefab to instantiate
+        [SerializeField] private float bulletSpeed = 100f; // Speed of the bullet
         // Scan pattern for idle state
-        [Header("Scan Pattern")] [SerializeField]
-        private float scanAngle = 60f;
-
+        [Header("Scan Pattern")]
+        [SerializeField] private float scanAngle = 60f;
         [SerializeField] private float scanSpeed = 20f;
 
         // Debug visualization
-        [Header("Debug")] [SerializeField] private bool showDebugGizmos = true;
-
+        [Header("Debug")]
+        [SerializeField] private bool showDebugGizmos = true;
         // Internal state tracking
         private Transform targetTransform;
         private int currentAmmo;
@@ -57,6 +51,7 @@ namespace MachineGunAI
         private Vector3 lastKnownTargetPosition;
         private float timeSinceTargetSeen = 0f;
         private float memoryDuration = 5f;
+        private IMachineGunnerState previousCombatState; // Track previous combat state
 
         // Properties
         public Transform Target => targetTransform;
@@ -65,17 +60,12 @@ namespace MachineGunAI
         public float CurrentHeat => currentHeat;
         public float HeatThreshold => heatThreshold;
         public float ReloadTime => reloadTime;
-
         // Expose parameters for states to use
         public float ScanAngle => scanAngle;
         public float ScanSpeed => scanSpeed;
         public Transform GunPivot => gunPivot;
         public Transform MuzzlePoint => muzzlePoint;
-        public ParticleSystem MuzzleFlash => muzzleFlash;
-        public AudioSource GunAudioSource => gunAudioSource;
-        public AudioClip FireSound => fireSound;
-        public AudioClip ReloadSound => reloadSound;
-        public AudioClip OverheatedSound => overheatedSound;
+        public float AlertDetectionRange => alertDetectionRange; // Expose alert range
 
         private void Awake()
         {
@@ -92,7 +82,6 @@ namespace MachineGunAI
         {
             // Set initial ammo
             currentAmmo = magazineSize;
-
             // Start in idle state
             TransitionToState(idleState);
         }
@@ -101,7 +90,6 @@ namespace MachineGunAI
         {
             // Update current state
             currentState?.UpdateState();
-
             // Cool down gun when not actively firing
             if (!(currentState is SuppressiveFireState || currentState is PrecisionFireState))
             {
@@ -126,14 +114,18 @@ namespace MachineGunAI
             // Exit current state
             currentState?.OnExit();
 
+            // Store the previous combat state (if applicable)
+            if (newState != idleState && newState != reloadState && newState != overheatedState)
+            {
+                previousCombatState = currentState;
+            }
+
             // Update current state
             currentState = newState;
-
             // Debug log for state transitions
             Debug.Log($"{gameObject.name} transitioning to {newState.GetType().Name}");
-
             // Enter new state
-            currentState.OnEnter();
+            newState.OnEnter();
         }
 
         // Detection methods
@@ -150,7 +142,7 @@ namespace MachineGunAI
                 {
                     // Check line of sight
                     if (!Physics.Raycast(muzzlePoint.position, directionToTarget.normalized,
-                            directionToTarget.magnitude, obstacleLayers))
+                         directionToTarget.magnitude, obstacleLayers))
                     {
                         SetTarget(hit.transform);
                         return true;
@@ -161,11 +153,18 @@ namespace MachineGunAI
             return false;
         }
 
+        // Check if target is in alert range
+        public bool IsTargetInAlertRange()
+        {
+            if (targetTransform == null) return false;
+            float distanceToTarget = Vector3.Distance(transform.position, targetTransform.position);
+            return distanceToTarget <= alertDetectionRange;
+        }
+
         // Check if target is in suppressive fire range
         public bool IsTargetInSuppressiveRange()
         {
             if (targetTransform == null) return false;
-
             float distanceToTarget = Vector3.Distance(transform.position, targetTransform.position);
             return distanceToTarget <= suppressiveFireRange;
         }
@@ -174,7 +173,6 @@ namespace MachineGunAI
         public bool IsTargetInPrecisionRange()
         {
             if (targetTransform == null) return false;
-
             float distanceToTarget = Vector3.Distance(transform.position, targetTransform.position);
             return distanceToTarget <= precisionFireRange;
         }
@@ -183,7 +181,6 @@ namespace MachineGunAI
         public bool IsTargetInFiringArc()
         {
             if (targetTransform == null) return false;
-
             Vector3 directionToTarget = targetTransform.position - transform.position;
             float angle = Vector3.Angle(gunPivot.forward, directionToTarget);
             return angle <= firingArc / 2;
@@ -193,7 +190,6 @@ namespace MachineGunAI
         public bool HasLineOfSightToTarget()
         {
             if (targetTransform == null) return false;
-
             Vector3 directionToTarget = targetTransform.position - muzzlePoint.position;
             if (Physics.Raycast(muzzlePoint.position, directionToTarget.normalized,
                     out RaycastHit hit, suppressiveFireRange, obstacleLayers | targetLayers))
@@ -232,7 +228,6 @@ namespace MachineGunAI
 
             // Decrease ammo
             currentAmmo--;
-
             // Increase heat
             currentHeat += heatGeneration;
             if (currentHeat >= heatThreshold)
@@ -243,126 +238,78 @@ namespace MachineGunAI
 
             // Calculate spread based on accuracy (0-1 value, higher is more accurate)
             float spread = (1f - accuracy) * 5f;
-
             // Apply spread to direction
             Vector3 spreadDirection = muzzlePoint.forward;
             spreadDirection += new Vector3(
                 Random.Range(-spread, spread),
                 Random.Range(-spread, spread),
-                Random.Range(-spread, spread)
-            ).normalized * spread;
+                0
+            );
+            spreadDirection.Normalize();
 
-            // Create raycast for bullet
-            if (Physics.Raycast(muzzlePoint.position, spreadDirection, out RaycastHit hit, 100f))
-            {
-                // Handle hit - apply damage if it's a valid target
-                if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Enemy"))
-                {
-                    // Apply damage to target
-                    IDamageable damageable = hit.transform.GetComponent<IDamageable>();
-                    damageable?.TakeDamage(5); // Example damage value
-                }
+            // Instantiate bullet and set its velocity
+            GameObject bullet = Instantiate(bulletPrefab, muzzlePoint.position, muzzlePoint.rotation);
+            Rigidbody bulletRb = bullet.GetComponent<Rigidbody>();
+            bulletRb.linearVelocity = spreadDirection * bulletSpeed;
 
-                // Visual feedback for hit location
-                Debug.DrawLine(muzzlePoint.position, hit.point, Color.red, 0.2f);
-            }
-            else
-            {
-                // Visual feedback for miss
-                Debug.DrawRay(muzzlePoint.position, spreadDirection * 100f, Color.blue, 0.1f);
-            }
-
-            // Play effects
-            muzzleFlash.Play();
-
-            // Play sound
-            if (gunAudioSource && fireSound)
-            {
-                gunAudioSource.PlayOneShot(fireSound);
-            }
+            // Optional: Play firing sound or animation
+            // gunAudioSource.PlayOneShot(fireSound);
+            // gunAnimator.SetTrigger("Fire");
         }
 
         // Reload method
-        public void ReloadMagazine()
+        public void Reload()
         {
             currentAmmo = magazineSize;
+            currentHeat = 0;
+            // Optional: Play reload sound or animation
+            // gunAudioSource.PlayOneShot(reloadSound);
+            // gunAnimator.SetTrigger("Reload");
 
-            // Play reload sound
-            if (gunAudioSource && reloadSound)
+            // After reload, transition back to the previous combat state
+            if (previousCombatState != null)
             {
-                gunAudioSource.PlayOneShot(reloadSound);
+                TransitionToState(previousCombatState);
+            }
+            else
+            {
+                TransitionToState(idleState); // If no previous combat state, go to idle
             }
         }
 
-        // Set target method
-        public void SetTarget(Transform newTarget)
+        public void SetTarget(Transform target)
         {
-            targetTransform = newTarget;
-            if (newTarget != null)
-            {
-                lastKnownTargetPosition = newTarget.position;
-                timeSinceTargetSeen = 0f;
-            }
+            targetTransform = target;
+            timeSinceTargetSeen = 0f;
         }
 
-        // Clear target method
         public void ClearTarget()
         {
             targetTransform = null;
         }
 
-        // Visualization gizmos for debugging
+        // Gizmos for debug visualization
         private void OnDrawGizmos()
         {
-            if (!showDebugGizmos) return;
-
-            // Draw detection ranges
-            Gizmos.color = Color.yellow;
-            DrawArc(transform.position, alertDetectionRange, firingArc);
-
-            Gizmos.color = Color.red;
-            DrawArc(transform.position, suppressiveFireRange, firingArc);
-
-            Gizmos.color = Color.magenta;
-            DrawArc(transform.position, precisionFireRange, firingArc);
-
-            // Draw target connection if available
-            if (targetTransform != null)
+            if (showDebugGizmos)
             {
+                // Draw alert range
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawWireSphere(transform.position, alertDetectionRange);
+                // Draw suppressive fire range
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(transform.position, suppressiveFireRange);
+                // Draw precision fire range
                 Gizmos.color = Color.green;
-                Gizmos.DrawLine(muzzlePoint.position, targetTransform.position);
+                Gizmos.DrawWireSphere(transform.position, precisionFireRange);
+                // Draw firing arc
+                Gizmos.color = Color.blue;
+                Vector3 forward = gunPivot.forward;
+                Vector3 right = Quaternion.Euler(0, firingArc / 2, 0) * forward;
+                Vector3 left = Quaternion.Euler(0, -firingArc / 2, 0) * forward;
+                Gizmos.DrawLine(gunPivot.position, gunPivot.position + right * alertDetectionRange);
+                Gizmos.DrawLine(gunPivot.position, gunPivot.position + left * alertDetectionRange);
             }
-        }
-
-        // Helper to draw arcs for gizmos
-        private void DrawArc(Vector3 position, float radius, float angle)
-        {
-            Vector3 forward = gunPivot != null ? gunPivot.forward : transform.forward;
-            float halfAngle = angle / 2;
-            int segments = 20;
-            Vector3 previous = position + GetPointOnArc(forward, radius, -halfAngle);
-
-            for (int i = 0; i <= segments; i++)
-            {
-                float currentAngle = -halfAngle + (i * angle / segments);
-                Vector3 current = position + GetPointOnArc(forward, radius, currentAngle);
-                Gizmos.DrawLine(previous, current);
-                previous = current;
-            }
-
-            // Draw two lines from center to arc edges
-            Vector3 leftPoint = position + GetPointOnArc(forward, radius, -halfAngle);
-            Vector3 rightPoint = position + GetPointOnArc(forward, radius, halfAngle);
-            Gizmos.DrawLine(position, leftPoint);
-            Gizmos.DrawLine(position, rightPoint);
-        }
-
-        // Helper to get a point on an arc
-        private Vector3 GetPointOnArc(Vector3 forward, float radius, float angle)
-        {
-            Vector3 right = Vector3.Cross(Vector3.up, forward).normalized;
-            return forward * radius * Mathf.Cos(angle * Mathf.Deg2Rad) +
-                   right * radius * Mathf.Sin(angle * Mathf.Deg2Rad);
         }
     }
 }

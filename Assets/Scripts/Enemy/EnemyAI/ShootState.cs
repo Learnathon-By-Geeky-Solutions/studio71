@@ -10,7 +10,7 @@ namespace patrolEnemy
         private float shootTimer = 0f;
         private float repositionTimer = 0f;
         private float repositionInterval = 3f;
-        private bool isRepositioning = false;
+        public bool isRepositioning = false;
         private Vector3 repositionTarget;
 
         public ShootState(EnemyAI enemyAI)
@@ -20,6 +20,7 @@ namespace patrolEnemy
 
         public void Enter()
         {
+            Debug.Log("Entering Shoot State");
 
             // Reset timers
             shootTimer = 0f;
@@ -59,6 +60,9 @@ namespace patrolEnemy
                     repositionTarget = enemy.FindPositionWithLineOfSight();
                     enemy.navMeshAgent.SetDestination(repositionTarget);
                     isRepositioning = true;
+                    Debug.Log("Repositioning Target");
+                    
+
                 }
                 else
                 {
@@ -92,6 +96,7 @@ namespace patrolEnemy
             {
                 enemy.navMeshAgent.ResetPath();
                 isRepositioning = false;
+               
             }
 
             // Shooting logic

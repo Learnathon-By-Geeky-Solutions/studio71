@@ -1,26 +1,21 @@
 using UnityEngine;
 
-// Precision Fire State Implementation
-
 namespace MachineGunAI
 {
+    // Precision Fire State Implementation
     public class PrecisionFireState : IMachineGunnerState
     {
         private MachineGunnerAI gunner;
-
-        // Precision fire parameters
-        private float fireRate = 0.07f; // Time between shots
+        private float fireRate = 0.2f;
         private float fireTimer = 0f;
-        private float accuracyBase = 0.7f;
-        private float accuracyMax = 0.95f;
-        private float accuracyBuildTime = 2.0f;
-        private float currentAccuracy;
 
-        // Target tracking
-        private float targetCheckInterval = 0.2f;
-        private float lastTargetCheckTime = 0f;
-        private float targetLostTime = 0f;
-        private float targetMemoryDuration = 2.0f;
+        // Timers for smooth transitions and target persistence
+        private float suppressiveStateEnterDelay = 0.3f;
+        private float suppressiveStateEnterTimer = 0f;
+        private float alertStateEnterDelay = 0.5f;
+        private float alertStateEnterTimer = 0f;
+        private float timeSinceLastSeen = 0f;
+        private float targetLostDuration = 1.5f; // How long to remember the target
 
         public PrecisionFireState(MachineGunnerAI gunner)
         {
@@ -30,27 +25,63 @@ namespace MachineGunAI
         public void OnEnter()
         {
             Debug.Log("Machine Gunner entered Precision Fire State");
-
-            // Reset timers and accuracy
             fireTimer = 0f;
-            targetLostTime = 0f;
-            currentAccuracy = accuracyBase;
+            suppressiveStateEnterTimer = 0f;
+            alertStateEnterTimer = 0f;
+            timeSinceLastSeen = 0f;
         }
 
         public void UpdateState()
         {
-            // Check for target status at regular intervals
-            if (Time.time >= lastTargetCheckTime + targetCheckInterval)
+            // Rotate towards the target
+            if (gunner.Target != null)
             {
-                lastTargetCheckTime = Time.time;
+                gunner.RotateToward(gunner.Target.position, 1f);
+                timeSinceLastSeen = 0f; // Reset timer when target is seen
+            }
+            else
+            {
+                timeSinceLastSeen += Time.deltaTime; // Increment timer when target is lost
+            }
 
-                // Check if we still have a target
-                if (gunner.Target == null)
+            // Fire at target
+            fireTimer += Time.deltaTime;
+            if (fireTimer >= fireRate)
+            {
+                gunner.FireBullet(0.9f);
+                fireTimer = 0f;
+            }
+
+            // Check for state transitions
+            HandleStateTransitions();
+        }
+
+        private void HandleStateTransitions()
+        {
+            // Check if target is lost or out of range
+            if (gunner.Target == null || timeSinceLastSeen >= targetLostDuration ||
+                !gunner.IsTargetInPrecisionRange() || !gunner.HasLineOfSightToTarget())
+            {
+                // If still in suppressive range, go back to suppressive after delay
+                if (gunner.IsTargetInSuppressiveRange())
                 {
-                    targetLostTime += targetCheckInterval;
+                    suppressiveStateEnterTimer += Time.deltaTime;
+                    if (suppressiveStateEnterTimer >= suppressiveStateEnterDelay)
+                    {
+                        gunner.TransitionToState(gunner.suppressiveFireState);
+                        return;
+                    }
+                }
+                else
+                {
+                    suppressiveStateEnterTimer = 0f;
+                }
 
-                    // If we've lost the target for too long, go back to alert state
-                    if (targetLostTime >= targetMemoryDuration)
+                // If no longer in suppressive range, go back to alert after delay
+                if (!gunner.IsTargetInSuppressiveRange() && gunner.IsTargetInAlertRange())
+                {
+                    alertStateEnterTimer += Time.deltaTime;
+                    if (alertStateEnterTimer >= alertStateEnterDelay)
                     {
                         gunner.TransitionToState(gunner.alertState);
                         return;
@@ -58,57 +89,27 @@ namespace MachineGunAI
                 }
                 else
                 {
-                    // Reset target lost timer if we have a target
-                    targetLostTime = 0f;
-
-                    // If target is visible but out of precision range, go to suppressive fire
-                    if (!gunner.IsTargetInPrecisionRange() && gunner.IsTargetInSuppressiveRange())
-                    {
-                        gunner.TransitionToState(gunner.suppressiveFireState);
-                        return;
-                    }
-
-                    // If target is not in line of sight, go to suppressive fire
-                    if (!gunner.HasLineOfSightToTarget() && gunner.IsTargetInSuppressiveRange())
-                    {
-                        gunner.TransitionToState(gunner.suppressiveFireState);
-                        return;
-                    }
+                    alertStateEnterTimer = 0f;
                 }
-            }
 
-            // Rotate towards the target with high priority
-            if (gunner.Target != null)
-            {
-                gunner.RotateToward(gunner.Target.position, 2.0f); // Very fast rotation in precision fire
-
-                // Improve accuracy over time while on target
-                currentAccuracy = Mathf.Lerp(accuracyBase, accuracyMax,
-                    Mathf.Min(1.0f, Time.deltaTime / accuracyBuildTime));
+                // If not in alert range, go back to idle
+                if (!gunner.IsTargetInAlertRange())
+                {
+                    gunner.TransitionToState(gunner.idleState);
+                    return;
+                }
             }
             else
             {
-                // If no target, rotate towards last known position
-                gunner.RotateToward(gunner.LastKnownTargetPosition, 1.5f);
-
-                // Reduce accuracy when we don't have direct line of sight
-                currentAccuracy = accuracyBase;
-            }
-
-            // Handle firing logic
-            fireTimer += Time.deltaTime;
-            if (fireTimer >= fireRate)
-            {
-                fireTimer = 0f;
-
-                // Fire with high accuracy for precision effect
-                gunner.FireBullet(currentAccuracy);
+                // Reset timers if conditions are not met
+                suppressiveStateEnterTimer = 0f;
+                alertStateEnterTimer = 0f;
             }
         }
 
         public void OnExit()
         {
-            // Nothing special to clean up
+            // Nothing specific to clean up in this state
         }
     }
 }
