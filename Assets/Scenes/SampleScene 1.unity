@@ -131,6 +131,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Plant_Tall_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1750317376975932, guid: 4df02c4afb4f0d34e8d3e09ab058521c, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4716707136383240, guid: 4df02c4afb4f0d34e8d3e09ab058521c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 36.55653
@@ -382,6 +386,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Env_Plant_01
       objectReference: {fileID: 0}
+    - target: {fileID: 1105849076062308, guid: 8bc9fda3f439c3d4193217772b8e3549, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4634705661865834, guid: 8bc9fda3f439c3d4193217772b8e3549, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.107419
@@ -448,6 +456,10 @@ PrefabInstance:
     - target: {fileID: 1614032917696564, guid: 7f457d9c80dab5e40ae0f72c815d292a, type: 3}
       propertyPath: m_Name
       value: SM_Env_Pebbles_04
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614032917696564, guid: 7f457d9c80dab5e40ae0f72c815d292a, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4503665795825568, guid: 7f457d9c80dab5e40ae0f72c815d292a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -521,6 +533,10 @@ PrefabInstance:
     - target: {fileID: 1530055821248730, guid: 8326d39c1c61e4d4fb28e9039b9deda1, type: 3}
       propertyPath: m_Name
       value: SM_Env_Pebbles_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 1530055821248730, guid: 8326d39c1c61e4d4fb28e9039b9deda1, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4986718629974442, guid: 8326d39c1c61e4d4fb28e9039b9deda1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1119,6 +1135,10 @@ PrefabInstance:
     - target: {fileID: 1614032917696564, guid: 7f457d9c80dab5e40ae0f72c815d292a, type: 3}
       propertyPath: m_Name
       value: SM_Env_Pebbles_04 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1614032917696564, guid: 7f457d9c80dab5e40ae0f72c815d292a, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4503665795825568, guid: 7f457d9c80dab5e40ae0f72c815d292a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1769,6 +1789,10 @@ PrefabInstance:
       propertyPath: _interactionButton
       value: 
       objectReference: {fileID: 315722830}
+    - target: {fileID: 1689038584940517072, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+      propertyPath: _collisionMask.m_Bits
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.8896322
@@ -1783,15 +1807,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8516165454287865469, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9174833544633827567, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9174833544633827567, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

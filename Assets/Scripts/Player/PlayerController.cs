@@ -38,6 +38,7 @@ namespace Player
         //Gun variables
         private Weapon.Gun _equippedGun;
         private GameObject _equippedGunMagazine;
+        private GameObject _playerGun;
 
         //Grenade variables
         [SerializeField] private GameObject _grenade;
@@ -105,8 +106,8 @@ namespace Player
 
             //Gun variable initialization
             _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
-            _equippedGunMagazine = _equippedGun.transform.Find("Mag")?.gameObject;
-
+            _equippedGunMagazine = _equippedGun.transform.Find("Mag").gameObject;
+            _playerGun = _equippedGun.gameObject;
             //Grenade Variable initialization
             _lineRenderer = GetComponentInChildren<LineRenderer>();
             _lineRenderer.enabled = false;
@@ -250,8 +251,9 @@ namespace Player
             _playerAnimation.IsThrowingGrenade = true;
             AudioManager.Instance.PlaySound("grenadeThrow", transform.position);
             _equippedGun.StopShooting();
+            _playerGun.SetActive(false);
             StartCoroutine(DelayedAction(1.7f,
-                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation);GrenadeCount -= 1; }));
+                () => { Instantiate(_grenade, _throwPoint.position, _grenade.transform.rotation);GrenadeCount -= 1; _playerGun.SetActive(true); }));
         }
         private void DrawTrajectory()
         {

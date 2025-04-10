@@ -974,7 +974,10 @@ MonoBehaviour:
   _timeStep: 0.05
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
+  walkSound: walking
+  crouchSound: crouching
+  sprintSound: sprinting
 --- !u!136 &7348640931027012126
 CapsuleCollider:
   m_ObjectHideFlags: 0
