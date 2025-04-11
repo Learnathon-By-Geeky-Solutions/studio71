@@ -8,21 +8,34 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
-  sonarcloud:
-    name: Analyze with SonarCloud
+  build:
+    name: Build and Analyze
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Optional: List files to debug what's being scanned
-      - name: List C# files being scanned
-        run: find Assets/Scripts -name "*.cs"
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '7.0.x'
 
-      - name: SonarCloud scan
+      - name: Restore
+        run: dotnet restore studio71.sln
+
+      - name: Build
+        run: dotnet build studio71.sln --no-restore /p:UseSharedCompilation=false
+
+      - name: Run SonarCloud analysis
         uses: SonarSource/sonarcloud-github-action@v2
         with:
-          projectBaseDir: .
+          args: >
+            -Dsonar.projectKey=Learnathon-By-Geeky-Solutions_studio71
+            -Dsonar.organization=learnathon-by-geeky-solutions
+            -Dsonar.sources=Assets/Scripts
+            -Dsonar.exclusions=**/*.meta,Library/**,Temp/**,obj/**,Build/**,Packages/**,Assets/Plugins/**
+            -Dsonar.cs.opencover.reportsPaths=coverage.opencover.xml
+            -Dsonar.verbose=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
