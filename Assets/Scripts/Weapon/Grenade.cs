@@ -1,12 +1,13 @@
 using HealthSystem;
 using UnityEngine;
 using SingletonManagers;
+using Player;
 
 public class Grenade : MonoBehaviour
 {
     [Header("Explosion Settings")]
     [SerializeField] private float explosionDelay = 3f;
-    [SerializeField] private float explosionRadius = 5f;
+    [SerializeField] private float explosionRadius = 4f;
     [SerializeField] private float explosionForce = 700f;
     [SerializeField] private LayerMask hitLayers;
     [SerializeField] private int _GrenadeDMG = 0;
@@ -40,7 +41,7 @@ public class Grenade : MonoBehaviour
         if (_rigidbody != null && player != null)
         {
             // Use player's forward direction instead of grenade's local forward
-            Vector3 throwDirection = (player.forward * forwardForce) + (Vector3.up * upwardForce);
+            Vector3 throwDirection = (player.forward * forwardForce) + (Vector3.up * upwardForce) + player.gameObject.GetComponent<PlayerController>().CurrentVelocity;
             _rigidbody.AddForce(throwDirection, ForceMode.Impulse);
         }
     }
@@ -66,11 +67,5 @@ public class Grenade : MonoBehaviour
         }
 
         Destroy(gameObject); // Destroy grenade after explosion
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 }

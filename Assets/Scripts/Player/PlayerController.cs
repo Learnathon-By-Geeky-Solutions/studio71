@@ -12,11 +12,16 @@ namespace Player
     public class PlayerController : MonoBehaviour
     {
         // Movement related variables
+        [Header("Variables for Movement")]
         [SerializeField] private float _moveSpeed = 5f;
         private float _currentMoveSpeed = 1f;
+        public Vector3 CurrentVelocity { get; private set; }
+        private Vector3 _lastPosition;
+
 
 
         //Look around related variables
+        [Header("Variables for Looking Around")]
         [SerializeField] private float _rotationSpeed = 5f;
         private Camera _mainCamera;
         private Plane _groundPlane;
@@ -25,28 +30,32 @@ namespace Player
         //Crouch related variables
         private CapsuleCollider _playerCollider;
         private bool _isCrouching;
-        [Range(0.1f,1f)]
+        [Header("Variables for Crouch"), Range(0.1f,1f)]
         [SerializeField] private float _crouchModifier = 1f;
 
 
         //Sprint related variables
         public bool _isSprinting { get; private set; }
-        [Min(1f)]
+        [Header("Variables for Sprint"), Min(1f)]
         [SerializeField] private float _sprintModifier = 1f;
 
 
         //Gun variables
+        [Header("Gun Variables")]
         private Weapon.Gun _equippedGun;
         private GameObject _equippedGunMagazine;
         private GameObject _playerGun;
 
         //Grenade variables
+        [Header("Grenade Variables")]
         [SerializeField] private GameObject _grenade;
         [SerializeField] private Transform _throwPoint;
         public int GrenadeCount = 0;
         private LineRenderer _lineRenderer;
-        [SerializeField] private int _resolution = 30; // Number of points in trajectory
-        [SerializeField] private float _timeStep = 0.05f; // Simulation time step
+        [SerializeField] LineRenderer _radiusRenderer;
+        [SerializeField] private int _lineResolution = 30; // Number of points in trajectory
+        [SerializeField] private int _radiusResolution = 30;
+        private float _timeStep = 0.05f; // Simulation time step
         [SerializeField] private LayerMask _collisionMask; // Stops drawing when hitting obstacles
 
         //PlayerAnimation Variable
@@ -86,6 +95,7 @@ namespace Player
         {
             //Movement variable initialization
             _currentMoveSpeed = _moveSpeed;
+            _lastPosition = transform.position;
 
             //Look around variable initialization
             _mainCamera = Camera.main;
@@ -140,6 +150,8 @@ namespace Player
             LookAround();
             DrawTrajectory();
             UpdateMovementSounds();
+            CurrentVelocity = (transform.position - _lastPosition) / Time.deltaTime;
+            _lastPosition = transform.position;
         }
 
 
@@ -260,22 +272,23 @@ namespace Player
             if (!InputHandler.Instance.GrenadeThrowStart)
             {
                 _lineRenderer.enabled = false;
+                _radiusRenderer.enabled = false;
                 return;
             }
             if (GrenadeCount <= 0) return;
+
             _lineRenderer.enabled = true;
             List<Vector3> points = new List<Vector3>();
             Vector3 startPosition = _throwPoint.position;
-            Vector3 startVelocity = (transform.forward * 5) + (Vector3.up * 6); // Use the same force as the real throw
+            Vector3 startVelocity = (transform.forward * 5) + (Vector3.up * 6);
 
-            points.Add(startPosition); // Ensure there's always at least one point
+            points.Add(startPosition);
 
-            for (float t = 0; t < _resolution * _timeStep; t += _timeStep)
+            for (float t = 0; t < _lineResolution * _timeStep; t += _timeStep)
             {
                 Vector3 point = startPosition + startVelocity * t + 0.5f * Physics.gravity * t * t;
                 points.Add(point);
 
-                // Ensure we have at least 2 points before checking for collisions
                 if (points.Count > 1)
                 {
                     Vector3 lastPoint = points[^2];
@@ -292,22 +305,32 @@ namespace Player
 
             _lineRenderer.positionCount = points.Count;
             _lineRenderer.SetPositions(points.ToArray());
-            
-        }
 
-        private static IEnumerator DelayedAction(float delay, System.Action action)
+            // Draw explosion radius at the last point
+            DrawExplosionRadius(points[^1]); // Last point
+        }
+        private void DrawExplosionRadius(Vector3 center)
         {
-            yield return new WaitForSeconds(delay);
-            action?.Invoke();
-        }
+            _radiusRenderer.enabled = true;
+            _radiusRenderer.positionCount = _radiusResolution + 1;
 
+            float angleStep = 360f / _radiusResolution;
+            for (int i = 0; i <= _radiusResolution; i++)
+            {
+                float angle = Mathf.Deg2Rad * angleStep * i;
+                float x = Mathf.Cos(angle) * 4f;
+                float z = Mathf.Sin(angle) * 4f;
+                Vector3 point = center + new Vector3(x, 0.05f, z); // Slight Y offset for visibility
+                _radiusRenderer.SetPosition(i, point);
+            }
+        }
         private void UpdateMovementSounds()
         {
             // Only play sounds if we're actually moving
             if (InputHandler.Instance.MoveDirection.magnitude > 0.1f)
             {
                 string soundToPlay;
-                
+
                 // Determine which sound to play based on movement state
                 if (_isCrouching)
                     soundToPlay = crouchSound;
@@ -315,14 +338,14 @@ namespace Player
                     soundToPlay = sprintSound;
                 else
                     soundToPlay = walkSound;
-                
+
                 // Start playing sound if not already playing the right one
                 if (!isPlayingMovementSound || currentMovementSound != soundToPlay)
                 {
                     // Stop any current movement sound
                     if (isPlayingMovementSound)
                         AudioManager.Instance.StopSound(currentMovementSound);
-                    
+
                     // Start new movement sound
                     AudioManager.Instance.PlaySound(soundToPlay, transform.position);
                     isPlayingMovementSound = true;
@@ -336,6 +359,11 @@ namespace Player
                 isPlayingMovementSound = false;
                 currentMovementSound = "";
             }
+        }
+        private static IEnumerator DelayedAction(float delay, System.Action action)
+        {
+            yield return new WaitForSeconds(delay);
+            action?.Invoke();
         }
 
         
