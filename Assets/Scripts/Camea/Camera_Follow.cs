@@ -16,22 +16,22 @@ namespace CameraManager
         [SerializeField] private float movementOffsetMultiplier = 2f; // How much movement affects the camera offset
 
         private Vector3 _targetOffset; // The dynamically adjusted offset
-        private Vector2 moveDirection = Vector2.zero;
-        void Start()
+
+        private void Start()
         {
-            _player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            _player = GameObject.FindGameObjectWithTag("Player").transform;
             _targetOffset = _offset;
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             if (_player == null) return;
 
             // Get movement direction from singleton input handler
-            moveDirection = InkDialogueManager.IsDialogueOpen ? Vector2.zero : InputHandler.Instance.MoveDirection;
+            var moveDirection = InkDialogueManager.IsDialogueOpen ? Vector2.zero : InputHandler.Instance.MoveDirection;
 
             // Convert moveDirection into world space offset
-            Vector3 movementOffset = new Vector3(moveDirection.x, 0, moveDirection.y) * movementOffsetMultiplier;
+            var movementOffset = new Vector3(moveDirection.x, 0, moveDirection.y) * movementOffsetMultiplier;
 
             // Smoothly adjust the offset based on movement
             _targetOffset = Vector3.Lerp(_targetOffset, _offset + movementOffset, Time.deltaTime * followSpeed);
