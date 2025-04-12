@@ -5,14 +5,14 @@ namespace MachineGunner.States
 {
     public class IdleState : IMachineGunnerState
     {
-        private float _rotationTimer = 0f;
-        private float _currentRotationAngle = 0f;
+        private protected float RotationTimer { get; private set; }
+        private float _currentRotationAngle;
         private float _rotationDirection = 1f; // 1 for forward, -1 for backward
 
         public void EnterState(MachineGunnerController controller)
         {
             Debug.Log("Machine Gunner entered Idle State");
-            _rotationTimer = 0f;
+            RotationTimer = 0f;
             _currentRotationAngle = 0f;
             _rotationDirection = 1f;
         }

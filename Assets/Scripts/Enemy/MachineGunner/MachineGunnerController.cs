@@ -9,8 +9,9 @@ namespace MachineGunner
 
         [Header("Ranges")]
         public float alertRange = 10f;
-        public float suppressiveRange = 15f;
-        public float shootRange = 7f;
+
+        private float SuppressiveRange { get; } = 15f;
+        private float shootRange = 7f;
 
         [Header("Shooting Configuration")]
         public GameObject bulletPrefab;
@@ -29,13 +30,13 @@ namespace MachineGunner
         public string playerTag = "Player";
         public LayerMask lineOfSightMask;
 
-        [Header("Gizmo Colors")]
-        public Color alertGizmoColor = Color.yellow;
-        public Color suppressiveGizmoColor = Color.blue;
-        public Color shootGizmoColor = Color.red;
-        public Color lineOfSightColor = Color.green;
-        public Color noLineOfSightColor = Color.magenta;
-        public Color suppressiveArcColor = new Color(1f, 0.5f, 0f, 0.5f); // Orange with alpha
+        [Header("Gizmo Colors")] 
+        private readonly Color alertGizmoColor = Color.yellow;
+        private Color suppressiveGizmoColor = Color.blue;
+        private Color shootGizmoColor = Color.red;
+        private Color lineOfSightColor = Color.green;
+        private Color noLineOfSightColor = Color.magenta;
+        private Color suppressiveArcColor = new Color(1f, 0.5f, 0f, 0.5f); // Orange with alpha
 
         [Header("Idle Rotation")]
         public float idleRotationSpeed = 10f;
@@ -57,7 +58,6 @@ namespace MachineGunner
         private float _timeSinceLastShot = 0f;
         private float _currentHeat = 0f;
         private bool _isOverheated = false;
-        private float _overheatStartTime;
         private float _reloadStartTime;
         private int _currentAmmo;
         private Vector3 _lastKnownPlayerPosition;
@@ -75,6 +75,14 @@ namespace MachineGunner
         public float SuppressiveFireSpreadAngle => suppressiveFireSpreadAngle; // Expose for gizmo
         public float BurstSweepAngle => burstSweepAngle; // Expose for ShootState
         public float BurstSweepSpeed => burstSweepSpeed; // Expose for ShootState
+
+        public Color AlertGizmoColor => alertGizmoColor;
+
+        public float AlertRange
+        {
+            get => alertRange;
+            set => alertRange = value;
+        }
 
         #endregion
 
@@ -103,11 +111,11 @@ namespace MachineGunner
 
         void OnDrawGizmos()
         {
-            Gizmos.color = alertGizmoColor;
-            Gizmos.DrawWireSphere(transform.position, alertRange);
+            Gizmos.color = AlertGizmoColor;
+            Gizmos.DrawWireSphere(transform.position, AlertRange);
 
             Gizmos.color = suppressiveGizmoColor;
-            Gizmos.DrawWireSphere(transform.position, suppressiveRange);
+            Gizmos.DrawWireSphere(transform.position, SuppressiveRange);
 
             Gizmos.color = shootGizmoColor;
             Gizmos.DrawWireSphere(transform.position, shootRange);
@@ -124,9 +132,9 @@ namespace MachineGunner
             Vector3 leftRayDirection = leftRayRotation * forwardDirection;
             Vector3 rightRayDirection = rightRayRotation * forwardDirection;
 
-            Gizmos.DrawRay(firePoint.position, leftRayDirection * suppressiveRange);
-            Gizmos.DrawRay(firePoint.position, rightRayDirection * suppressiveRange);
-            Gizmos.DrawWireSphere(transform.position + forwardDirection * suppressiveRange, 0.5f); // Indicate end of range
+            Gizmos.DrawRay(firePoint.position, leftRayDirection * SuppressiveRange);
+            Gizmos.DrawRay(firePoint.position, rightRayDirection * SuppressiveRange);
+            Gizmos.DrawWireSphere(transform.position + forwardDirection * SuppressiveRange, 0.5f); // Indicate end of range
 
             // Idle Rotation Gizmo (visualize the angle)
             Gizmos.color = Color.cyan;
@@ -163,12 +171,12 @@ namespace MachineGunner
 
         public bool IsPlayerInAlertRange()
         {
-            return Vector3.Distance(transform.position, _player.transform.position) <= alertRange;
+            return Vector3.Distance(transform.position, _player.transform.position) <= AlertRange;
         }
 
         public bool IsPlayerInSuppressiveRange()
         {
-            return Vector3.Distance(transform.position, _player.transform.position) <= suppressiveRange;
+            return Vector3.Distance(transform.position, _player.transform.position) <= SuppressiveRange;
         }
 
         public bool IsPlayerInShootRange()
@@ -213,7 +221,6 @@ namespace MachineGunner
                 if (_currentHeat >= overheatThreshold)
                 {
                     _isOverheated = true;
-                    _overheatStartTime = Time.time;
                     SwitchState(new OverheatAndReloadState());
                 }
             }
@@ -226,7 +233,6 @@ namespace MachineGunner
         public void StartCoolingAndReloading()
         {
             _isOverheated = true;
-            _overheatStartTime = Time.time;
             _reloadStartTime = Time.time;
             _currentAmmo = 0; // Immediately set ammo to 0 when overheating
         }

@@ -6,7 +6,7 @@ namespace MachineGunner.States
     public class AlertState : IMachineGunnerState
     {
         private float _alertStartTime;
-        private float _alertDuration = 1f; // Brief alert duration
+        private const float AlertDuration = 1f; // Brief alert duration
 
         public void EnterState(MachineGunnerController controller)
         {
@@ -25,7 +25,7 @@ namespace MachineGunner.States
                 controller.transform.rotation = Quaternion.Slerp(controller.transform.rotation, lookRotation, Time.deltaTime * 5f); // Smooth rotation
             }
 
-            if (Time.time >= _alertStartTime + _alertDuration)
+            if (Time.time >= _alertStartTime + AlertDuration)
             {
                 if (controller.IsPlayerInShootRange())
                 {
