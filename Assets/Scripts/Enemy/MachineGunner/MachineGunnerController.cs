@@ -1,29 +1,8 @@
 using UnityEngine;
-using System.Collections;
+using MachineGunner.States; // Ensure you have this using statement
 
 namespace MachineGunner
 {
-    #region Interfaces and Enums
-
-    public interface IMachineGunnerState
-    {
-        void EnterState(MachineGunnerController controller);
-        void UpdateState(MachineGunnerController controller);
-        void ExitState(MachineGunnerController controller);
-    }
-
-    public enum MachineGunnerStateType
-    {
-        Idle,
-        Alert,
-        Suppress,
-        Shoot,
-        OverheatAndReload,
-        Death
-    }
-
-    #endregion
-
     public class MachineGunnerController : MonoBehaviour
     {
         #region Public Variables
@@ -52,8 +31,22 @@ namespace MachineGunner
 
         [Header("Gizmo Colors")]
         public Color alertGizmoColor = Color.yellow;
-        public Color suppressiveGizmoColor = Color.orange;
+        public Color suppressiveGizmoColor = Color.blue;
         public Color shootGizmoColor = Color.red;
+        public Color lineOfSightColor = Color.green;
+        public Color noLineOfSightColor = Color.magenta;
+        public Color suppressiveArcColor = new Color(1f, 0.5f, 0f, 0.5f); // Orange with alpha
+
+        [Header("Idle Rotation")]
+        public float idleRotationSpeed = 10f;
+        [Range(0f, 180f)]
+        public float idleRotationAngle = 60f; // Total angle of rotation
+        public float idleRotationOffset = 0f; // Starting offset for the rotation
+
+        [Header("Shoot State")]
+        [Range(0f, 90f)]
+        public float burstSweepAngle = 30f; // Total sweep angle during burst
+        public float burstSweepSpeed = 60f; // Degrees per second of sweep
 
         #endregion
 
@@ -67,6 +60,7 @@ namespace MachineGunner
         private float _overheatStartTime;
         private float _reloadStartTime;
         private int _currentAmmo;
+        private Vector3 _lastKnownPlayerPosition;
 
         #endregion
 
@@ -78,6 +72,9 @@ namespace MachineGunner
         public float CurrentHeat => _currentHeat;
         public bool IsOverheated => _isOverheated;
         public int CurrentAmmo => _currentAmmo;
+        public float SuppressiveFireSpreadAngle => suppressiveFireSpreadAngle; // Expose for gizmo
+        public float BurstSweepAngle => burstSweepAngle; // Expose for ShootState
+        public float BurstSweepSpeed => burstSweepSpeed; // Expose for ShootState
 
         #endregion
 
@@ -89,17 +86,22 @@ namespace MachineGunner
             _currentState = new IdleState();
             _currentState.EnterState(this);
             _currentAmmo = magazineSize;
+            _lastKnownPlayerPosition = transform.forward; // Default forward if no player yet
+            idleRotationOffset = transform.eulerAngles.y; // Initialize offset with current Y rotation
         }
 
         void Update()
         {
-            if (_player == null) return; // Player might be destroyed
+            if (_player != null)
+            {
+                _lastKnownPlayerPosition = _player.transform.position;
+            }
 
             _currentState?.UpdateState(this);
             _timeSinceLastShot += Time.deltaTime;
         }
 
-        void OnDrawGizmosSelected()
+        void OnDrawGizmos()
         {
             Gizmos.color = alertGizmoColor;
             Gizmos.DrawWireSphere(transform.position, alertRange);
@@ -109,6 +111,39 @@ namespace MachineGunner
 
             Gizmos.color = shootGizmoColor;
             Gizmos.DrawWireSphere(transform.position, shootRange);
+
+            // Line of Sight Gizmo
+            Gizmos.color = HasLineOfSightToPlayer() ? lineOfSightColor : noLineOfSightColor;
+            Gizmos.DrawLine(firePoint.position, _lastKnownPlayerPosition);
+
+            // Suppressive Fire Arc Gizmo
+            Gizmos.color = suppressiveArcColor;
+            Vector3 forwardDirection = transform.forward;
+            Quaternion leftRayRotation = Quaternion.AngleAxis(-suppressiveFireSpreadAngle / 2f, Vector3.up);
+            Quaternion rightRayRotation = Quaternion.AngleAxis(suppressiveFireSpreadAngle / 2f, Vector3.up);
+            Vector3 leftRayDirection = leftRayRotation * forwardDirection;
+            Vector3 rightRayDirection = rightRayRotation * forwardDirection;
+
+            Gizmos.DrawRay(firePoint.position, leftRayDirection * suppressiveRange);
+            Gizmos.DrawRay(firePoint.position, rightRayDirection * suppressiveRange);
+            Gizmos.DrawWireSphere(transform.position + forwardDirection * suppressiveRange, 0.5f); // Indicate end of range
+
+            // Idle Rotation Gizmo (visualize the angle)
+            Gizmos.color = Color.cyan;
+            Quaternion initialRotation = Quaternion.Euler(0f, idleRotationOffset - idleRotationAngle / 2f, 0f);
+            Quaternion finalRotation = Quaternion.Euler(0f, idleRotationOffset + idleRotationAngle / 2f, 0f);
+            Vector3 initialDirection = initialRotation * Vector3.forward * 2f;
+            Vector3 finalDirection = finalRotation * Vector3.forward * 2f;
+            Gizmos.DrawRay(transform.position, initialDirection);
+            Gizmos.DrawRay(transform.position, finalDirection);
+
+            // Burst Sweep Gizmo
+            Gizmos.color = Color.yellow;
+            Vector3 currentForward = transform.forward;
+            Quaternion sweepLeft = Quaternion.AngleAxis(-burstSweepAngle / 2f, Vector3.up);
+            Quaternion sweepRight = Quaternion.AngleAxis(burstSweepAngle / 2f, Vector3.up);
+            Gizmos.DrawRay(firePoint.position, sweepLeft * currentForward * shootRange * 0.75f); // Slightly shorter to visualize
+            Gizmos.DrawRay(firePoint.position, sweepRight * currentForward * shootRange * 0.75f);
         }
 
         #endregion
@@ -165,12 +200,12 @@ namespace MachineGunner
                 Rigidbody rb = bullet.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    Vector3 direction = (targetPosition - firePoint.position).normalized;
+                    Vector3 direction = firePoint.forward; // Use the firePoint's current forward direction
                     if (isSuppressive)
                     {
                         direction = Quaternion.Euler(0f, Random.Range(-suppressiveFireSpreadAngle, suppressiveFireSpreadAngle), 0f) * direction;
                     }
-                    rb.velocity = direction * bulletForce;
+                    rb.linearVelocity = direction * bulletForce;
                 }
                 _timeSinceLastShot = 0f;
                 _currentAmmo--;

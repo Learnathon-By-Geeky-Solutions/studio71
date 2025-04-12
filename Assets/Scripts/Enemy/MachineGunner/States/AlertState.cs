@@ -16,6 +16,15 @@ namespace MachineGunner.States
 
         public void UpdateState(MachineGunnerController controller)
         {
+            if (controller.Player != null)
+            {
+                // Rotate to face the player
+                Vector3 directionToPlayer = controller.Player.transform.position - controller.transform.position;
+                directionToPlayer.y = 0f; // Keep rotation on the horizontal plane
+                Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
+                controller.transform.rotation = Quaternion.Slerp(controller.transform.rotation, lookRotation, Time.deltaTime * 5f); // Smooth rotation
+            }
+
             if (Time.time >= _alertStartTime + _alertDuration)
             {
                 if (controller.IsPlayerInShootRange())
