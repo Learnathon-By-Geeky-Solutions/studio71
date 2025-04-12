@@ -69,6 +69,7 @@ namespace Player
 
         private void OnDisable()
         {
+            PlayAnimation("Idle", 0.1f, 0);
             InputHandler.Instance.OnCrouch -= CrouchAnimation;
             InputHandler.Instance.OnReload -= ReloadAnimation;
             InputHandler.Instance.OnGrenade -= GrenadeAnimation;

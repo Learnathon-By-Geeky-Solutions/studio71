@@ -83,6 +83,7 @@ namespace Player
         }
         private void OnDisable()
         {
+            AudioManager.Instance.StopSound(currentMovementSound);
             InputHandler.Instance.OnCrouch -= Crouch;
             InputHandler.Instance.OnSprint -= Sprint;
             InputHandler.Instance.OnPrimaryWeapon -= PrimaryWeapon;

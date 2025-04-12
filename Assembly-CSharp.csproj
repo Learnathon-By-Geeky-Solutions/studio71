@@ -95,8 +95,8 @@
     <Compile Include="Assets\Scripts\Visualizer\PlayerFacingDirection.cs" />
     <Compile Include="Assets\Scripts\Enemy\MortarAI\MortarTeleportingState.cs" />
     <Compile Include="Assets\Scripts\Enemy\SniperAI\FleeState.cs" />
-    <Compile Include="Assets\Scripts\UI\MainMenu\ParallaxEffect.cs" />
     <Compile Include="Assets\Scripts\UI\Level Selector\LocationDot.cs" />
+    <Compile Include="Assets\Scripts\UI\MainMenu\ParallaxEffect.cs" />
     <Compile Include="Assets\Scripts\Enemy\SniperAI\SniperState.cs" />
     <Compile Include="Assets\Scripts\Carousel\Carousel\CarouselController.cs" />
     <Compile Include="Assets\Scripts\Enemy\MachineGun AI\machine-gunner-interface.cs" />

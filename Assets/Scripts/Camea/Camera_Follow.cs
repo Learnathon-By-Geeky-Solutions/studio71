@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using SingletonManagers;
+using dialogue;
 /// <summary>
 /// Controls the camera movement to follow a controllable player while maintaining a fixed offset and rotation.
 /// </summary>
@@ -15,7 +16,7 @@ namespace CameraManager
         [SerializeField] private float movementOffsetMultiplier = 2f; // How much movement affects the camera offset
 
         private Vector3 _targetOffset; // The dynamically adjusted offset
-
+        private Vector2 moveDirection = Vector2.zero;
         void Start()
         {
             _player = GameObject.FindGameObjectWithTag("Player")?.transform;
@@ -27,7 +28,7 @@ namespace CameraManager
             if (_player == null) return;
 
             // Get movement direction from singleton input handler
-            Vector2 moveDirection = InputHandler.Instance.MoveDirection;
+            moveDirection = InkDialogueManager.IsDialogueOpen ? Vector2.zero : InputHandler.Instance.MoveDirection;
 
             // Convert moveDirection into world space offset
             Vector3 movementOffset = new Vector3(moveDirection.x, 0, moveDirection.y) * movementOffsetMultiplier;

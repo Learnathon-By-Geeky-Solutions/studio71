@@ -7,6 +7,8 @@ using System.Collections;
 using DG.Tweening;
 using SingletonManagers;
 using TextProcessing;
+using Player;
+
 namespace dialogue{
 public class InkDialogueManager : MonoBehaviour
 {
@@ -41,7 +43,8 @@ public class InkDialogueManager : MonoBehaviour
     private Story story;
     public static bool IsDialogueOpen { get; private set; } = false;
     private bool canContinueToNextLine = true;
-
+    private PlayerController _playercontroller;
+    private PlayerAnimation _playerAnimation;
     void Awake()
     {
         characterDictionary = new Dictionary<int, CharacterData>();
@@ -53,6 +56,8 @@ public class InkDialogueManager : MonoBehaviour
         dialoguePanelRect = dialoguePanel.GetComponent<RectTransform>();
         dialoguePanelOriginalPos = dialoguePanelRect.anchoredPosition;
         dialoguePanelOriginalScale = dialoguePanelRect.localScale;
+        _playercontroller=GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        _playerAnimation=GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAnimation>();
     }
 
     void Start()
@@ -95,6 +100,8 @@ public class InkDialogueManager : MonoBehaviour
                    .SetEase(easeType);
 
             IsDialogueOpen = true;
+            _playercontroller.enabled = false;
+            _playerAnimation.enabled = false;
             ContinueStory();
         }
     }
@@ -251,6 +258,8 @@ public class InkDialogueManager : MonoBehaviour
                   });
 
         IsDialogueOpen = false;
+        _playercontroller.enabled = true;
+        _playerAnimation.enabled = true;
         yield return new WaitForSeconds(animationDuration);
     }
 }
