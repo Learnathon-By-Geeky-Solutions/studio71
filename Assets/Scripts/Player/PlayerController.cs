@@ -176,7 +176,6 @@ namespace Player
                 {
                     transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction), _rotationSpeed * Time.deltaTime);
                 }
-
             }
         }
         private void Crouch()

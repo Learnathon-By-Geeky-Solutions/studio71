@@ -182,7 +182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6507c166ca670a41962ab4f51b76b96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bulletSpeed: 17
+  _bulletSpeed: 20
   _maxLifeTime: 3
   _bulletDmg: 10
   hitLayers:

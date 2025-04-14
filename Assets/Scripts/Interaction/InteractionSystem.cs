@@ -3,8 +3,6 @@ using System.Collections;
 using UnityEngine;
 using dialogue;
 using Player;
-// Replace 'YourNamespace' with the actual namespace where the Npc class is defined
-
 namespace Interaction
 {
     public class InteractionSystem : MonoBehaviour

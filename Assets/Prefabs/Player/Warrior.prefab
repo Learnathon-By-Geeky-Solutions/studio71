@@ -974,7 +974,6 @@ MonoBehaviour:
   _radiusRenderer: {fileID: 2480317299932930715}
   _lineResolution: 30
   _radiusResolution: 30
-  _timeStep: 0.05
   _collisionMask:
     serializedVersion: 2
     m_Bits: 256
@@ -2619,8 +2618,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8447092791057330406}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.61113685, y: 0.5639665, z: 0.35569793, w: 0.42653552}
-  m_LocalPosition: {x: 0.8896322, y: 1.2909398, z: -0.024173737}
+  m_LocalRotation: {x: 0.5874928, y: 0.58973974, z: 0.39352322, w: 0.3901265}
+  m_LocalPosition: {x: 0.8896322, y: 1.2609386, z: -0.024173737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2711,12 +2710,12 @@ ParentConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_TranslationAtRest: {x: 0.8896321, y: 1.2909399, z: -0.024173765}
-  m_RotationAtRest: {x: 6.9001646, y: 112.698875, z: 90.0011}
+  m_TranslationAtRest: {x: 0.8896322, y: 1.2609389, z: -0.024173737}
+  m_RotationAtRest: {x: -0.32999715, y: 112.698875, z: 90.00096}
   m_TranslationOffsets:
-  - {x: 0.09000015, y: 0.07000017, z: -0.010000229}
+  - {x: 0.09000015, y: 0.100001335, z: -0.010000229}
   m_RotationOffsets:
-  - {x: -6.900174, y: 67.30114, z: -89.99894}
+  - {x: 0.33000228, y: 67.30113, z: -89.99904}
   m_AffectTranslationX: 1
   m_AffectTranslationY: 1
   m_AffectTranslationZ: 1
