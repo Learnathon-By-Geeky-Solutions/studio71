@@ -20,12 +20,8 @@ namespace Player
         public bool IsBusy {get; private set;}
         public bool IsThrowingGrenade { get; set; }
         private bool _isPickingUp=false;
-        private bool _isDead = false;
+        public bool IsDead { get;private set;}
         private bool _isCrouching = false;
-
-        //Weapon Variable
-        private Weapon.Gun _equippedGun;
-
 
         //Reference to Other Player Scripts to work with them.
         private InteractionSystem _interactionSystem;
@@ -43,9 +39,6 @@ namespace Player
             //Caching Animation Lengths to return from animations
             CacheAnimationLength();
 
-            //Weapon Initialization for Animation
-            _equippedGun = gameObject.GetComponentInChildren<Weapon.AutomaticGun>();
-
             //Interaction System Initialization
             _interactionSystem=GetComponent<InteractionSystem>();
 
@@ -54,7 +47,7 @@ namespace Player
 
             //Health System Initialization
             _PlayerHealth = gameObject.GetComponent<Health>();
-            _isDead = false;
+            IsDead = false;
 
         }
 
@@ -83,11 +76,14 @@ namespace Player
         private void Update()
         {
             EightWayLocomotion();
-            if (_isPickingUp || _isDead) return;            
-                MoveAnimation();
-            if (_PlayerHealth.CurrentHealth <= 0)
+            if (_isPickingUp || IsDead) { return; }
+            else
             {
-                DeathAnimation();
+                MoveAnimation();
+                if (_PlayerHealth.CurrentHealth <= 0)
+                {
+                    DeathAnimation();
+                }
             }
         }
 
@@ -112,8 +108,8 @@ namespace Player
         }
         private void ShootAnimation(bool isPressed)
         {
-            if (IsBusy) return;
-            
+            if (!IsBusy)
+            {
                 switch (isPressed)
                 {
                     case true:
@@ -123,12 +119,14 @@ namespace Player
                         PlayAnimation("Idle UpperBody", 0.1f, 1);
                         break;
                 }
+            }
+            else { return; }
             
         }
         private void PickupAnimation()
         {
             if (_interactionSystem._currentTarget == null) return;
-            if (IsBusy || !_interactionSystem._currentTarget.CompareTag("Interactable")||_isDead) return;
+            if (IsBusy || !_interactionSystem._currentTarget.CompareTag("Interactable")||IsDead) return;
             IsBusy = true;
             _isPickingUp = true;
             _playerController.enabled = false;
@@ -138,14 +136,14 @@ namespace Player
         }
         private void ReloadAnimation()
         {
-            if (IsBusy||_isDead) return;
+            if (IsBusy||IsDead) return;
             IsBusy = true;     
             PlayAnimationAndReturn("Reload", "Idle UpperBody", 0.1f, 1);   
             
         }
         private void GrenadeAnimation()
         {
-            if (IsBusy || _isDead || _playerController.GrenadeCount<=0) return;
+            if (IsBusy || IsDead || _playerController.GrenadeCount<=0) return;
             IsBusy = true;
             PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", 0.1f, 1);
             StartCoroutine(DelayedAction(_animationLengths["Grenade Throw"], () => { IsThrowingGrenade = false; }));
@@ -153,7 +151,7 @@ namespace Player
         }
         private void DeathAnimation()
         {
-            _isDead = true;
+            IsDead = true;
             _playerController.enabled=false;
             PlayAnimation("Death", 0.1f, 0);
             _playerAnimator.SetLayerWeight(1, 0);
@@ -165,47 +163,37 @@ namespace Player
         /// <returns></returns>
         private string EightWayLocomotion()
         {
-            Vector3 movedirection = new Vector3(InputHandler.Instance.MoveDirection.x, 0, InputHandler.Instance.MoveDirection.y);
-            movedirection.Normalize();
-             float _angleForAnimation = Vector3.SignedAngle(transform.forward,movedirection,Vector3.up);
-            string moveAnimationState = null;
+            Vector3 moveDirection = new Vector3(InputHandler.Instance.MoveDirection.x, 0, InputHandler.Instance.MoveDirection.y).normalized;
+            float angle = Vector3.SignedAngle(transform.forward, moveDirection, Vector3.up);
 
-            if (!_playerController._isSprinting && !_isCrouching)
-            {
-                if (_angleForAnimation is > -22.5f and <= 22.5f) moveAnimationState = "Walk Forward";
-                else if (_angleForAnimation is > 22.5f and <= 67.5f) moveAnimationState = "Walk Forward Right";
-                else if (_angleForAnimation is > 67.5f and <= 112.5f) moveAnimationState = "Walk Right";
-                else if (_angleForAnimation is > 112.5f and <= 157.5f) moveAnimationState = "Walk Backward Right";
-                else if (_angleForAnimation is > 157.5f or <= -157.5f) moveAnimationState = "Walk Backward";
-                else if (_angleForAnimation is > -157.5f and <= -112.5f) moveAnimationState = "Walk Backward Left";
-                else if (_angleForAnimation is > -112.5f and <= -67.5f) moveAnimationState = "Walk Left";
-                else if (_angleForAnimation is > -67.5f and <= -22.5f) moveAnimationState = "Walk Forward Left";
-            }
-            else if (_playerController._isSprinting)
-            {
-                if (_angleForAnimation is > -22.5f and <= 22.5f) moveAnimationState = "Sprint Forward";
-                else if (_angleForAnimation is > 22.5f and <= 67.5f) moveAnimationState = "Sprint Forward Right";
-                else if (_angleForAnimation is > 67.5f and <= 112.5f) moveAnimationState = "Sprint Right";
-                else if (_angleForAnimation is > 112.5f and <= 157.5f) moveAnimationState = "Sprint Backward Right";
-                else if (_angleForAnimation is > 157.5f or <= -157.5f) moveAnimationState = "Sprint Backward";
-                else if (_angleForAnimation is > -157.5f and <= -112.5f) moveAnimationState = "Sprint Backward Left";
-                else if (_angleForAnimation is > -112.5f and <= -67.5f) moveAnimationState = "Sprint Left";
-                else if (_angleForAnimation is > -67.5f and <= -22.5f) moveAnimationState = "Sprint Forward Left";
-            }
-            else if(_isCrouching)
-            {
-                if (_angleForAnimation is > -22.5f and <= 22.5f) moveAnimationState = "Crouch Forward";
-                else if (_angleForAnimation is > 22.5f and <= 67.5f) moveAnimationState = "Crouch Forward Right";
-                else if (_angleForAnimation is > 67.5f and <= 112.5f) moveAnimationState = "Crouch Right";
-                else if (_angleForAnimation is > 112.5f and <= 157.5f) moveAnimationState = "Crouch Backward Right";
-                else if (_angleForAnimation is > 157.5f or <= -157.5f) moveAnimationState = "Crouch Backward";
-                else if (_angleForAnimation is > -157.5f and <= -112.5f) moveAnimationState = "Crouch Backward Left";
-                else if (_angleForAnimation is > -112.5f and <= -67.5f) moveAnimationState = "Crouch Left";
-                else if (_angleForAnimation is > -67.5f and <= -22.5f) moveAnimationState = "Crouch Forward Left";
-            }
+            string statePrefix = GetMovementStatePrefix();
+            string directionSuffix = GetDirectionFromAngle(angle);
 
-            return moveAnimationState;
+            if (string.IsNullOrEmpty(statePrefix) || string.IsNullOrEmpty(directionSuffix))
+                return null;
 
+            return $"{statePrefix} {directionSuffix}";
+        }
+
+        private string GetMovementStatePrefix()
+        {
+            if (_playerController._isSprinting) return "Sprint";
+            if (_isCrouching) return "Crouch";
+            if (!_playerController._isSprinting && !_isCrouching) return "Walk";
+            return null;
+        }
+
+        private static string GetDirectionFromAngle(float angle)
+        {
+            if (angle is > -22.5f and <= 22.5f) return "Forward";
+            if (angle is > 22.5f and <= 67.5f) return "Forward Right";
+            if (angle is > 67.5f and <= 112.5f) return "Right";
+            if (angle is > 112.5f and <= 157.5f) return "Backward Right";
+            if (angle > 157.5f || angle <= -157.5f) return "Backward";
+            if (angle is > -157.5f and <= -112.5f) return "Backward Left";
+            if (angle is > -112.5f and <= -67.5f) return "Left";
+            if (angle is > -67.5f and <= -22.5f) return "Forward Left";
+            return null;
         }
         private void PlayAnimation(string newAnimation,float SmoothFrame,int WorkingLayer)
         {

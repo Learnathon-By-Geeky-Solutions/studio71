@@ -48,7 +48,7 @@ MonoBehaviour:
   - name: Grenade Explosion
     prefab: {fileID: 198217647695368876, guid: 076574be5e4ff37469589e9e41c3a61b, type: 3}
   - name: Gunshot
-    prefab: {fileID: 198810977704173606, guid: cd1d886709a5442438e6514e8d7bad2a, type: 3}
+    prefab: {fileID: 198810977704173606, guid: 0682ff91c3fce004b81c6fb1266d08ec, type: 3}
   - name: Blood Splatter
     prefab: {fileID: 198157190901592544, guid: bfdd002af60979e4d9fab865212ee890, type: 3}
   - name: Terrain Hit
