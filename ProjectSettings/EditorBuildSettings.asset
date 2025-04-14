@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu3d.unity
-    guid: 5e976c7884aff8846b8ca6cfb5ff6903
-  - enabled: 1
+    guid: d825be14e6ffa824eac3e0c9d2d67d6d
+  - enabled: 0
     path: Assets/Scenes/SampleScene 1.unity
-    guid: 445db9b652043e74288956ea227e6ac9
+    guid: 45b3b394b6783fb49af77f750448f09d
+  - enabled: 1
+    path: Assets/Scenes/SlidingMenu.unity
+    guid: e7aea9eb421b31049b7e6c68721786fc
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 60d119ec1edfb284f8c86194aa613daf, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 5f0fa73ad133a3a4ab542b45891aaef2, type: 3}

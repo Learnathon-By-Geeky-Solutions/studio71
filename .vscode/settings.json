@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "3knot3.sln"
+    "dotnet.defaultSolution": "studio71.sln"
 }

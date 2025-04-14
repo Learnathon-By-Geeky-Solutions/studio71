@@ -45,7 +45,9 @@ namespace Carousel.UI
                 return;
             }
 
+#if UNITY_EDITOR
             EditorApplication.delayCall += UpdateSizeDelta;
+#endif
         }
 
         public void SetPosition(RectTransform rectTransform, int index)
@@ -84,7 +86,9 @@ namespace Carousel.UI
                 }
             }
 
+#if UNITY_EDITOR
             EditorApplication.delayCall -= UpdateSizeDelta;
+#endif
         }
     }
 }
