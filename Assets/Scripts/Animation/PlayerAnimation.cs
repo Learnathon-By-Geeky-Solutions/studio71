@@ -76,14 +76,15 @@ namespace Player
         private void Update()
         {
             EightWayLocomotion();
-            if (_isPickingUp || IsDead) { return; }
-            else
+
+            if (_isPickingUp || IsDead)
+                return;
+
+            MoveAnimation();
+
+            if (_PlayerHealth.CurrentHealth <= 0)
             {
-                MoveAnimation();
-                if (_PlayerHealth.CurrentHealth <= 0)
-                {
-                    DeathAnimation();
-                }
+                DeathAnimation();
             }
         }
 
