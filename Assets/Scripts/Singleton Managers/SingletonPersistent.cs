@@ -7,35 +7,38 @@ namespace Singleton
         private static T _instance;
         private static readonly object _lock = new object();
 
-        public static T Instance => _instance;
-
-        protected virtual void Awake()
+        public static T Instance
         {
-            // Ensure that this instance is the only one
-            if (_instance == null)
+            get
             {
-                _instance = this as T;
-            }
-            else if (_instance != this)
-            {
-                Destroy(gameObject); // Destroy duplicate
+                if (_instance == null)
+                {
+                    // Only safe to use in editor or initialization phase
+                    _instance = Object.FindAnyObjectByType<T>();
+
+                    if (_instance == null)
+                    {
+                        Debug.LogWarning($"No instance of {typeof(T).Name} found in the scene.");
+                    }
+                }
+                return _instance;
             }
         }
 
-        public static void Initialize(T instance)
+        protected virtual void Awake()
         {
             lock (_lock)
             {
                 if (_instance == null)
                 {
-                    _instance = instance;
+                    _instance = this as T;
                 }
-
-                else
+                else if (_instance != this)
                 {
-                    Debug.Log($"An instance of {typeof(T).Name} has already been initialized.");
+                    Destroy(gameObject); // Ensure only one instance
                 }
             }
         }
     }
 }
+

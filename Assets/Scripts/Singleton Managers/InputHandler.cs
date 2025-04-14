@@ -10,20 +10,19 @@ namespace SingletonManagers
     public class InputHandler : SingletonPersistent<InputHandler>
     {
         public delegate void OnActionEvent();
-        public delegate void OnActionEventBool(bool value);
 
         private InputAction MoveInput;
         public Vector2 MoveDirection { get; private set; }
         public Vector2 MousePosition { get; private set; }
         public bool GrenadeThrowStart { get; private set; }
 
-        public event OnActionEventBool OnAttack;
+        public event Action<bool> OnAttack;
         public event OnActionEvent OnReload;
         public event OnActionEvent OnPrimaryWeapon;
         public event OnActionEvent OnSecondaryWeapon;
         public event OnActionEvent OnCrouch;
         public event OnActionEvent OnGrenade;
-        public event OnActionEventBool OnSprint;
+        public event Action<bool> OnSprint;
         public event OnActionEvent OnInteract;
 
         private void Start()
