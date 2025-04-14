@@ -1,14 +1,23 @@
 using UnityEngine;
-
+using SingletonManagers;
 public class CursorManager : MonoBehaviour
 {
-    [SerializeField] private Texture2D _reticleTexture;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private RectTransform rectTransform;
+    [SerializeField] private Texture2D _transparentCursor;
+    private void Awake()
     {
-        Vector2 hotspot = new Vector2(_reticleTexture.width / 2, _reticleTexture.height / 2);
-        Cursor.SetCursor(_reticleTexture, hotspot, CursorMode.Auto);
+        rectTransform = GetComponent<RectTransform>();
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+    }
+    private void Start()
+    {
+        Cursor.SetCursor(_transparentCursor, Vector2.zero, CursorMode.Auto);
+        Cursor.visible = true; // Must be true for UI to work
+    }
+
+    private void Update()
+    {
+        rectTransform.position = InputHandler.Instance.MousePosition;
     }
 }
