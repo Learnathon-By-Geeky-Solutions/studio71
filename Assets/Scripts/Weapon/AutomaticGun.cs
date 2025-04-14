@@ -1,10 +1,10 @@
 using UnityEngine;
 using SingletonManagers;
-/// <summary>
-/// Implementation for Automatic Gun.
-/// </summary>
 namespace Weapon
 {
+    //// <summary>
+    /// Implementation for Automatic Gun.
+    /// </summary>
     public class AutomaticGun : Gun
     {
         private float _nextFireTime;
@@ -14,7 +14,7 @@ namespace Weapon
         }
         private void Update()
         {
-            if (!IsShooting || (!(Time.time >= _nextFireTime)) || CurrentMagazineSize <= 0) return;
+            if (!IsShooting || Time.time < _nextFireTime || CurrentMagazineSize <= 0) return;
             Shoot();
             _nextFireTime = Time.time + 1f / Fire_Rate;
             CurrentMagazineSize -= 1;

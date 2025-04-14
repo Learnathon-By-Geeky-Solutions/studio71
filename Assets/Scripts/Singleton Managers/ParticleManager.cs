@@ -12,9 +12,10 @@ namespace SingletonManagers
             public string name;
             public ParticleSystem prefab;
         }
-        public List<ParticlePrefab> particlePrefabs; // Assign in the Inspector
-        private Dictionary<string, ParticleSystem> _prefabDictionary = new Dictionary<string, ParticleSystem>();
-        private Dictionary<string, Queue<ParticleSystem>> _particlePools = new Dictionary<string, Queue<ParticleSystem>>();
+        [SerializeField] private List<ParticlePrefab> particlePrefabs;
+        public List<ParticlePrefab> ParticlePrefabs => particlePrefabs; // Assign in the Inspector
+        private readonly Dictionary<string, ParticleSystem> _prefabDictionary = new Dictionary<string, ParticleSystem>();
+        private readonly Dictionary<string, Queue<ParticleSystem>> _particlePools = new Dictionary<string, Queue<ParticleSystem>>();
 
         private void Start()
         {

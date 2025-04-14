@@ -970,7 +970,7 @@ MonoBehaviour:
   _sprintModifier: 2
   _grenade: {fileID: 1207142880592337251, guid: 34881f261669ade428f4526bdbcd60ca, type: 3}
   _throwPoint: {fileID: 726657489492370677}
-  GrenadeCount: 3
+  _grenadeCount: 3
   _radiusRenderer: {fileID: 2480317299932930715}
   _lineResolution: 30
   _radiusResolution: 30

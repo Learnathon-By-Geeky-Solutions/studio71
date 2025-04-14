@@ -50,12 +50,17 @@ namespace Player
         [Header("Grenade Variables")]
         [SerializeField] private GameObject _grenade;
         [SerializeField] private Transform _throwPoint;
-        public int GrenadeCount = 0;
+        [SerializeField] private int _grenadeCount = 0;
+        public int GrenadeCount
+        {
+            get => _grenadeCount;
+            private set => _grenadeCount = value;
+        }
         private LineRenderer _lineRenderer;
         [SerializeField] LineRenderer _radiusRenderer;
         [SerializeField] private int _lineResolution = 30; // Number of points in trajectory
         [SerializeField] private int _radiusResolution = 30;
-        private float _timeStep = 0.05f; // Simulation time step
+        private readonly float _timeStep = 0.05f; // Simulation time step
         [SerializeField] private LayerMask _collisionMask; // Stops drawing when hitting obstacles
 
         //PlayerAnimation Variable
@@ -223,16 +228,20 @@ namespace Player
         private void Attack(bool isPressed)
         {
 
-            if (_isSprinting || _playerAnimation.IsBusy) return;       
-                if (isPressed)
-                {
-                    _equippedGun.StartShooting();
-                }
-                else
-                {
-                    _equippedGun.StopShooting();
-                }
-            
+            if (_isSprinting || _playerAnimation.IsBusy)
+            {
+                return;
+            }
+
+            if (isPressed)
+            {
+                _equippedGun.StartShooting();
+            }
+            else
+            {
+                _equippedGun.StopShooting();
+            }
+
         }
         private void PrimaryWeapon()
         {

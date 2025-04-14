@@ -18,10 +18,13 @@ namespace Weapon
 
         public override void Shoot()
         {
-            if (!IsShooting||CurrentMagazineSize <= 0) return;          
-                Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
-                IsShooting = false;
-                CurrentMagazineSize -= 1;
+            if (!IsShooting || CurrentMagazineSize <= 0)
+            {
+                return;
+            }
+            Instantiate(Prefab_Bullet, Fire_Point.position, Fire_Point.rotation);
+            IsShooting = false;
+            CurrentMagazineSize -= 1;
             
         }
     }

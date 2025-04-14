@@ -121,7 +121,6 @@ namespace Player
                         break;
                 }
             }
-            else { return; }
             
         }
         private void PickupAnimation()
@@ -180,20 +179,30 @@ namespace Player
         {
             if (_playerController._isSprinting) return "Sprint";
             if (_isCrouching) return "Crouch";
-            if (!_playerController._isSprinting && !_isCrouching) return "Walk";
-            return null;
+            return "Walk";
         }
 
         private static string GetDirectionFromAngle(float angle)
         {
-            if (angle is > -22.5f and <= 22.5f) return "Forward";
-            if (angle is > 22.5f and <= 67.5f) return "Forward Right";
-            if (angle is > 67.5f and <= 112.5f) return "Right";
-            if (angle is > 112.5f and <= 157.5f) return "Backward Right";
-            if (angle > 157.5f || angle <= -157.5f) return "Backward";
-            if (angle is > -157.5f and <= -112.5f) return "Backward Left";
-            if (angle is > -112.5f and <= -67.5f) return "Left";
-            if (angle is > -67.5f and <= -22.5f) return "Forward Left";
+            var directions = new (float min, float max, string direction)[]
+            {
+                (-22.5f, 22.5f, "Forward"),
+                (22.5f, 67.5f, "Forward Right"),
+                (67.5f, 112.5f, "Right"),
+                (112.5f, 157.5f, "Backward Right"),
+                (157.5f, 180f, "Backward"),
+                (-180f, -157.5f, "Backward"),
+                (-157.5f, -112.5f, "Backward Left"),
+                (-112.5f, -67.5f, "Left"),
+                (-67.5f, -22.5f, "Forward Left"),
+            };
+
+            foreach (var (min, max, dir) in directions)
+            {
+                if (angle > min && angle <= max)
+                    return dir;
+            }
+
             return null;
         }
         private void PlayAnimation(string newAnimation,float SmoothFrame,int WorkingLayer)
