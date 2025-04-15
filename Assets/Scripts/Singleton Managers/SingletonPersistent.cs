@@ -5,32 +5,24 @@ namespace Singleton
     public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
     {
         private static T _instance;
-        private static readonly object _lock = new object();
+        private static bool _initialized;
 
         public static T Instance => _instance;
 
         protected virtual void Awake()
         {
-            lock (_lock)
+            if (_initialized)
             {
-                if (_instance == null)
+                if (_instance != this)
                 {
-                    _instance = this as T;
-                }
-                else if (_instance != this)
-                {
-                    Debug.LogWarning($"[SingletonPersistent<{typeof(T).Name}>] Duplicate found on '{gameObject.name}'. Destroying this instance.");
+                    Debug.LogWarning($"[SingletonPersistent<{typeof(T).Name}>] Duplicate instance found, destroying: {gameObject.name}");
                     Destroy(gameObject);
                 }
+                return;
             }
-        }
 
-        /*protected virtual void OnDestroy()
-        {
-            if (_instance == this)
-            {
-                _instance = null;
-            }
-        }*/
+            _instance = (T)(object)this;
+            _initialized = true;
+        }
     }
 }

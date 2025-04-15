@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Singleton;
@@ -9,36 +8,38 @@ namespace SingletonManagers
 {
     public class InputHandler : SingletonPersistent<InputHandler>
     {
-        public delegate void OnActionEvent();
-
         private InputAction MoveInput;
         public Vector2 MoveDirection { get; private set; }
         public Vector2 MousePosition { get; private set; }
         public bool GrenadeThrowStart { get; private set; }
 
         public event Action<bool> OnAttack;
-        public event OnActionEvent OnReload;
-        public event OnActionEvent OnPrimaryWeapon;
-        public event OnActionEvent OnSecondaryWeapon;
-        public event OnActionEvent OnCrouch;
-        public event OnActionEvent OnGrenade;
+        public event Action OnReload;
+        public event Action OnPrimaryWeapon;
+        public event Action OnSecondaryWeapon;
+        public event Action OnCrouch;
+        public event Action OnGrenade;
         public event Action<bool> OnSprint;
-        public event OnActionEvent OnInteract;
+        public event Action OnInteract;
 
         private void Start()
         {
-            MoveInput = gameObject.GetComponent<PlayerInput>().actions.FindAction("Move");
-            if (MoveInput == null) { print($"Input System is missing on {gameObject.name}"); }
+            MoveInput = GetComponent<PlayerInput>().actions.FindAction("Move");
+            if (MoveInput == null)
+            {
+                Debug.LogWarning($"Input System is missing on {gameObject.name}");
+            }
         }
+
         private void Update()
         {
             MoveAction();
             LookAction();
         }
+
         private void MoveAction()
         {
             MoveDirection = MoveInput.ReadValue<Vector2>();
-
         }
 
         private void LookAction()
@@ -49,10 +50,7 @@ namespace SingletonManagers
 
         public void CrouchAction(InputAction.CallbackContext context)
         {
-            if (context.performed)
-            {
-                OnCrouch?.Invoke();
-            }
+            if (context.performed) OnCrouch?.Invoke();
         }
 
         public void SprintAction(InputAction.CallbackContext context)
@@ -67,26 +65,17 @@ namespace SingletonManagers
 
         public void PrimaryWeaponAction(InputAction.CallbackContext context)
         {
-            if (context.performed)
-            {
-                OnPrimaryWeapon?.Invoke();
-            }
+            if (context.performed) OnPrimaryWeapon?.Invoke();
         }
 
         public void SecondaryWeaponAction(InputAction.CallbackContext context)
         {
-            if (context.performed)
-            {
-                OnSecondaryWeapon?.Invoke();
-            }
+            if (context.performed) OnSecondaryWeapon?.Invoke();
         }
 
         public void ReloadAction(InputAction.CallbackContext context)
         {
-            if (context.performed)
-            {
-                OnReload?.Invoke();
-            }
+            if (context.performed) OnReload?.Invoke();
         }
 
         public void GrenadeAction(InputAction.CallbackContext context)
@@ -97,22 +86,17 @@ namespace SingletonManagers
             }
             else if (context.canceled)
             {
-                StartCoroutine(DelayedAction(1.7f,
-                    () => { GrenadeThrowStart = false; }));
+                StartCoroutine(DelayedAction(1.7f, () => { GrenadeThrowStart = false; }));
                 OnGrenade?.Invoke();
-
             }
         }
 
         public void InteractAction(InputAction.CallbackContext context)
         {
-            
-            if (context.performed)
-            {
-                OnInteract?.Invoke();
-            }
+            if (context.performed) OnInteract?.Invoke();
         }
-        private static IEnumerator DelayedAction(float delay, System.Action action)
+
+        private static IEnumerator DelayedAction(float delay, Action action)
         {
             yield return new WaitForSeconds(delay);
             action?.Invoke();
