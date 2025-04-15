@@ -2,7 +2,7 @@ using DG.Tweening;
 using Carousel.UI;
 using UnityEngine;
 using UnityEngine.UI;
-
+namespace LevelSelection{
 public class LocationCarouselItem : CarouselItem<LocationData>
 {
     [SerializeField] Image _image;
@@ -28,4 +28,5 @@ public class LocationCarouselItem : CarouselItem<LocationData>
             .Join(_image.DOFade(.25f, .25f))
             .Join(_rectTransform.DOScale(.75f, .25f));
     }
+}
 }

@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using Carousel.UI;
 using TMPro;
 using TextProcessing;
 using UnityEngine;
-using LevelSelection;
 
+namespace LevelSelection{
 [System.Serializable]
 public class LocationData {
     public Sprite sprite; // Keep sprite for the carousel item UI
@@ -106,4 +104,5 @@ public class LocationCarousel : CarouselController<LocationData>
             _descriptionText.text = fixedDescription; // Set the fixed text
         }
     }
+}
 }
