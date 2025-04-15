@@ -22,8 +22,6 @@ namespace LevelSelection
         private LocationData _currentActive;
         // Reference to the currently running rotation coroutine
         private Coroutine _currentRotationCoroutine;
-        // Reference to the model being rotated
-        private GameObject _currentlyRotatingModel;
 
         /// <summary>
         /// Initializes the models based on the provided location data array.
@@ -112,8 +110,7 @@ namespace LevelSelection
 
             if (modelToRotate != null)
             {
-                 _currentlyRotatingModel = modelToRotate;
-                _currentRotationCoroutine = StartCoroutine(RotateModelCoroutine(_currentlyRotatingModel.transform));
+                _currentRotationCoroutine = StartCoroutine(RotateModelCoroutine(modelToRotate.transform));
             }
         }
 
@@ -123,7 +120,6 @@ namespace LevelSelection
             {
                 StopCoroutine(_currentRotationCoroutine);
                 _currentRotationCoroutine = null;
-                _currentlyRotatingModel = null; // Clear the reference
             }
         }
 
@@ -136,8 +132,7 @@ namespace LevelSelection
                 yield return null; // Wait for the next frame
             }
             // Ensure coroutine reference is cleared if the loop exits (e.g., object destroyed)
-            _currentRotationCoroutine = null; 
-            _currentlyRotatingModel = null;
+            _currentRotationCoroutine = null;
         }
         
         /// <summary>
