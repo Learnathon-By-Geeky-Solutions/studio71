@@ -64,7 +64,7 @@ public class LocationCarousel : CarouselController<LocationData>
         }
     }
 
-    private void LogItem(LocationData data)
+    private static void LogItem(LocationData data)
     {
         Debug.Log("Carousel Item Updated/Selected: " + (data?.name ?? data?.sprite?.name ?? "N/A")); // Log name if available
     }
