@@ -29,8 +29,8 @@ namespace SingletonManagers
         [SerializeField] private int initialPoolSize = 5;
         [SerializeField] private Transform audioSourceParent;
 
-        private Dictionary<string, AudioClipInfo> _clipDictionary = new Dictionary<string, AudioClipInfo>();
-        private Queue<AudioSource> _audioSourcePool = new Queue<AudioSource>();
+        private readonly Dictionary<string, AudioClipInfo> _clipDictionary = new Dictionary<string, AudioClipInfo>();
+        private readonly Queue<AudioSource> _audioSourcePool = new Queue<AudioSource>();
 
         private void Start()
         {
