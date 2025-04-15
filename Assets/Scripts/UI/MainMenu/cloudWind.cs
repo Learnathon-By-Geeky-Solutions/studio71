@@ -16,13 +16,11 @@ public class cloudWind : MonoBehaviour
     [SerializeField] private float pauseDuration = 1.5f;
     
     private bool movingRight = true;
-    private Vector3 startPosition;
     
     private void Start()
     {
         // Calculate screen width in world units
         screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
-        startPosition = transform.position;
         
         // Start the movement sequence
         StartHorizontalMovement();
