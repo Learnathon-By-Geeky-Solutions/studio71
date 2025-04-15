@@ -59,12 +59,12 @@ namespace SingletonManagers
 
         public void SprintAction(InputAction.CallbackContext context)
         {
-            OnSprint?.Invoke(context.performed);
+            OnSprint.Invoke(context.performed);
         }
 
         public void AttackAction(InputAction.CallbackContext context)
         {
-            OnAttack?.Invoke(context.performed);
+            OnAttack.Invoke(context.performed);
         }
 
         public void PrimaryWeaponAction(InputAction.CallbackContext context)
