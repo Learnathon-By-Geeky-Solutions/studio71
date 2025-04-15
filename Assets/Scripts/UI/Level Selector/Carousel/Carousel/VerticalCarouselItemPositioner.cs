@@ -38,14 +38,12 @@ namespace Carousel.UI
          
             _image.color = _debugCarouselArea ? new Color(1, 1, 1, 50 / 255f) : new Color(1, 1, 1, 1 / 255f);
 
-            if(_isStatic)
+            if (!_isStatic)
             {
-                return;
-            }
-
 #if UNITY_EDITOR
-            EditorApplication.delayCall += UpdateSizeDelta;
+                EditorApplication.delayCall += UpdateSizeDelta;
 #endif
+            }
         }
 
         public void SetPosition(RectTransform rectTransform, int index)
