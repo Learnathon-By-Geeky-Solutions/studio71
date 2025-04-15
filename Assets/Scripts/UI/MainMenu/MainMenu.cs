@@ -10,17 +10,17 @@ namespace UI.MainMenu
             // Play background music when the menu loads
             AudioManager.PlaySound("background_music");
         }
-        public static void PlayGame()
+        public void PlayGame()
         {   
             AudioManager.PlaySound("button_press");
             SceneManager.LoadSceneAsync(1);
         }
 
-        public static void Settings()
+        public void Settings()
         {
             AudioManager.PlaySound("button_press");
         }
-        public static void QuitGame()
+        public void QuitGame()
         {   
             AudioManager.PlaySound("button_press");
             Application.Quit();
