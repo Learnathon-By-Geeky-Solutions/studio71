@@ -1,20 +1,22 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ReturnMainMenu : MonoBehaviour
+namespace UI.MainMenu
 {
-    private GameObject player;
-    private GameObject[] enemies;
-
-
-    void Update()
+    public class ReturnMainMenu : MonoBehaviour
     {
-        player = GameObject.FindGameObjectWithTag("Player");
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        private GameObject player;
+        private GameObject[] enemies;
 
-        if (player == null || enemies.Length == 0)
+        void Update()
         {
-            SceneManager.LoadSceneAsync(0);
+            player = GameObject.FindGameObjectWithTag("Player");
+            enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+            if (player == null || enemies.Length == 0)
+            {
+                SceneManager.LoadSceneAsync(0);
+            }
         }
     }
 }

@@ -1,13 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using SingletonManagers;
-namespace UI
-
+namespace UI.MainMenu
 {
-    /// <summary>
-    /// Handles the main menu.
-    /// </summary>      
-    public class MainMenu : MonoBehaviour
+       public class MainMenu : MonoBehaviour
     {   
          private void Start()
         {

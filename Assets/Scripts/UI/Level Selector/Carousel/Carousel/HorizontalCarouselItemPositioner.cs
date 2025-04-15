@@ -71,17 +71,14 @@ namespace Carousel.UI
             {
                 Vector2 newSize = new Vector2(_visibleItem * _gap, _image.rectTransform.sizeDelta.y);
 
-                if (_image.rectTransform.sizeDelta != newSize)
-                {
 #if UNITY_EDITOR
-                    Undo.RecordObject(_image.rectTransform, "Update RectTransform SizeDelta");
+                Undo.RecordObject(_image.rectTransform, "Update RectTransform SizeDelta");
 #endif
-                     _image.rectTransform.sizeDelta = newSize;
+                _image.rectTransform.sizeDelta = newSize;
 
 #if UNITY_EDITOR
-                    EditorUtility.SetDirty(_image.rectTransform);
+                EditorUtility.SetDirty(_image.rectTransform);
 #endif
-                }
             }
 
 #if UNITY_EDITOR

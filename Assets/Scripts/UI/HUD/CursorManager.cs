@@ -1,6 +1,6 @@
 using UnityEngine;
 using SingletonManagers;
-namespace HUD
+namespace UI.HUD
 {
     public class CursorManager : MonoBehaviour
     {
