@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace UI.MainMenu
 {
-    public class CloudWind : MonoBehaviour
+    public class CloudWindAttch : MonoBehaviour
     {
         [Header("Movement Settings")]
         [SerializeField] private float horizontalSpeed = 2f;
