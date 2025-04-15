@@ -8,21 +8,23 @@ namespace UI.MainMenu
         private void Start()
         {
             // Play background music when the menu loads
-            AudioManager.PlaySound("background_music");
+            AudioManager.PlaySound(SoundKeys.BackgroundMusic);
         }
         public void PlayGame()
         {   
-            AudioManager.PlaySound("button_press");
+            AudioManager.PlaySound(SoundKeys.ButtonPress);
             SceneManager.LoadSceneAsync(1);
         }
 
         public void Settings()
         {
-            AudioManager.PlaySound("button_press");
+            AudioManager.PlaySound(SoundKeys.ButtonPress);
+            Debug.Log("Settings button clicked");
         }
         public void QuitGame()
         {   
-            AudioManager.PlaySound("button_press");
+            AudioManager.PlaySound(SoundKeys.ButtonPress);
+            Debug.Log("Quit button clicked");
             Application.Quit();
         }
     }

@@ -5,6 +5,20 @@ using System.Collections;
 
 namespace SingletonManagers
 {
+    public static class SoundKeys
+    {
+        public const string BackgroundMusic = "background_music";
+        public const string ButtonPress = "button_press";
+        public const string ButtonHover = "button_hover";
+        public const string GunShot = "gunShot";
+        public const string BloodHit = "bloodHit";
+        public const string TerrainHit = "terrainHit";
+        public const string ReloadStart = "reload_start";
+        public const string GrenadeThrow = "grenadeThrow";
+        public const string GrenadeExplosion = "Grenade_Explosion";
+        // Add other sound keys here as needed
+    }
+
     public class AudioManager : SingletonPersistent
     {
         public static AudioManager Instance => GetInstance<AudioManager>();
