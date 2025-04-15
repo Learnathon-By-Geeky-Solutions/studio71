@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using SingletonManagers;
 namespace UI.MainMenu
 {
-    public class MainMenu : MonoBehaviour
+    public class MainMenuTransitioner : MonoBehaviour
     {   
         private void Start()
         {
