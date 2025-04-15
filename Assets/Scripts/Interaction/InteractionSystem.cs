@@ -87,23 +87,23 @@ namespace Interaction
         /// Starts dialogue with an NPC.
         /// </summary>
         private static void TriggerNpcDialogue(GameObject npc)
-{
-    if (npc == null)
-    {
-        Debug.LogError("Attempted to trigger dialogue with null NPC");
-        return;
-    }
+        {
+            if (npc == null)
+            {
+                Debug.LogError("Attempted to trigger dialogue with null NPC");
+                return;
+            }
 
-    var npcComponent = npc.GetComponent<Npc>();
-    if (npcComponent == null)
-    {
-        Debug.LogError($"No Npc component found on GameObject {npc.name}");
-        return;
-    }
+            var npcComponent = npc.GetComponent<NpcDialogueTrigger>();
+            if (npcComponent == null)
+            {
+                Debug.LogError($"No NpcDialogueTrigger component found on GameObject {npc.name}");
+                return;
+            }
 
-    Debug.Log($"Starting dialogue with {npc.name}");
-    npcComponent.TriggerDialogue();
-}
+            Debug.Log($"Starting dialogue with {npc.name}");
+            npcComponent.TriggerDialogue();
+        }
         /// <summary>
         /// Handles picking up an interactable item.
         /// </summary>
