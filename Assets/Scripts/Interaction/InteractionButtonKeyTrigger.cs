@@ -13,12 +13,12 @@ namespace Interaction
 
         private void OnEnable()
         {
-            InputHandler.Instance.SubscribeInteract(Interact);
+            InputHandler.Instance.OnInteract += Interact;
         }
 
         private void OnDisable()
         {
-            InputHandler.Instance.UnsubscribeInteract(Interact);
+            InputHandler.Instance.OnInteract -= Interact;
         }
         private void Interact()
         {

@@ -67,11 +67,11 @@ public class InkDialogueManager : MonoBehaviour
     }
     private void OnEnable()
     {
-        InputHandler.Instance.SubscribeInteract(LetsContinueStory);
+            InputHandler.Instance.OnInteract += LetsContinueStory;
     }
     private void OnDisable()
     {
-        InputHandler.Instance.UnsubscribeInteract(LetsContinueStory);
+        InputHandler.Instance.OnInteract -= LetsContinueStory;
     }
     void LetsContinueStory()
     {

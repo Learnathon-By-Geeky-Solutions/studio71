@@ -78,24 +78,24 @@ namespace Player
 
         private void OnEnable()
         {
-            InputHandler.Instance.SubscribeCrouch(Crouch);
-            InputHandler.Instance.SubscribeSprint(Sprint);
-            InputHandler.Instance.SubscribePrimaryWeapon(PrimaryWeapon);
-            InputHandler.Instance.SubscribeSecondaryWeapon(SecondaryWeapon);
-            InputHandler.Instance.SubscribeAttack(Attack);
-            InputHandler.Instance.SubscribeReload(Reload);
-            InputHandler.Instance.SubscribeGrenade(Grenade);
+            InputHandler.Instance.OnCrouch += Crouch;
+            InputHandler.Instance.OnSprint += Sprint;
+            InputHandler.Instance.OnPrimaryWeapon += PrimaryWeapon;
+            InputHandler.Instance.OnSecondaryWeapon += SecondaryWeapon;
+            InputHandler.Instance.OnAttack += Attack;
+            InputHandler.Instance.OnReload += Reload;
+            InputHandler.Instance.OnGrenade += Grenade;
         }
         private void OnDisable()
         {
             AudioManager.Instance.StopSound(currentMovementSound);
-            InputHandler.Instance.UnsubscribeCrouch(Crouch);
-            InputHandler.Instance.UnsubscribeSprint(Sprint);
-            InputHandler.Instance.UnsubscribePrimaryWeapon(PrimaryWeapon);
-            InputHandler.Instance.UnsubscribeSecondaryWeapon(SecondaryWeapon);
-            InputHandler.Instance.UnsubscribeAttack(Attack);
-            InputHandler.Instance.UnsubscribeReload(Reload);
-            InputHandler.Instance.UnsubscribeGrenade(Grenade);
+            InputHandler.Instance.OnCrouch -= Crouch;
+            InputHandler.Instance.OnSprint -= Sprint;
+            InputHandler.Instance.OnPrimaryWeapon -= PrimaryWeapon;
+            InputHandler.Instance.OnSecondaryWeapon -= SecondaryWeapon;
+            InputHandler.Instance.OnAttack -= Attack;
+            InputHandler.Instance.OnReload -= Reload;
+            InputHandler.Instance.OnGrenade -= Grenade;
         }
         private void Awake()
         {

@@ -118,25 +118,5 @@ namespace SingletonManagers
             yield return new WaitForSeconds(delay);
             action?.Invoke();
         }
-
-        // Subscription Methods
-        public void SubscribeAttack(Action<bool> callback) => OnAttack += callback;
-        public void SubscribeReload(OnActionEvent callback) => OnReload += callback;
-        public void SubscribePrimaryWeapon(OnActionEvent callback) => OnPrimaryWeapon += callback;
-        public void SubscribeSecondaryWeapon(OnActionEvent callback) => OnSecondaryWeapon += callback;
-        public void SubscribeCrouch(OnActionEvent callback) => OnCrouch += callback;
-        public void SubscribeGrenade(OnActionEvent callback) => OnGrenade += callback;
-        public void SubscribeSprint(Action<bool> callback) => OnSprint += callback;
-        public void SubscribeInteract(OnActionEvent callback) => OnInteract += callback;
-
-        // Unsubscription Methods
-        public void UnsubscribeAttack(Action<bool> callback) => OnAttack -= callback;
-        public void UnsubscribeReload(OnActionEvent callback) => OnReload -= callback;
-        public void UnsubscribePrimaryWeapon(OnActionEvent callback) => OnPrimaryWeapon -= callback;
-        public void UnsubscribeSecondaryWeapon(OnActionEvent callback) => OnSecondaryWeapon -= callback;
-        public void UnsubscribeCrouch(OnActionEvent callback) => OnCrouch -= callback;
-        public void UnsubscribeGrenade(OnActionEvent callback) => OnGrenade -= callback;
-        public void UnsubscribeSprint(Action<bool> callback) => OnSprint -= callback;
-        public void UnsubscribeInteract(OnActionEvent callback) => OnInteract -= callback;
     }
 }
