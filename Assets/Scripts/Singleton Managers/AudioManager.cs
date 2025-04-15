@@ -23,7 +23,8 @@ namespace SingletonManagers
         }
 
         [Header("Audio Clips")]
-        public List<AudioClipInfo> audioClips; // Assign in the Inspector
+        [SerializeField] private List<AudioClipInfo> audioClips; // Assign in the Inspector
+        public List<AudioClipInfo> AudioClips => audioClips;
         
         [Header("Audio Source Settings")]
         [SerializeField] private int initialPoolSize = 5;
