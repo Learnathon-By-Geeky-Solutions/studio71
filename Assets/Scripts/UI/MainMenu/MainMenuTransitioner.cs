@@ -7,12 +7,14 @@ namespace UI.MainMenu
     {   
         private void Start()
         {
-            // Play background music when the menu loads
+            Debug.Log("MainMenuTransitioner started");
             AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+            
         }
         public void PlayGame()
         {   
             AudioManager.PlaySound(SoundKeys.ButtonPress);
+            Debug.Log("Play button clicked");
             SceneManager.LoadSceneAsync(1);
         }
 
@@ -20,11 +22,13 @@ namespace UI.MainMenu
         {
             AudioManager.PlaySound(SoundKeys.ButtonPress);
             Debug.Log("Settings button clicked");
+            
         }
         public void QuitGame()
         {   
             AudioManager.PlaySound(SoundKeys.ButtonPress);
             Debug.Log("Quit button clicked");
+           
             Application.Quit();
         }
     }
