@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -142,14 +143,12 @@ namespace LevelSelection
         {
             StopCurrentRotation(); // Stop rotation before destroying models
 
-            foreach (var pair in _models)
+            // Process each non-null model in the dictionary
+            foreach (var model in _models.Values.Where(model => model != null))
             {
-                if (pair.Value != null)
-                {
-                    // Kill any active DoTween animations on the object before destroying
-                    DOTween.Kill(pair.Value.transform); 
-                    Destroy(pair.Value);
-                }
+                // Kill any active DoTween animations on the object before destroying
+                DOTween.Kill(model.transform);
+                Destroy(model);
             }
 
             _models.Clear();
