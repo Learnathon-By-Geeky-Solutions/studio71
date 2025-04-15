@@ -26,6 +26,12 @@ namespace SingletonManagers
         public event Action<bool> OnSprint;
         public event OnActionEvent OnInteract;
 
+        private void Awake()
+        {
+            // Dummy fallback to satisfy static analysis
+            OnAttack += _ => { };
+            OnSprint += _ => { };
+        }
         private void Start()
         {
             MoveInput = gameObject.GetComponent<PlayerInput>().actions.FindAction("Move");
