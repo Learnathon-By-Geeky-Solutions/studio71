@@ -5,8 +5,23 @@ using System.Collections;
 
 namespace SingletonManagers
 {
-    public class AudioManager : SingletonPersistent<AudioManager>
+    public static class SoundKeys
     {
+        public const string BackgroundMusic = "background_music";
+        public const string ButtonPress = "button_press";
+        public const string ButtonHover = "button_hover";
+        public const string GunShot = "gunShot";
+        public const string BloodHit = "bloodHit";
+        public const string TerrainHit = "terrainHit";
+        public const string ReloadStart = "reload_start";
+        public const string GrenadeThrow = "grenadeThrow";
+        public const string GrenadeExplosion = "Grenade_Explosion";
+        // Add other sound keys here as needed
+    }
+
+    public class AudioManager : SingletonPersistent
+    {
+        public static AudioManager Instance => GetInstance<AudioManager>();
         [System.Serializable]
         public class AudioClipInfo
         {
@@ -22,14 +37,15 @@ namespace SingletonManagers
         }
 
         [Header("Audio Clips")]
-        public List<AudioClipInfo> audioClips; // Assign in the Inspector
+        [SerializeField] private List<AudioClipInfo> audioClips; // Assign in the Inspector
+        public List<AudioClipInfo> AudioClips => audioClips;
         
         [Header("Audio Source Settings")]
         [SerializeField] private int initialPoolSize = 5;
         [SerializeField] private Transform audioSourceParent;
 
-        private Dictionary<string, AudioClipInfo> _clipDictionary = new Dictionary<string, AudioClipInfo>();
-        private Queue<AudioSource> _audioSourcePool = new Queue<AudioSource>();
+        private readonly Dictionary<string, AudioClipInfo> _clipDictionary = new Dictionary<string, AudioClipInfo>();
+        private readonly Queue<AudioSource> _audioSourcePool = new Queue<AudioSource>();
 
         private void Start()
         {
@@ -67,12 +83,17 @@ namespace SingletonManagers
             return audioSource;
         }
 
-        public void PlaySound(string soundName)
+        public static void PlaySound(string soundName)
         {
             PlaySound(soundName, Vector3.zero);
         }
 
-        public void PlaySound(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
+        public static void PlaySound(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
+        {
+            Instance.PlaySoundInternal(soundName, position, volumeMultiplier, pitchMultiplier);
+        }
+
+        private void PlaySoundInternal(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
         {
             if (!_clipDictionary.ContainsKey(soundName))
             {

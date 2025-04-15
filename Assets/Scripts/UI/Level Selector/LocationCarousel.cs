@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+
 using Carousel.UI;
 using TMPro;
 using TextProcessing;
 using UnityEngine;
 
+namespace LevelSelection{
 [System.Serializable]
 public class LocationData {
     public Sprite sprite; // Keep sprite for the carousel item UI
@@ -33,7 +32,7 @@ public class LocationCarousel : CarouselController<LocationData>
         OnCurrentItemUpdated.AddListener(UpdateDescription); // Add listener for description update
     }
 
-    private void OnDisable()
+    protected override void  OnDisable()
     {
         // OnItemSelected.RemoveListener(LogItem); // Optional: Can keep if needed
         OnCurrentItemUpdated.RemoveListener(LogItem); // Optional: Can keep if needed
@@ -65,7 +64,7 @@ public class LocationCarousel : CarouselController<LocationData>
         }
     }
 
-    private void LogItem(LocationData data)
+    private static void LogItem(LocationData data)
     {
         Debug.Log("Carousel Item Updated/Selected: " + (data?.name ?? data?.sprite?.name ?? "N/A")); // Log name if available
     }
@@ -105,4 +104,5 @@ public class LocationCarousel : CarouselController<LocationData>
             _descriptionText.text = fixedDescription; // Set the fixed text
         }
     }
+}
 }

@@ -1,44 +1,40 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace Singleton
 {
-    public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class SingletonPersistent : MonoBehaviour
     {
-        private static T _instance;
-        private static readonly object _lock = new object();
-
-        public static T Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    // Only safe to use in editor or initialization phase
-                    _instance = Object.FindAnyObjectByType<T>();
-
-                    if (_instance == null)
-                    {
-                        Debug.LogWarning($"No instance of {typeof(T).Name} found in the scene.");
-                    }
-                }
-                return _instance;
-            }
-        }
+        private static readonly Dictionary<System.Type, SingletonPersistent> Instances = new();
 
         protected virtual void Awake()
         {
-            lock (_lock)
+            var type = GetType();
+
+            if (Instances.TryGetValue(type, out var existingInstance))
             {
-                if (_instance == null)
+                if (existingInstance != this)
                 {
-                    _instance = this as T;
-                }
-                else if (_instance != this)
-                {
-                    Destroy(gameObject); // Ensure only one instance
+                    Debug.LogWarning($"Duplicate singleton of type {type.Name} found. Destroying new one.");
+                    Destroy(gameObject);
+                    return;
                 }
             }
+            else
+            {
+                Instances[type] = this;
+            }
+
+            OnAwake();
+        }
+
+        protected virtual void OnAwake() { }
+
+        public static T GetInstance<T>() where T : SingletonPersistent
+        {
+            Instances.TryGetValue(typeof(T), out var instance);
+            return instance as T;
         }
     }
 }
-

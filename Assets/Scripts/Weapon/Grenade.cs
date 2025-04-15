@@ -52,9 +52,8 @@ namespace Weapon
 
         private void Explode()
         {
-
-            ParticleManager.Instance.PlayParticle("Grenade Explosion", transform.position, Quaternion.identity);
-            AudioManager.Instance.PlaySound("Grenade_Explosion", transform.position, 1f, 1f); // Play explosion sound
+            ParticleManager.Instance.PlayParticle("Grenade_Explosion", transform.position, Quaternion.identity);
+            AudioManager.PlaySound(SoundKeys.GrenadeExplosion, transform.position, 1f, 1f); // Play explosion sound
             Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
             foreach (Collider other in colliders)
             {

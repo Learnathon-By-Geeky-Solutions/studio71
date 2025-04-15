@@ -24,7 +24,7 @@ namespace Weapon
         {
             Instantiate(Prefab_Bullet, Fire_Point.position, Rotation.rotation);
             ParticleManager.Instance.PlayParticle("Gunshot", Fire_Point.position, Quaternion.identity);
-            AudioManager.Instance.PlaySound("gunShot", Fire_Point.position);
+            AudioManager.PlaySound(SoundKeys.GunShot, Fire_Point.position);
         }
     }
 }

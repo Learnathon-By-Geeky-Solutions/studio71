@@ -174,7 +174,7 @@ namespace Carousel.UI
 
         protected virtual void MoveItemToPositionAtIndex(CarouselItem<T> item, int index)
         {
-            _positioner?.SetPosition(item._rectTransform, index);
+            _positioner?.SetPosition(item.RectTransform, index);
         }
 
         public virtual void Next()
@@ -218,7 +218,7 @@ namespace Carousel.UI
         protected virtual void AdjustIndexForClickedItem(CarouselItem<T> clickedItem)
         {
             var targetItem = GetCarouselItemAt(_currentIndex + _data.Length);
-            int direction = _positioner.IsItemAfter(targetItem._rectTransform, clickedItem._rectTransform) ? -1 : 1;
+            int direction = _positioner.IsItemAfter(targetItem.RectTransform, clickedItem.RectTransform) ? -1 : 1;
 
             while (GetCarouselItemAt(_currentIndex + _data.Length) != clickedItem)
             {

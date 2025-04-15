@@ -66,8 +66,8 @@ namespace Player
             InputHandler.Instance.OnCrouch -= CrouchAnimation;
             InputHandler.Instance.OnReload -= ReloadAnimation;
             InputHandler.Instance.OnGrenade -= GrenadeAnimation;
-            InputHandler.Instance.OnAttack -=ShootAnimation;
-            InputHandler.Instance.OnInteract-= PickupAnimation;
+            InputHandler.Instance.OnAttack -= ShootAnimation;
+            InputHandler.Instance.OnInteract -= PickupAnimation;
         }
 
         /// <summary>

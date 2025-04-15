@@ -5,7 +5,7 @@ using UnityEngine;
 /// Represents an NPC with a dialogue trigger.
 /// </summary>
 namespace dialogue{
- public class Npc : MonoBehaviour
+ public class NpcDialogueTrigger : MonoBehaviour
     {
         [SerializeField] private TextAsset inkJSON;
         private InkDialogueManager dialogueManager;

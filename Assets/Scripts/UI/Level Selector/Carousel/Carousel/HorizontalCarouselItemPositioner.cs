@@ -40,14 +40,12 @@ namespace Carousel.UI
             
             _image.color = _debugCarouselArea ? new Color(1, 1, 1, 50 / 255f) : new Color(1, 1, 1, 1 / 255f);
             
-            if(_isStatic)
+            if (!_isStatic)
             {
-                return;
-            }
-
 #if UNITY_EDITOR
-            EditorApplication.delayCall += UpdateSizeDelta;
+                EditorApplication.delayCall += UpdateSizeDelta;
 #endif
+            }
         }
 
         public void SetPosition(RectTransform rectTransform, int index)
@@ -73,17 +71,14 @@ namespace Carousel.UI
             {
                 Vector2 newSize = new Vector2(_visibleItem * _gap, _image.rectTransform.sizeDelta.y);
 
-                if (_image.rectTransform.sizeDelta != newSize)
-                {
 #if UNITY_EDITOR
-                    Undo.RecordObject(_image.rectTransform, "Update RectTransform SizeDelta");
+                Undo.RecordObject(_image.rectTransform, "Update RectTransform SizeDelta");
 #endif
-                     _image.rectTransform.sizeDelta = newSize;
+                _image.rectTransform.sizeDelta = newSize;
 
 #if UNITY_EDITOR
-                    EditorUtility.SetDirty(_image.rectTransform);
+                EditorUtility.SetDirty(_image.rectTransform);
 #endif
-                }
             }
 
 #if UNITY_EDITOR
