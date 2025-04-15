@@ -5,6 +5,7 @@ using Carousel.UI;
 using TMPro;
 using TextProcessing;
 using UnityEngine;
+using LevelSelection;
 
 [System.Serializable]
 public class LocationData {
@@ -33,7 +34,7 @@ public class LocationCarousel : CarouselController<LocationData>
         OnCurrentItemUpdated.AddListener(UpdateDescription); // Add listener for description update
     }
 
-    private void OnDisable()
+    protected override void  OnDisable()
     {
         // OnItemSelected.RemoveListener(LogItem); // Optional: Can keep if needed
         OnCurrentItemUpdated.RemoveListener(LogItem); // Optional: Can keep if needed
