@@ -2,7 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using System.Collections;
 
-public class cloudWind : MonoBehaviour
+public class CloudWind : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float horizontalSpeed = 2f;

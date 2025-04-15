@@ -1,8 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
-using System.Collections;
 
-public class grassWind : MonoBehaviour
+public class GrassWind : MonoBehaviour
 {
     [Header("Movement Settings")]
     [SerializeField] private float minMovementDuration = 0.5f;
