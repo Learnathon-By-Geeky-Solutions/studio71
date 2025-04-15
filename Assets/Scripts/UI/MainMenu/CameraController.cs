@@ -8,13 +8,11 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector2 verticalBounds = new Vector2(-5f, 5f);
     
     private Vector3 originalPosition;
-    private Vector3 targetPosition;
     private Vector3 currentVelocity = Vector3.zero;
     
     private void Start()
     {
         originalPosition = transform.position;
-        targetPosition = originalPosition;
     }
     
     private void Update()
@@ -29,7 +27,7 @@ public class CameraController : MonoBehaviour
         );
         
         // Calculate target position based on mouse offset
-        targetPosition = originalPosition + new Vector3(
+        Vector3 targetPosition = originalPosition + new Vector3(
             Mathf.Clamp(mouseOffset.x * mouseSensitivity, horizontalBounds.x, horizontalBounds.y),
             Mathf.Clamp(mouseOffset.y * mouseSensitivity, verticalBounds.x, verticalBounds.y),
             0
