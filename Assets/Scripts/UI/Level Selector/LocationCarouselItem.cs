@@ -16,17 +16,17 @@ public class LocationCarouselItem : CarouselItem<LocationData>
     protected override void OnActivated()
     {
         base.OnActivated();
-        this.CreateSequence()
-            .Join(_image.DOFade(1, .25f))
-            .Join(_rectTransform.DOScale(1, .25f));
+        Sequence sequence = this.CreateSequence();
+        sequence.Join(_image.DOFade(1, .25f));
+        sequence.Join(RectTransform.DOScale(1, .25f));
     }
 
     protected override void OnDeactivated()
     {
         base.OnDeactivated();
-        this.CreateSequence()
-            .Join(_image.DOFade(.25f, .25f))
-            .Join(_rectTransform.DOScale(.75f, .25f));
+        Sequence sequence = this.CreateSequence();
+        sequence.Join(_image.DOFade(.25f, .25f));
+        sequence.Join(RectTransform.DOScale(.75f, .25f));
     }
 }
 }

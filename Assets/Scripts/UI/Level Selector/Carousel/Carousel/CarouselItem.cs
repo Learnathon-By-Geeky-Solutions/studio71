@@ -12,7 +12,9 @@ namespace Carousel.UI
 
         public event Action<CarouselItem<T>> OnSelected;
 
-        public RectTransform _rectTransform;
+        [SerializeField] private RectTransform _rectTransform;
+        public RectTransform RectTransform => _rectTransform;
+        
         public T Data 
         { 
             get => _data; 
