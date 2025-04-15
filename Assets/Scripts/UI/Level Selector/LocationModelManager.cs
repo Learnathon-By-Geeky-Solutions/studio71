@@ -17,7 +17,7 @@ namespace LevelSelection
         [SerializeField] private float _rotationSpeed = 45f; 
 
         // Stores instantiated models keyed by their LocationData
-        private Dictionary<LocationData, GameObject> _models = new Dictionary<LocationData, GameObject>();
+        private readonly Dictionary<LocationData, GameObject> _models = new Dictionary<LocationData, GameObject>();
         // Tracks the currently active/raised location
         private LocationData _currentActive;
         // Reference to the currently running rotation coroutine
