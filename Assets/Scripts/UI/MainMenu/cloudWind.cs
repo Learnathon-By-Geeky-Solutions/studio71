@@ -16,10 +16,25 @@ public class cloudWind : MonoBehaviour
     [SerializeField] private float pauseDuration = 1.5f;
     
     private bool movingRight = true;
+    private SpriteRenderer _spriteRenderer;
     
     private void Start()
     {
-        // Calculate screen width in world units
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        if (_spriteRenderer == null)
+        {
+            Debug.LogError("cloudWind requires a SpriteRenderer component.", this);
+            enabled = false; // Disable script if no renderer
+            return;
+        }
+        
+        // Calculate screen width in world units using the main camera
+        if (Camera.main == null)
+        {
+             Debug.LogError("Main Camera not found. Cannot calculate screen width.", this);
+             enabled = false;
+             return;
+        }
         screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
         
         // Start the movement sequence
@@ -28,17 +43,21 @@ public class cloudWind : MonoBehaviour
     
     private void StartHorizontalMovement()
     {
-        // Determine target X position based on direction
+        if (_spriteRenderer == null) return; // Safety check
+        
+        // Determine target X position based on direction and sprite width
+        float spriteWidth = _spriteRenderer.bounds.size.x;
         float targetX = movingRight ? 
-            screenWidth/2 + GetComponent<SpriteRenderer>().bounds.size.x/2 : 
-            -screenWidth/2 - GetComponent<SpriteRenderer>().bounds.size.x/2;
+            (screenWidth / 2) + (spriteWidth / 2) :
+            (-screenWidth / 2) - (spriteWidth / 2);
             
         // Randomly select speed for this movement
         float currentSpeed = Random.Range(minHorizontalSpeed, maxHorizontalSpeed);
         
         // Calculate duration based on distance and speed
         float distance = Mathf.Abs(targetX - transform.position.x);
-        float duration = distance / currentSpeed;
+        // Avoid division by zero if speed is somehow zero
+        float duration = currentSpeed > 0 ? distance / currentSpeed : float.MaxValue; 
         
         // Create the horizontal movement sequence
         Sequence moveSequence = DOTween.Sequence();
@@ -46,52 +65,74 @@ public class cloudWind : MonoBehaviour
         // Add horizontal movement
         moveSequence.Append(transform.DOMoveX(targetX, duration).SetEase(Ease.Linear));
         
-        // Add occasional vertical movements during horizontal travel
+        // Schedule occasional checks during horizontal travel
+        ScheduleMovementSegments(moveSequence, duration);
+        
+        // When complete, handle completion
+        moveSequence.OnComplete(HandleMovementCompletion);
+    }
+
+    // Extracted method to schedule segment checks
+    private void ScheduleMovementSegments(Sequence moveSequence, float totalDuration)
+    {
         float timeElapsed = 0;
-        while (timeElapsed < duration)
+        while (timeElapsed < totalDuration)
         {
-            // Determine when to add vertical movement
-            float segmentDuration = Random.Range(duration * 0.15f, duration * 0.3f);
+            // Determine duration for the next segment check
+            float segmentDuration = Random.Range(totalDuration * 0.15f, totalDuration * 0.3f);
             
-            // Make sure we don't exceed the total duration
-            if (timeElapsed + segmentDuration > duration)
-                segmentDuration = duration - timeElapsed;
-                
-            moveSequence.InsertCallback(timeElapsed, () => {
-                // Random chance to move vertically
-                if (Random.value < verticalMovementChance)
-                {
-                    // Determine up or down
-                    float verticalTarget = transform.position.y + (Random.value > 0.5f ? verticalDistance : -verticalDistance);
-                    transform.DOMoveY(verticalTarget, verticalDuration).SetEase(Ease.InOutSine);
-                }
-                
-                // Random chance to pause
-                if (Random.value < pauseChance)
-                {
-                    moveSequence.Pause();
-                    DOVirtual.DelayedCall(pauseDuration, () => moveSequence.Play());
-                }
-                
-                // Random chance to change speed
-                horizontalSpeed = Random.Range(minHorizontalSpeed, maxHorizontalSpeed);
-            });
+            // Clamp segment duration to not exceed remaining time
+            segmentDuration = Mathf.Min(segmentDuration, totalDuration - timeElapsed);
+
+            // Use a local variable for the callback to capture the current state correctly
+            Sequence currentSequence = moveSequence;            
+            moveSequence.InsertCallback(timeElapsed, () => HandleMovementSegment(currentSequence));
             
             timeElapsed += segmentDuration;
+
+            // Break if somehow duration is non-positive to prevent infinite loop
+            if (segmentDuration <= 0) break; 
+        }
+    }
+
+    // Extracted method to handle logic within a movement segment
+    private void HandleMovementSegment(Sequence sequence)
+    {
+        // Random chance to move vertically
+        if (Random.value < verticalMovementChance)
+        {
+            float verticalTargetY = transform.position.y + (Random.value > 0.5f ? verticalDistance : -verticalDistance);
+            // Use a short duration tween for the vertical shift
+            transform.DOMoveY(verticalTargetY, verticalDuration).SetEase(Ease.InOutSine);
         }
         
-        // When complete, flip direction and start again
-        moveSequence.OnComplete(() => {
-            movingRight = !movingRight;
-            // Reset position to just off screen on the opposite side
-            Vector3 newPos = transform.position;
-            newPos.x = movingRight ? 
-                -screenWidth/2 - GetComponent<SpriteRenderer>().bounds.size.x/2 : 
-                screenWidth/2 + GetComponent<SpriteRenderer>().bounds.size.x/2;
-            transform.position = newPos;
-            
-            // Start the sequence again
-            StartHorizontalMovement();
-        });
+        // Random chance to pause
+        if (Random.value < pauseChance)
+        {
+            sequence.Pause();
+            DOVirtual.DelayedCall(pauseDuration, () => { if (sequence != null && sequence.IsActive()) sequence.Play(); });
+        }
+        
+        // Random chance to change speed (Note: This doesn't change the current tween's duration)
+        // horizontalSpeed = Random.Range(minHorizontalSpeed, maxHorizontalSpeed); // This doesn't affect the *current* tween
+    }
+
+    // Extracted method to handle sequence completion
+    private void HandleMovementCompletion()
+    {
+        if (_spriteRenderer == null) return; // Safety check
+
+        movingRight = !movingRight;
+        
+        // Reset position to just off screen on the opposite side
+        float spriteWidth = _spriteRenderer.bounds.size.x;
+        Vector3 newPos = transform.position;
+        newPos.x = movingRight ? 
+            (-screenWidth / 2) - (spriteWidth / 2) :
+            (screenWidth / 2) + (spriteWidth / 2);
+        transform.position = newPos;
+        
+        // Start the sequence again
+        StartHorizontalMovement();
     }
 }
