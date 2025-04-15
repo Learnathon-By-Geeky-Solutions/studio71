@@ -3,7 +3,7 @@ using DG.Tweening;
 
 namespace UI.MainMenu
 {
-    public class GrassWind : MonoBehaviour
+    public class GrassWindAttached : MonoBehaviour
     {
         [Header("Movement Settings")]
         [SerializeField] private float minMovementDuration = 0.5f;
