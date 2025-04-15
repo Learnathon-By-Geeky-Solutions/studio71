@@ -69,12 +69,17 @@ namespace SingletonManagers
             return audioSource;
         }
 
-        public void PlaySound(string soundName)
+        public static void PlaySound(string soundName)
         {
             PlaySound(soundName, Vector3.zero);
         }
 
-        public void PlaySound(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
+        public static void PlaySound(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
+        {
+            Instance.PlaySoundInternal(soundName, position, volumeMultiplier, pitchMultiplier);
+        }
+
+        private void PlaySoundInternal(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
         {
             if (!_clipDictionary.ContainsKey(soundName))
             {

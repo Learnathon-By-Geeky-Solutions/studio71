@@ -259,7 +259,7 @@ namespace Player
         }
         private void Reload()
         {     
-            AudioManager.Instance.PlaySound("reload_start", transform.position);   
+            AudioManager.PlaySound("reload_start", transform.position);   
              _equippedGun.StopShooting();
             StartCoroutine(DelayedAction(1f, () => { _equippedGunMagazine.SetActive(false); }));
             
@@ -270,7 +270,7 @@ namespace Player
         {
             if (_playerAnimation.IsThrowingGrenade || GrenadeCount<=0) return; // Prevents throwing if grenade animation is already playing
             _playerAnimation.IsThrowingGrenade = true;
-            AudioManager.Instance.PlaySound("grenadeThrow", transform.position);
+            AudioManager.PlaySound("grenadeThrow", transform.position);
             _equippedGun.StopShooting();
             _playerGun.SetActive(false);
             StartCoroutine(DelayedAction(1.7f,
@@ -356,7 +356,7 @@ namespace Player
                         AudioManager.Instance.StopSound(currentMovementSound);
 
                     // Start new movement sound
-                    AudioManager.Instance.PlaySound(soundToPlay, transform.position);
+                    AudioManager.PlaySound(soundToPlay, transform.position);
                     isPlayingMovementSound = true;
                     currentMovementSound = soundToPlay;
                 }

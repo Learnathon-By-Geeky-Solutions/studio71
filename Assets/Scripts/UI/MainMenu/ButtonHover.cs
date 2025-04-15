@@ -20,7 +20,8 @@ namespace UI.MainMenu
         
         // Called when the mouse enters the button area
         public void OnPointerEnter(PointerEventData eventData)
-        {   AudioManager.Instance.PlaySound("button_hover");
+        {   
+            AudioManager.PlaySound("button_hover");
             // Scale up the button using DOTween
             transform.DOScale(originalScale * hoverScale, tweenDuration);
         }

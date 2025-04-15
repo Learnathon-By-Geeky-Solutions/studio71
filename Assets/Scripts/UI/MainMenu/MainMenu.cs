@@ -3,24 +3,26 @@ using UnityEngine.SceneManagement;
 using SingletonManagers;
 namespace UI.MainMenu
 {
-       public class MainMenu : MonoBehaviour
+    public class MainMenu : MonoBehaviour
     {   
-         private void Start()
+        private void Start()
         {
             // Play background music when the menu loads
-            AudioManager.Instance.PlaySound("background_music");
+            AudioManager.PlaySound("background_music");
         }
         public static void PlayGame()
-        {   AudioManager.Instance.PlaySound("button_press");
+        {   
+            AudioManager.PlaySound("button_press");
             SceneManager.LoadSceneAsync(1);
         }
 
         public static void Settings()
         {
-            AudioManager.Instance.PlaySound("button_press");
+            AudioManager.PlaySound("button_press");
         }
         public static void QuitGame()
-        {   AudioManager.Instance.PlaySound("button_press");
+        {   
+            AudioManager.PlaySound("button_press");
             Application.Quit();
         }
     }
