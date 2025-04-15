@@ -5,13 +5,10 @@ namespace UI.MainMenu
 {
     public class ReturnMainMenu : MonoBehaviour
     {
-        private GameObject player;
-        private GameObject[] enemies;
-
         void Update()
         {
-            player = GameObject.FindGameObjectWithTag("Player");
-            enemies = GameObject.FindGameObjectsWithTag("Enemy");
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
             if (player == null || enemies.Length == 0)
             {
