@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Weapon;
-
+namespace UI.HUD{
 public class BulletCountUI : MonoBehaviour
 {
     [SerializeField] private Gun gunReference;
@@ -11,7 +11,7 @@ public class BulletCountUI : MonoBehaviour
     [SerializeField] private int spacingBetweenIcons = 2;
     [SerializeField] private Vector2 iconSize = new Vector2(20, 20);
     
-    private List<GameObject> bulletIcons = new List<GameObject>();
+    private readonly List<GameObject> bulletIcons = new List<GameObject>();
     private int lastBulletCount = -1;
 
     private void Start()
@@ -78,5 +78,6 @@ public class BulletCountUI : MonoBehaviour
         }
 
         lastBulletCount = gunReference.CurrentMagazineSize;
+    }
     }
 }
