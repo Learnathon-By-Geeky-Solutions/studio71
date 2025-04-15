@@ -53,21 +53,21 @@ namespace Player
 
         private void OnEnable()
         {
-            InputHandler.Instance.OnCrouch += CrouchAnimation;
-            InputHandler.Instance.OnReload += ReloadAnimation;
-            InputHandler.Instance.OnGrenade += GrenadeAnimation;
-            InputHandler.Instance.OnAttack += ShootAnimation;
-            InputHandler.Instance.OnInteract += PickupAnimation;
+            InputHandler.Instance.SubscribeCrouch(CrouchAnimation);
+            InputHandler.Instance.SubscribeReload(ReloadAnimation);
+            InputHandler.Instance.SubscribeGrenade(GrenadeAnimation);
+            InputHandler.Instance.SubscribeAttack(ShootAnimation);
+            InputHandler.Instance.SubscribeInteract(PickupAnimation);
         }
 
         private void OnDisable()
         {
             PlayAnimation("Idle", 0.1f, 0);
-            InputHandler.Instance.OnCrouch -= CrouchAnimation;
-            InputHandler.Instance.OnReload -= ReloadAnimation;
-            InputHandler.Instance.OnGrenade -= GrenadeAnimation;
-            InputHandler.Instance.OnAttack -=ShootAnimation;
-            InputHandler.Instance.OnInteract-= PickupAnimation;
+            InputHandler.Instance.UnsubscribeCrouch(CrouchAnimation);
+            InputHandler.Instance.UnsubscribeReload(ReloadAnimation);
+            InputHandler.Instance.UnsubscribeGrenade(GrenadeAnimation);
+            InputHandler.Instance.UnsubscribeAttack(ShootAnimation);
+            InputHandler.Instance.UnsubscribeInteract(PickupAnimation);
         }
 
         /// <summary>
