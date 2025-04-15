@@ -5,8 +5,9 @@ using System.Collections;
 
 namespace SingletonManagers
 {
-    public class AudioManager : SingletonPersistent<AudioManager>
+    public class AudioManager : SingletonPersistent
     {
+        public static AudioManager Instance => GetInstance<AudioManager>();
         [System.Serializable]
         public class AudioClipInfo
         {

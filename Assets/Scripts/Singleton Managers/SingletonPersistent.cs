@@ -1,26 +1,40 @@
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
 namespace Singleton
 {
-    public class SingletonPersistent<T> : MonoBehaviour where T : MonoBehaviour
+    public abstract class SingletonPersistent : MonoBehaviour
     {
-        private static T _instance;
-        private static readonly object LockObj = new object();
-
-        public static T Instance => _instance;
+        private static readonly Dictionary<System.Type, SingletonPersistent> Instances = new();
 
         protected virtual void Awake()
         {
-            lock (LockObj)
+            var type = GetType();
+
+            if (Instances.TryGetValue(type, out var existingInstance))
             {
-                if (_instance != null && _instance != this)
+                if (existingInstance != this)
                 {
-                    Destroy(gameObject); // destroy duplicate
+                    Debug.LogWarning($"Duplicate singleton of type {type.Name} found. Destroying new one.");
+                    Destroy(gameObject);
                     return;
                 }
-
-                _instance = (T)(object)this;
             }
+            else
+            {
+                Instances[type] = this;
+            }
+
+            OnAwake();
+        }
+
+        protected virtual void OnAwake() { }
+
+        public static T GetInstance<T>() where T : SingletonPersistent
+        {
+            Instances.TryGetValue(typeof(T), out var instance);
+            return instance as T;
         }
     }
 }

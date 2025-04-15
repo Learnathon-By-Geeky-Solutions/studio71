@@ -12,7 +12,7 @@ namespace TextProcessing
         public char ReplacedSuffixCharacter;
     }
 
-    public class BanglaTextFixer : Singleton.SingletonPersistent<BanglaTextFixer>
+    public class BanglaTextFixer : Singleton.SingletonPersistent
     {
         public new static BanglaTextFixer Instance { get; private set; }
 

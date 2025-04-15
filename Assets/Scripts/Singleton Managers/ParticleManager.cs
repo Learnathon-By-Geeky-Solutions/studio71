@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Collections;
 namespace SingletonManagers
 {
-    public class ParticleManager : SingletonPersistent<ParticleManager>
+    public class ParticleManager : SingletonPersistent
     {
+        public static ParticleManager Instance => GetInstance<ParticleManager>();
         [System.Serializable]
         public class ParticlePrefab
         {

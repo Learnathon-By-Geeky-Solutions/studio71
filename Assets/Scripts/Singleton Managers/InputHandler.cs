@@ -7,8 +7,9 @@ using Singleton;
 
 namespace SingletonManagers
 {
-    public class InputHandler : SingletonPersistent<InputHandler>
+    public class InputHandler : SingletonPersistent
     {
+        public static InputHandler Instance => GetInstance<InputHandler>();
         public delegate void OnActionEvent();
 
         private InputAction MoveInput;
@@ -16,14 +17,14 @@ namespace SingletonManagers
         public Vector2 MousePosition { get; private set; }
         public bool GrenadeThrowStart { get; private set; }
 
-        private event Action<bool> OnAttack;
-        private event OnActionEvent OnReload;
-        private event OnActionEvent OnPrimaryWeapon;
-        private event OnActionEvent OnSecondaryWeapon;
-        private event OnActionEvent OnCrouch;
-        private event OnActionEvent OnGrenade;
-        private event Action<bool> OnSprint;
-        private event OnActionEvent OnInteract;
+        public event Action<bool> OnAttack;
+        public event OnActionEvent OnReload;
+        public event OnActionEvent OnPrimaryWeapon;
+        public event OnActionEvent OnSecondaryWeapon;
+        public event OnActionEvent OnCrouch;
+        public event OnActionEvent OnGrenade;
+        public event Action<bool> OnSprint;
+        public event OnActionEvent OnInteract;
 
         private void Start()
         {
