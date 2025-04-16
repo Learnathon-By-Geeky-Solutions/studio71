@@ -12,14 +12,15 @@ namespace MortarSystem
 
         [Header("Targeting")]
         [HideInInspector] public Transform Player{ get; private set; }
-        public float alertRadius{ get; private set; } = 10f;
-        public float firingRadius { get; private set; }= 5f;
+        [SerializeField]public float alertRadius{ get; private set; } = 10f;
+        [SerializeField]public float firingRadius { get; private set; }= 5f;
 
         [Header("Idle Behavior")]
         public float idleScanAngle { get; private set; }= 0f;
         public float idleScanRange { get; private set; }= 90f;
 
         [Header("Firing")]
+        [SerializeField]
         public GameObject ProjectilePrefab{ get; private set; }
         public Transform FirePoint{ get; private set; }
         public float trajectoryHeight { get; private set; } = 5f; // Adjust for the arc height

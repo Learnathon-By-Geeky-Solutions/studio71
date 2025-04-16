@@ -8,14 +8,14 @@ namespace MachineGunner
         #region Public Variables
 
         [Header("Ranges")]
-        public float alertRange { get; private set; }= 10f;
+        [SerializeField]public float alertRange { get; private set; }= 10f;
 
-        private float SuppressiveRange { get; } = 15f;
-        private readonly float _shootRange = 7f;
+        [SerializeField]private float SuppressiveRange { get; } = 15f;
+        [SerializeField]private readonly float _shootRange = 7f;
 
         [Header("Shooting Configuration")]
-        public GameObject bulletPrefab{ get; private set; }
-        public Transform firePoint{ get; private set; }
+        [SerializeField]public GameObject bulletPrefab{ get; private set; }
+        [SerializeField]public Transform firePoint{ get; private set; }
         public float fireRate { get; private set; }= 0.1f;
         public float burstDuration { get; private set; }= 2f; // Duration of a single burst in ShootState
         public float suppressiveBurstDuration { get; private set; }= 3f;
