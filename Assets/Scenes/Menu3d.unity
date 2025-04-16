@@ -18360,9 +18360,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26256d05ffd77d48b17d8a176e2544b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 2
-  maxHorizontalSpeed: 3
-  minHorizontalSpeed: 1
+  horizontalSpeed: 3
+  maxHorizontalSpeed: 5
+  minHorizontalSpeed: 3
   verticalMovementChance: 2
   verticalDistance: 1
   verticalDuration: 5
@@ -18704,15 +18704,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d26256d05ffd77d48b17d8a176e2544b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontalSpeed: 5
+  horizontalSpeed: -3
   maxHorizontalSpeed: 10
-  minHorizontalSpeed: 5
+  minHorizontalSpeed: -3
   verticalMovementChance: 0.3
   verticalDistance: 2
   verticalDuration: 3
   screenWidth: 0
   pauseChance: 0.2
-  pauseDuration: 4
+  pauseDuration: 0
 --- !u!212 &2115397280
 SpriteRenderer:
   m_ObjectHideFlags: 0
