@@ -7,7 +7,7 @@ namespace patrolEnemy
     public class AlertState : IEnemyState
     {
         private EnemyAI enemy;
-        private bool countdownStarted = false;
+        private bool _countdownStarted;
 
         public AlertState(EnemyAI enemyAI)
         {
@@ -20,7 +20,7 @@ namespace patrolEnemy
 
             // Reset alert timer
             enemy.currentAlertTime = 0f;
-            countdownStarted = false;
+            _countdownStarted = false;
 
             // Stop moving
             enemy.navMeshAgent.ResetPath();
@@ -50,7 +50,7 @@ namespace patrolEnemy
             if (enemy.playerInLineOfSight)
             {
                 // Player is visible, start or continue countdown
-                countdownStarted = true;
+                _countdownStarted = true;
                 enemy.currentAlertTime += Time.deltaTime;
 
                 // If countdown is complete, switch to follow state
@@ -63,7 +63,7 @@ namespace patrolEnemy
             else
             {
                 // Player is not visible, pause countdown
-                countdownStarted = false;
+                _countdownStarted = false;
             }
         }
 
