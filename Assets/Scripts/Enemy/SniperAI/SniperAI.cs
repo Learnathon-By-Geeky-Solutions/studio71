@@ -1,7 +1,9 @@
 using UnityEngine;
 using sniperAI;
 
-public class SniperAI : MonoBehaviour
+namespace sniperAI
+{
+    public class SniperAI : MonoBehaviour
 {
     // Inspector Settings
     public float optimalRange = 30f;
@@ -69,4 +71,5 @@ public class SniperAI : MonoBehaviour
             }
         }
     }
+}
 }

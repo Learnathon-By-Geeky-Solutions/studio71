@@ -5,7 +5,7 @@ namespace MortarSystem
     public class FiringState : IMortarState
     {
         private float _reloadTimer = 0f;
-        private float _reloadDuration = 3f; // Adjust reload duration as needed
+        private readonly float _reloadDuration = 3f; // Adjust reload duration as needed
 
         public void EnterState(MortarController mortar)
         {
@@ -75,7 +75,7 @@ namespace MortarSystem
     }
 
     Vector3 horizontalDisplacement = new Vector3(targetPosition.x - startPosition.x, 0f, targetPosition.z - startPosition.z);
-    Vector3 horizontalVelocity = Vector3.zero;
+    Vector3 horizontalVelocity;
     if (timeToTarget > Mathf.Epsilon) // Avoid division by zero
     {
         horizontalVelocity = horizontalDisplacement / timeToTarget;

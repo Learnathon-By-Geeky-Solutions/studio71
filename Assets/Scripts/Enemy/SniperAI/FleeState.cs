@@ -5,8 +5,8 @@ namespace sniperAI
     public class FleeState : SniperState
     {
         private Vector3 fleeDirection;
-        private float fleeSpeed = 5f;
-        private float safeDistance;
+        private readonly float fleeSpeed = 5f;
+        private readonly float safeDistance;
 
         public FleeState(SniperAI sniper) : base(sniper) 
         {

@@ -6,7 +6,7 @@ namespace patrolEnemy
 {
     public class AlertState : IEnemyState
     {
-        private EnemyAI enemy;
+        private readonly EnemyAI enemy;
         private bool _countdownStarted;
 
         public AlertState(EnemyAI enemyAI)

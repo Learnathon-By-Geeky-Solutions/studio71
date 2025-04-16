@@ -5,7 +5,7 @@ namespace MortarSystem
     public class AlertState : IMortarState
     {
         private float _loadingTimer = 0f;
-        private float _loadingDuration = 2f; // Adjust loading duration as needed
+        private readonly float _loadingDuration = 2f; // Adjust loading duration as needed
 
         public void EnterState(MortarController mortar)
         {

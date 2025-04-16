@@ -6,7 +6,7 @@ namespace patrolEnemy
 {
     public class RecoverState : IEnemyState
     {
-        private EnemyAI enemy;
+        private readonly EnemyAI enemy;
         private Transform coverTarget;
         private bool isTakingCover = false;
         private bool isHealing = false;

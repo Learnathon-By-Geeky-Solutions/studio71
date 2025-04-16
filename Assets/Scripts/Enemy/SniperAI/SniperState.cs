@@ -4,7 +4,7 @@ namespace sniperAI
     {
         protected readonly SniperAI sniper;
 
-        public SniperState(SniperAI sniperAI)
+        protected SniperState(SniperAI sniperAI)
         {
             this.sniper = sniperAI;
         }

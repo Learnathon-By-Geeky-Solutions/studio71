@@ -15,19 +15,12 @@ namespace sniperAI
                 // Calculate shot direction
                 Vector3 shotDirection = (sniper.playerTarget.position - sniper.transform.position).normalized;
 
-                // Raycast to check hit
-                if (Physics.Raycast(
-                        sniper.transform.position,
-                        shotDirection,
-                        out RaycastHit hit,
-                        sniper.optimalRange * 2f))
+                // Raycast to check hit and verify if it hits the player
+                if (Physics.Raycast(sniper.transform.position, shotDirection, out RaycastHit hit, sniper.optimalRange * 2f) && hit.collider.CompareTag("Player"))
                 {
-                    if (hit.collider.CompareTag("Player"))
-                    {
-                        Debug.Log($"Hit player for {sniper.shotDamage} damage!");
-                        //hit.collider.GetComponent<PlayerHealth>()?.TakeDamage(sniper.shotDamage);
-                    }
+                    Debug.Log($"Hit player for {sniper.shotDamage} damage!");
                 }
+
 
                 // Play shooting effects
                 Debug.Log("Bang! Shot fired");

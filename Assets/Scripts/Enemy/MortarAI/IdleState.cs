@@ -5,7 +5,7 @@ namespace MortarSystem
     public class IdleState : IMortarState
     {
         private float _scanTimer = 0f;
-        private float _scanInterval = 2f; // Adjust scan interval as needed
+        private readonly float _scanInterval = 2f; // Adjust scan interval as needed
         private float _currentScanAngle = 0f;
         private float _scanSpeed = 30f; // Degrees per second
 

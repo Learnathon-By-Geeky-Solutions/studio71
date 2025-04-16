@@ -6,10 +6,10 @@ namespace patrolEnemy
 {
     public class ShootState : IEnemyState
     {
-        private EnemyAI enemy;
+        private readonly EnemyAI enemy;
         private float shootTimer = 0f;
         private float repositionTimer = 0f;
-        private float repositionInterval = 3f;
+        private readonly float repositionInterval = 3f;
         public bool isRepositioning = false;
         private Vector3 repositionTarget;
 
