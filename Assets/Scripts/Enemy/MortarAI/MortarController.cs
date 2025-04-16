@@ -12,16 +12,16 @@ namespace MortarSystem
 
         [Header("Targeting")]
         [HideInInspector] public Transform Player{ get; private set; }
-        [SerializeField]public float alertRadius{ get; private set; } = 10f;
-        [SerializeField]public float firingRadius { get; private set; }= 5f;
+        [SerializeField]public float AlertRadius{ get; private set; } = 10f;
+        [SerializeField]public float FiringRadius { get; private set; }= 5f;
 
         [Header("Idle Behavior")]
         public float idleScanAngle { get; private set; }= 0f;
         public float idleScanRange { get; private set; }= 90f;
 
         [Header("Firing")]
-        [SerializeField]
-        public GameObject ProjectilePrefab{ get; private set; }
+     
+        [SerializeField] public GameObject ProjectilePrefab{ get; private set; }
         public Transform FirePoint{ get; private set; }
         public float trajectoryHeight { get; private set; } = 5f; // Adjust for the arc height
         public int projectilePathResolution { get; private set; }= 10; // Number of points to simulate path
@@ -62,13 +62,13 @@ namespace MortarSystem
         public bool PlayerInAlertZone()
         {
             if (Player == null) return false;
-            return Vector3.Distance(transform.position, Player.position) <= alertRadius;
+            return Vector3.Distance(transform.position, Player.position) <= AlertRadius;
         }
 
         public bool PlayerInFiringRange()
         {
             if (Player == null) return false;
-            return Vector3.Distance(transform.position, Player.position) <= firingRadius;
+            return Vector3.Distance(transform.position, Player.position) <= FiringRadius;
         }
 
         #region OnDrawGizmos
@@ -77,11 +77,11 @@ namespace MortarSystem
         {
             // Alert Radius
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, alertRadius);
+            Gizmos.DrawWireSphere(transform.position, AlertRadius);
 
             // Firing Radius
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, firingRadius);
+            Gizmos.DrawWireSphere(transform.position, FiringRadius);
 
             // Fire Point
             Gizmos.color = Color.green;

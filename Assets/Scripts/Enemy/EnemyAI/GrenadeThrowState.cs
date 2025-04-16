@@ -6,14 +6,14 @@ namespace patrolEnemy
 {
     public class GrenadeThrowState : IEnemyState
     {
-        private readonly EnemyAI enemy;
-        private float throwTimer = 0f;
-        private readonly float throwInterval = 1f;
-        private bool hasThrown = false;
+        private readonly EnemyAI _enemy;
+        private float _throwTimer = 0f;
+        private readonly float _throwInterval = 1f;
+        private bool _hasThrown = false;
 
         public GrenadeThrowState(EnemyAI enemyAI)
         {
-            enemy = enemyAI;
+            _enemy = enemyAI;
         }
 
         public void Enter()
@@ -21,71 +21,71 @@ namespace patrolEnemy
             Debug.Log("Entering Grenade Throw State");
 
             // Reset timers
-            throwTimer = 0f;
-            hasThrown = false;
+            _throwTimer = 0f;
+            _hasThrown = false;
 
             // Stop moving
-            enemy.navMeshAgent.ResetPath();
+            _enemy.navMeshAgent.ResetPath();
         }
 
         public void Execute()
         {
             // Look at player
-            if (enemy.player != null)
+            if (_enemy.player != null)
             {
-                Vector3 lookDirection = enemy.player.position - enemy.transform.position;
+                Vector3 lookDirection = _enemy.player.position - _enemy.transform.position;
                 lookDirection.y = 0;
                 if (lookDirection != Vector3.zero)
                 {
-                    enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
+                    _enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
                 }
             }
 
             // Check if player is out of attack range
-            if (!enemy.playerInAttackRange)
+            if (!_enemy.playerInAttackRange)
             {
-                enemy.ChangeState(enemy.followState);
+                _enemy.ChangeState(_enemy.followState);
                 return;
             }
 
             // Check if player is now in line of sight
-            if (enemy.playerInLineOfSight)
+            if (_enemy.playerInLineOfSight)
             {
-                enemy.ChangeState(enemy.shootState);
+                _enemy.ChangeState(_enemy.shootState);
                 return;
             }
 
             // Check if out of grenades
-            if (enemy.currentGrenades <= 0)
+            if (_enemy.currentGrenades <= 0)
             {
-                enemy.ChangeState(enemy.shootState);
+                _enemy.ChangeState(_enemy.shootState);
                 return;
             }
 
             // Throw grenade if possible
-            if (enemy.canThrowGrenade && !hasThrown)
+            if (_enemy.canThrowGrenade && !_hasThrown)
             {
-                throwTimer += Time.deltaTime;
+                _throwTimer += Time.deltaTime;
 
-                if (throwTimer >= throwInterval)
+                if (_throwTimer >= _throwInterval)
                 {
-                    enemy.ThrowGrenade();
-                    hasThrown = true;
+                    _enemy.ThrowGrenade();
+                    _hasThrown = true;
 
                     // Wait a bit after throwing before potentially changing state
-                    throwTimer = 0f;
+                    _throwTimer = 0f;
                 }
             }
-            else if (hasThrown && throwTimer < 2f)
+            else if (_hasThrown && _throwTimer < 2f)
             {
                 // Wait a bit after throwing to see if the situation changes
-                throwTimer += Time.deltaTime;
+                _throwTimer += Time.deltaTime;
             }
-            else if (hasThrown)
+            else if (_hasThrown)
             {
                 // After waiting, reassess the situation
-                hasThrown = false;
-                throwTimer = 0f;
+                _hasThrown = false;
+                _throwTimer = 0f;
             }
         }
 

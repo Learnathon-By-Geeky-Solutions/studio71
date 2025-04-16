@@ -1,5 +1,5 @@
 using UnityEngine;
-using MachineGunner.States; // Ensure you have this using statement
+using MachineGunner; 
 
 namespace MachineGunner
 {

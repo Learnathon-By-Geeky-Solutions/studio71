@@ -1,7 +1,7 @@
 using UnityEngine;
-using MachineGunner;
 
-namespace MachineGunner.States
+
+namespace MachineGunner
 {
     public class AlertState : IMachineGunnerState
     {
