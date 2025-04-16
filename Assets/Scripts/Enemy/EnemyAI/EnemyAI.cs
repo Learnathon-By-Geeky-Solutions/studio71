@@ -19,30 +19,30 @@ namespace patrolEnemy
         // References
         public Transform player{ get; private set; }
         public NavMeshAgent navMeshAgent{ get; private set; }
-        public Transform firePoint{ get; private set; }
-        public Transform grenadeThrowPoint{ get; private set; }
+        [SerializeField]public Transform firePoint{ get; private set; }
+        [SerializeField]public Transform grenadeThrowPoint{ get; private set; }
 
         // Detection and Attack
-        public float detectionRange{ get; private set; } = 15f;
-        public float attackRange { get; private set; } = 8f;
-        public LayerMask  obstacleLayer{ get; private set; }
+        [SerializeField]public float detectionRange{ get; private set; } = 15f;
+        [SerializeField]public float attackRange { get; private set; } = 8f;
+        [SerializeField]public LayerMask  obstacleLayer{ get; private set; }
 
         // Health System
-        public float maxHealth{ get; private set; } = 100f;
-        public float currentHealth{ get; set; }
-        public float recoveryThreshold{ get; private set; } = 30f;
-        public float recoveryRate { get; private set; }= 10f;
+        [SerializeField]public float maxHealth{ get; private set; } = 100f;
+        [SerializeField]public float currentHealth{ get; set; }
+        [SerializeField]public float recoveryThreshold{ get; private set; } = 30f;
+        [SerializeField]public float recoveryRate { get; private set; }= 10f;
 
         // Shooting
-        public GameObject bulletPrefab{ get; private set; }
-        public float fireRate { get; private set; }= 1f;
+        [SerializeField]public GameObject bulletPrefab{ get; private set; }
+        [SerializeField]public float fireRate { get; private set; }= 1f;
         public int maxAmmo { get; private set; }= 30;
         public int currentAmmo{ get; private set; }
         public float reloadTime{ get; private set; } = 2f;
         public bool isReloading { get; private set; }= false;
 
         // Grenade
-        public GameObject grenadePrefab{ get; private set; }
+        [SerializeField]public GameObject grenadePrefab{ get; private set; }
         public int maxGrenades { get; private set; }= 3;
         public int currentGrenades{ get; private set; }
         public float grenadeThrowCooldown { get; private set; }= 5f;
