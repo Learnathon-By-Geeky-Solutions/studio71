@@ -9,7 +9,7 @@ namespace patrolEnemy
         private readonly EnemyAI enemy;
         private readonly float patrolWaitTime = 2f;
         private float patrolTimer = 0f;
-        public bool isWaiting = false;
+        public bool isWaiting{ get; private set; } = false;
         private bool hasDestination = false;
 
         public IdleState(EnemyAI enemyAI)

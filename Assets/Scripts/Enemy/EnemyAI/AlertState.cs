@@ -57,7 +57,7 @@ namespace patrolEnemy
                 if (enemy.currentAlertTime >= enemy.alertCountdown)
                 {
                     enemy.ChangeState(enemy.followState);
-                    return;
+                  
                 }
             }
             else

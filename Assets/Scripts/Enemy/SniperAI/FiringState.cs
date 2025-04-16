@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 namespace sniperAI
 {
     public class FiringState : SniperState
