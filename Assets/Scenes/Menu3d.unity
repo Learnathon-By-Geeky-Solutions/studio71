@@ -10486,7 +10486,7 @@ MonoBehaviour:
   maxHorizontalSpeed: 10
   minHorizontalSpeed: -4
   verticalMovementChance: 0.3
-  verticalDistance: 2
+  verticalDistance: 0.5
   verticalDuration: 3
   screenWidth: 0
   pauseChance: 0.2
@@ -11635,7 +11635,7 @@ MonoBehaviour:
   maxHorizontalSpeed: 5
   minHorizontalSpeed: -4
   verticalMovementChance: 2
-  verticalDistance: 1
+  verticalDistance: 2
   verticalDuration: 5
   screenWidth: 0
   pauseChance: 0
@@ -18364,7 +18364,7 @@ MonoBehaviour:
   maxHorizontalSpeed: 5
   minHorizontalSpeed: 3
   verticalMovementChance: 2
-  verticalDistance: 1
+  verticalDistance: 2
   verticalDuration: 5
   screenWidth: 0
   pauseChance: 0
