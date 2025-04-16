@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace patrolEnemy
@@ -7,7 +5,6 @@ namespace patrolEnemy
     public class RecoverState : IEnemyState
     {
         private readonly EnemyAI _enemy;
-        private Transform _coverTarget;
         private bool _isTakingCover = false;
         private bool _isHealing = false;
 
@@ -16,7 +13,6 @@ namespace patrolEnemy
             _enemy = enemyAI;
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         public void Enter()
         {
             Debug.Log("Entering Recover State");
@@ -25,12 +21,12 @@ namespace patrolEnemy
             _isTakingCover = false;
             _isHealing = false;
 
-            // Find cover
-            _coverTarget = _enemy.FindCover();
+            // Declare coverTarget as a local variable
+            Transform coverTarget = _enemy.FindCover();
 
-            if (_coverTarget != null)
+            if (coverTarget != null)
             {
-                _enemy.navMeshAgent.SetDestination(_coverTarget.position);
+                _enemy.navMeshAgent.SetDestination(coverTarget.position);
                 _isTakingCover = true;
             }
             else
@@ -62,7 +58,7 @@ namespace patrolEnemy
 
                 if (_enemy.currentHealth >= _enemy.maxHealth)
                 {
-                    _enemy.currentHealth = _enemy.maxHealth;
+                    _enemy.currentHealth = Mathf.Clamp(_enemy.currentHealth, 0, _enemy.maxHealth); // Ensuring health doesn't exceed max
                     HandlePostHealingState();
                 }
             }
@@ -81,7 +77,6 @@ namespace patrolEnemy
             _enemy.currentHealth += _enemy.recoveryRate * Time.deltaTime;
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         private void HandlePostHealingState()
         {
             if (_enemy.playerInAttackRange)
@@ -114,7 +109,6 @@ namespace patrolEnemy
             }
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         public void Exit()
         {
             Debug.Log("Exiting Recover State");

@@ -272,13 +272,7 @@ namespace MachineGunner
                 }
             }
         }
-
-        public void Die()
-        {
-            Debug.Log("Machine Gunner Died!");
-            // Implement death effects, like explosion
-            Destroy(gameObject);
-        }
+        
 
         #endregion
     }

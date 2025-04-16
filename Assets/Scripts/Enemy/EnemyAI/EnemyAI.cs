@@ -49,18 +49,18 @@ namespace patrolEnemy
         public bool canThrowGrenade { get; private set; }= true;
 
         // Alert State
-        public float alertCountdown = 3f;
-        public float currentAlertTime = 0f;
+        public float alertCountdown { get; private set; }= 3f;
+        public float currentAlertTime { get; set; } = 0f;
 
         // Random Patrol
-        public float patrolRadius = 10f;
-        public Vector3 startPosition;
+        public float patrolRadius { get; private set; } = 10f;
+        public Vector3 startPosition{ get; private set; }
         private Vector3 currentPatrolDestination;
 
         // Status flags
-        public bool playerInDetectionRange = false;
-        public bool playerInAttackRange = false;
-        public bool playerInLineOfSight = false;
+        public bool playerInDetectionRange { get; private set; }= false;
+        public bool playerInAttackRange { get; private set; }= false;
+        public bool playerInLineOfSight { get; private set; }= false;
 
         void Start()
         {
@@ -144,23 +144,7 @@ namespace patrolEnemy
 
             return true; // Clear line of sight
         }
-
-        public void TakeDamage(float damageAmount)
-        {
-            currentHealth -= damageAmount;
-
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
-        }
-
-        void Die()
-        {
-            // Handle death - animation, drops, etc.
-            Destroy(gameObject);
-        }
-
+        
         public void Shoot()
         {
             if (currentAmmo <= 0 || isReloading) return;

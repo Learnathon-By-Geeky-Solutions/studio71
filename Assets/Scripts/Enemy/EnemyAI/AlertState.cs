@@ -26,6 +26,14 @@ namespace patrolEnemy
             enemy.navMeshAgent.ResetPath();
         }
 
+        public void Debuglogcheck()
+        {
+            if (_countdownStarted == false)
+            {
+                Debug.Log("Waiting for alert state");
+            }
+        }
+
         public void Execute()
         {
             // Always look at player
