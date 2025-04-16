@@ -6,8 +6,8 @@ namespace patrolEnemy
 {
     public class IdleState : IEnemyState
     {
-        private EnemyAI enemy;
-        private float patrolWaitTime = 2f;
+        private readonly EnemyAI enemy;
+        private readonly float patrolWaitTime = 2f;
         private float patrolTimer = 0f;
         public bool isWaiting = false;
         private bool hasDestination = false;

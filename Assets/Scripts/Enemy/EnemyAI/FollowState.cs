@@ -6,8 +6,8 @@ namespace patrolEnemy
 {
     public class FollowState : IEnemyState
     {
-        private EnemyAI enemy;
-        private float updatePathInterval = 0.5f;
+        private readonly EnemyAI enemy;
+        private readonly float updatePathInterval = 0.5f;
         private float updatePathTimer = 0f;
 
         public FollowState(EnemyAI enemyAI)

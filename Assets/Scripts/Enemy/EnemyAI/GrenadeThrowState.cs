@@ -6,9 +6,9 @@ namespace patrolEnemy
 {
     public class GrenadeThrowState : IEnemyState
     {
-        private EnemyAI enemy;
+        private readonly EnemyAI enemy;
         private float throwTimer = 0f;
-        private float throwInterval = 1f;
+        private readonly float throwInterval = 1f;
         private bool hasThrown = false;
 
         public GrenadeThrowState(EnemyAI enemyAI)

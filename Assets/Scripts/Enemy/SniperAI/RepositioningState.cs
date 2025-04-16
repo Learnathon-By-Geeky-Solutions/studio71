@@ -5,7 +5,7 @@ namespace sniperAI
     public class RepositioningState : SniperState
     {
         private int currentPosIndex = 0;
-        private float moveSpeed = 3f;
+        private readonly float moveSpeed = 3f;
 
         public RepositioningState(SniperAI sniper) : base(sniper) { }
 

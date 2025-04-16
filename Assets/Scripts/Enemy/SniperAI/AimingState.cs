@@ -5,7 +5,7 @@ namespace sniperAI
     public class AimingState : SniperState
     {
         private float aimTimer;
-        private Transform player;
+        private readonly Transform player;
 
         public AimingState(SniperAI sniper) : base(sniper) 
         {

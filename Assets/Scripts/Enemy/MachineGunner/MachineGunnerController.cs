@@ -11,7 +11,7 @@ namespace MachineGunner
         public float alertRange = 10f;
 
         private float SuppressiveRange { get; } = 15f;
-        private float shootRange = 7f;
+        private readonly float _shootRange = 7f;
 
         [Header("Shooting Configuration")]
         public GameObject bulletPrefab;
@@ -118,7 +118,7 @@ namespace MachineGunner
             Gizmos.DrawWireSphere(transform.position, SuppressiveRange);
 
             Gizmos.color = shootGizmoColor;
-            Gizmos.DrawWireSphere(transform.position, shootRange);
+            Gizmos.DrawWireSphere(transform.position, _shootRange);
 
             // Line of Sight Gizmo
             Gizmos.color = HasLineOfSightToPlayer() ? lineOfSightColor : noLineOfSightColor;
@@ -150,8 +150,8 @@ namespace MachineGunner
             Vector3 currentForward = transform.forward;
             Quaternion sweepLeft = Quaternion.AngleAxis(-burstSweepAngle / 2f, Vector3.up);
             Quaternion sweepRight = Quaternion.AngleAxis(burstSweepAngle / 2f, Vector3.up);
-            Gizmos.DrawRay(firePoint.position, sweepLeft * currentForward * shootRange * 0.75f); // Slightly shorter to visualize
-            Gizmos.DrawRay(firePoint.position, sweepRight * currentForward * shootRange * 0.75f);
+            Gizmos.DrawRay(firePoint.position, sweepLeft * currentForward * _shootRange * 0.75f); // Slightly shorter to visualize
+            Gizmos.DrawRay(firePoint.position, sweepRight * currentForward * _shootRange * 0.75f);
         }
 
         #endregion
@@ -181,7 +181,7 @@ namespace MachineGunner
 
         public bool IsPlayerInShootRange()
         {
-            return Vector3.Distance(transform.position, _player.transform.position) <= shootRange;
+            return Vector3.Distance(transform.position, _player.transform.position) <= _shootRange;
         }
 
         public bool HasLineOfSightToPlayer()
