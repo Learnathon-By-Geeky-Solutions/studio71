@@ -9,58 +9,58 @@ namespace patrolEnemy
     {
         // State Machine
         private IEnemyState currentState;
-        public IdleState idleState;
-        public AlertState alertState;
-        public FollowState followState;
-        public ShootState shootState;
-        public GrenadeThrowState grenadeThrowState;
-        public RecoverState recoverState;
+        public IdleState idleState{ get; private set; }
+        public AlertState alertState{ get; private set; }
+        public FollowState followState{ get; private set; }
+        public ShootState shootState{ get; private set; }
+        public GrenadeThrowState grenadeThrowState{ get; private set; }
+        public RecoverState recoverState{ get; private set; }
 
         // References
-        public Transform player;
-        public NavMeshAgent navMeshAgent;
-        public Transform firePoint;
-        public Transform grenadeThrowPoint;
+        public Transform player{ get; private set; }
+        public NavMeshAgent navMeshAgent{ get; private set; }
+        public Transform firePoint{ get; private set; }
+        public Transform grenadeThrowPoint{ get; private set; }
 
         // Detection and Attack
-        public float detectionRange = 15f;
-        public float attackRange = 8f;
-        public LayerMask obstacleLayer;
+        public float detectionRange{ get; private set; } = 15f;
+        public float attackRange { get; private set; } = 8f;
+        public LayerMask  obstacleLayer{ get; private set; }
 
         // Health System
-        public float maxHealth = 100f;
-        public float currentHealth;
-        public float recoveryThreshold = 30f;
-        public float recoveryRate = 10f;
+        public float maxHealth{ get; private set; } = 100f;
+        public float currentHealth{ get; set; }
+        public float recoveryThreshold{ get; private set; } = 30f;
+        public float recoveryRate { get; private set; }= 10f;
 
         // Shooting
-        public GameObject bulletPrefab;
-        public float fireRate = 1f;
-        public int maxAmmo = 30;
-        public int currentAmmo;
-        public float reloadTime = 2f;
-        public bool isReloading = false;
+        public GameObject bulletPrefab{ get; private set; }
+        public float fireRate { get; private set; }= 1f;
+        public int maxAmmo { get; private set; }= 30;
+        public int currentAmmo{ get; private set; }
+        public float reloadTime{ get; private set; } = 2f;
+        public bool isReloading { get; private set; }= false;
 
         // Grenade
-        public GameObject grenadePrefab;
-        public int maxGrenades = 3;
-        public int currentGrenades;
-        public float grenadeThrowCooldown = 5f;
-        public bool canThrowGrenade = true;
+        public GameObject grenadePrefab{ get; private set; }
+        public int maxGrenades { get; private set; }= 3;
+        public int currentGrenades{ get; private set; }
+        public float grenadeThrowCooldown { get; private set; }= 5f;
+        public bool canThrowGrenade { get; private set; }= true;
 
         // Alert State
-        public float alertCountdown = 3f;
-        public float currentAlertTime = 0f;
+        public float alertCountdown { get; private set; }= 3f;
+        public float currentAlertTime { get; set; } = 0f;
 
         // Random Patrol
-        public float patrolRadius = 10f;
-        public Vector3 startPosition;
+        public float patrolRadius { get; private set; } = 10f;
+        public Vector3 startPosition{ get; private set; }
         private Vector3 currentPatrolDestination;
 
         // Status flags
-        public bool playerInDetectionRange = false;
-        public bool playerInAttackRange = false;
-        public bool playerInLineOfSight = false;
+        public bool playerInDetectionRange { get; private set; }= false;
+        public bool playerInAttackRange { get; private set; }= false;
+        public bool playerInLineOfSight { get; private set; }= false;
 
         void Start()
         {
@@ -136,7 +136,7 @@ namespace patrolEnemy
             Debug.DrawRay(transform.position, directionToPlayer, Color.red);
 
             // Check if there are obstacles between enemy and player
-            if (Physics.Raycast(transform.position, directionToPlayer, out RaycastHit hit, distanceToPlayer,
+            if (Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer,
                     obstacleLayer))
             {
                 return false; // Something is blocking the line of sight
@@ -144,30 +144,10 @@ namespace patrolEnemy
 
             return true; // Clear line of sight
         }
-
-        public void TakeDamage(float damageAmount)
-        {
-            currentHealth -= damageAmount;
-
-            if (currentHealth <= 0)
-            {
-                Die();
-            }
-        }
-
-        void Die()
-        {
-            // Handle death - animation, drops, etc.
-            Destroy(gameObject);
-        }
-
+        
         public void Shoot()
         {
             if (currentAmmo <= 0 || isReloading) return;
-
-            // Instantiate bullet
-            GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-
             // Decrease ammo
             currentAmmo--;
 

@@ -3,7 +3,7 @@ using patrolEnemy;
 
 namespace Enemy_Anim
 {
-    public class EnemyAI_Animation : MonoBehaviour
+    public class EnemyAiAnimation : MonoBehaviour
     {
         private Animator _enemyAnimator;
         private EnemyAI _enemyAI;

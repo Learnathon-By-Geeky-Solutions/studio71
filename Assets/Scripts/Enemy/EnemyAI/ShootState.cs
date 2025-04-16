@@ -1,21 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace patrolEnemy
 {
     public class ShootState : IEnemyState
     {
-        private readonly EnemyAI enemy;
-        private float shootTimer = 0f;
-        private float repositionTimer = 0f;
-        private readonly float repositionInterval = 3f;
-        public bool isRepositioning = false;
-        private Vector3 repositionTarget;
+        private readonly EnemyAI _enemy;
+        private float _shootTimer = 0f;
+        private float _repositionTimer = 0f;
+        private readonly float _repositionInterval = 3f;
+        public bool IsRepositioning { get; private set; } = false;
 
         public ShootState(EnemyAI enemyAI)
         {
-            enemy = enemyAI;
+            _enemy = enemyAI;
         }
 
         public void Enter()
@@ -23,122 +20,124 @@ namespace patrolEnemy
             Debug.Log("Entering Shoot State");
 
             // Reset timers
-            shootTimer = 0f;
-            repositionTimer = 0f;
-            isRepositioning = false;
+            _shootTimer = 0f;
+            _repositionTimer = 0f;
+            IsRepositioning = false;
 
             // Stop moving initially to shoot
-            enemy.navMeshAgent.ResetPath();
+            _enemy.navMeshAgent.ResetPath();
         }
 
         public void Execute()
-    {
-    // Always look at player
-    LookAtPlayer();
-
-    // Check if player is out of attack range
-    if (!enemy.playerInAttackRange)
-    {
-        enemy.ChangeState(enemy.followState);
-        return;
-    }
-
-    // Handle repositioning when no line of sight
-    if (!enemy.playerInLineOfSight && enemy.currentGrenades <= 0)
-    {
-        HandleRepositioning();
-        return;
-    }
-
-    // Switch to grenade throw if we have grenades and lose line of sight
-    if (!enemy.playerInLineOfSight && enemy.currentGrenades > 0)
-    {
-        enemy.ChangeState(enemy.grenadeThrowState);
-        return;
-    }
-
-    // We have line of sight, stop moving and shoot
-    if (isRepositioning)
-    {
-        StopRepositioning();
-    }
-
-    // Shooting logic
-    HandleShooting();
-}
-
-private void LookAtPlayer()
-{
-    if (enemy.player != null)
-    {
-        Vector3 lookDirection = enemy.player.position - enemy.transform.position;
-        lookDirection.y = 0;
-
-        if (lookDirection != Vector3.zero)
         {
-            enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
+            // Always look at player
+            LookAtPlayer();
+
+            // Check if player is out of attack range
+            if (!_enemy.playerInAttackRange)
+            {
+                _enemy.ChangeState(_enemy.followState);
+                return;
+            }
+
+            // Handle repositioning when no line of sight
+            if (!_enemy.playerInLineOfSight && _enemy.currentGrenades <= 0)
+            {
+                HandleRepositioning();
+                return;
+            }
+
+            // Switch to grenade throw if we have grenades and lose line of sight
+            if (!_enemy.playerInLineOfSight && _enemy.currentGrenades > 0)
+            {
+                _enemy.ChangeState(_enemy.grenadeThrowState);
+                return;
+            }
+
+            // We have line of sight, stop moving and shoot
+            if (IsRepositioning)
+            {
+                StopRepositioning();
+            }
+
+            // Shooting logic
+            HandleShooting();
         }
-    }
-}
 
-private void HandleRepositioning()
-{
-    if (!isRepositioning)
-    {
-        StartRepositioning();
-    }
-    else
-    {
-        CheckRepositionTarget();
-    }
-}
-
-private void StartRepositioning()
-{
-    // Start repositioning to get line of sight
-    repositionTarget = enemy.FindPositionWithLineOfSight();
-    enemy.navMeshAgent.SetDestination(repositionTarget);
-    isRepositioning = true;
-
-    Debug.Log("Repositioning Target");
-}
-
-private void CheckRepositionTarget()
-{
-    // Check if we've reached the repositioning target
-    if (enemy.navMeshAgent.remainingDistance <= enemy.navMeshAgent.stoppingDistance)
-    {
-        repositionTimer += Time.deltaTime;
-
-        // Try another position after a delay if still no line of sight
-        if (repositionTimer >= repositionInterval)
+        private void LookAtPlayer()
         {
-            repositionTimer = 0f;
-            repositionTarget = enemy.FindPositionWithLineOfSight();
-            enemy.navMeshAgent.SetDestination(repositionTarget);
+            if (_enemy.player != null)
+            {
+                Vector3 lookDirection = _enemy.player.position - _enemy.transform.position;
+                lookDirection.y = 0;
+
+                if (lookDirection != Vector3.zero)
+                {
+                    _enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
+                }
+            }
         }
-    }
-}
 
-private void StopRepositioning()
-{
-    enemy.navMeshAgent.ResetPath();
-    isRepositioning = false;
-}
-
-private void HandleShooting()
-{
-    if (!enemy.isReloading)
-    {
-        shootTimer += Time.deltaTime;
-
-        if (shootTimer >= 1f / enemy.fireRate)
+        private void HandleRepositioning()
         {
-            shootTimer = 0f;
-            enemy.Shoot();
+            if (!IsRepositioning)
+            {
+                StartRepositioning();
+            }
+            else
+            {
+                CheckRepositionTarget();
+            }
         }
-    }
-}
+
+        private void StartRepositioning()
+        {
+            // Declare repositionTarget as a local variable
+            Vector3 repositionTarget = _enemy.FindPositionWithLineOfSight();
+            _enemy.navMeshAgent.SetDestination(repositionTarget);
+            IsRepositioning = true;
+
+            Debug.Log("Repositioning Target");
+        }
+
+        private void CheckRepositionTarget()
+        {
+            // Declare repositionTarget as a local variable
+            Vector3 repositionTarget = _enemy.FindPositionWithLineOfSight();
+
+            // Check if we've reached the repositioning target
+            if (_enemy.navMeshAgent.remainingDistance <= _enemy.navMeshAgent.stoppingDistance)
+            {
+                _repositionTimer += Time.deltaTime;
+
+                // Try another position after a delay if still no line of sight
+                if (_repositionTimer >= _repositionInterval)
+                {
+                    _repositionTimer = 0f;
+                    _enemy.navMeshAgent.SetDestination(repositionTarget);
+                }
+            }
+        }
+
+        private void StopRepositioning()
+        {
+            _enemy.navMeshAgent.ResetPath();
+            IsRepositioning = false;
+        }
+
+        private void HandleShooting()
+        {
+            if (!_enemy.isReloading)
+            {
+                _shootTimer += Time.deltaTime;
+
+                if (_shootTimer >= 1f / _enemy.fireRate)
+                {
+                    _shootTimer = 0f;
+                    _enemy.Shoot();
+                }
+            }
+        }
 
         public void Exit()
         {

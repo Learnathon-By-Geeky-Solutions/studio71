@@ -1,19 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace patrolEnemy
 {
     public class RecoverState : IEnemyState
     {
-        private readonly EnemyAI enemy;
-        private Transform coverTarget;
-        private bool isTakingCover = false;
-        private bool isHealing = false;
+        private readonly EnemyAI _enemy;
+        private bool _isTakingCover = false;
+        private bool _isHealing = false;
 
         public RecoverState(EnemyAI enemyAI)
         {
-            enemy = enemyAI;
+            _enemy = enemyAI;
         }
 
         public void Enter()
@@ -21,31 +18,31 @@ namespace patrolEnemy
             Debug.Log("Entering Recover State");
 
             // Reset flags
-            isTakingCover = false;
-            isHealing = false;
+            _isTakingCover = false;
+            _isHealing = false;
 
-            // Find cover
-            coverTarget = enemy.FindCover();
+            // Declare coverTarget as a local variable
+            Transform coverTarget = _enemy.FindCover();
 
             if (coverTarget != null)
             {
-                enemy.navMeshAgent.SetDestination(coverTarget.position);
-                isTakingCover = true;
+                _enemy.navMeshAgent.SetDestination(coverTarget.position);
+                _isTakingCover = true;
             }
             else
             {
                 // No cover found, move away from player
-                if (enemy.player != null)
+                if (_enemy.player != null)
                 {
-                    Vector3 directionAway = enemy.transform.position - enemy.player.position;
-                    Vector3 retreatPosition = enemy.transform.position +
-                                              directionAway.normalized * enemy.detectionRange * 0.5f;
+                    Vector3 directionAway = _enemy.transform.position - _enemy.player.position;
+                    Vector3 retreatPosition = _enemy.transform.position +
+                                              directionAway.normalized * _enemy.detectionRange * 0.5f;
 
                     if (UnityEngine.AI.NavMesh.SamplePosition(retreatPosition, out UnityEngine.AI.NavMeshHit hit, 10f,
                             UnityEngine.AI.NavMesh.AllAreas))
                     {
-                        enemy.navMeshAgent.SetDestination(hit.position);
-                        isTakingCover = true;
+                        _enemy.navMeshAgent.SetDestination(hit.position);
+                        _isTakingCover = true;
                     }
                 }
             }
@@ -55,13 +52,13 @@ namespace patrolEnemy
         {
             HandleCoverOrRetreat();
 
-            if (isHealing)
+            if (_isHealing)
             {
                 HealEnemy();
 
-                if (enemy.currentHealth >= enemy.maxHealth)
+                if (_enemy.currentHealth >= _enemy.maxHealth)
                 {
-                    enemy.currentHealth = enemy.maxHealth;
+                    _enemy.currentHealth = Mathf.Clamp(_enemy.currentHealth, 0, _enemy.maxHealth); // Ensuring health doesn't exceed max
                     HandlePostHealingState();
                 }
             }
@@ -69,46 +66,46 @@ namespace patrolEnemy
 
         private void HandleCoverOrRetreat()
         {
-            if (isTakingCover && !isHealing && enemy.navMeshAgent.remainingDistance <= enemy.navMeshAgent.stoppingDistance)
+            if (_isTakingCover && !_isHealing && _enemy.navMeshAgent.remainingDistance <= _enemy.navMeshAgent.stoppingDistance)
             {
-                isHealing = true;
+                _isHealing = true;
             }
         }
 
         private void HealEnemy()
         {
-            enemy.currentHealth += enemy.recoveryRate * Time.deltaTime;
+            _enemy.currentHealth += _enemy.recoveryRate * Time.deltaTime;
         }
 
         private void HandlePostHealingState()
         {
-            if (enemy.playerInAttackRange)
+            if (_enemy.playerInAttackRange)
             {
                 HandleAttackRangeState();
             }
-            else if (enemy.playerInDetectionRange)
+            else if (_enemy.playerInDetectionRange)
             {
-                enemy.ChangeState(enemy.followState);
+                _enemy.ChangeState(_enemy.followState);
             }
             else
             {
-                enemy.ChangeState(enemy.idleState);
+                _enemy.ChangeState(_enemy.idleState);
             }
         }
 
         private void HandleAttackRangeState()
         {
-            if (enemy.playerInLineOfSight)
+            if (_enemy.playerInLineOfSight)
             {
-                enemy.ChangeState(enemy.shootState);
+                _enemy.ChangeState(_enemy.shootState);
             }
-            else if (enemy.currentGrenades > 0)
+            else if (_enemy.currentGrenades > 0)
             {
-                enemy.ChangeState(enemy.grenadeThrowState);
+                _enemy.ChangeState(_enemy.grenadeThrowState);
             }
             else
             {
-                enemy.ChangeState(enemy.shootState);
+                _enemy.ChangeState(_enemy.shootState);
             }
         }
 

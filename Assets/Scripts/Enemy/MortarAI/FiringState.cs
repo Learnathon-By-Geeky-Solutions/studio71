@@ -41,7 +41,7 @@ namespace MortarSystem
             Debug.Log("Mortar exited Firing State.");
         }
 
-        private void FireProjectile(MortarController mortar)
+        private static void FireProjectile(MortarController mortar)
 {
     if (mortar.ProjectilePrefab == null || mortar.FirePoint == null || mortar.Player == null)
     {

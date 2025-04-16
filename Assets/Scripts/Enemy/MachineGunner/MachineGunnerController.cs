@@ -8,27 +8,27 @@ namespace MachineGunner
         #region Public Variables
 
         [Header("Ranges")]
-        public float alertRange = 10f;
+        public float alertRange { get; private set; }= 10f;
 
         private float SuppressiveRange { get; } = 15f;
         private readonly float _shootRange = 7f;
 
         [Header("Shooting Configuration")]
-        public GameObject bulletPrefab;
-        public Transform firePoint;
-        public float fireRate = 0.1f;
-        public float burstDuration = 2f; // Duration of a single burst in ShootState
-        public float suppressiveBurstDuration = 3f;
-        public float overheatThreshold = 10f;
-        public float coolingRate = 2f;
-        public float reloadTime = 3f;
-        public int magazineSize = 30;
-        public float suppressiveFireSpreadAngle = 15f; // Angle for bullet spread in suppressive fire
-        public float bulletForce = 10f;
+        public GameObject bulletPrefab{ get; private set; }
+        public Transform firePoint{ get; private set; }
+        public float fireRate { get; private set; }= 0.1f;
+        public float burstDuration { get; private set; }= 2f; // Duration of a single burst in ShootState
+        public float suppressiveBurstDuration { get; private set; }= 3f;
+        public float overheatThreshold { get; private set; }= 10f;
+        public float coolingRate { get; private set; }= 2f;
+        public float reloadTime { get; private set; }= 3f;
+        public int magazineSize { get; private set; }= 30;
+        public float suppressiveFireSpreadAngle { get; private set; }= 15f; // Angle for bullet spread in suppressive fire
+        public float bulletForce { get; private set; }= 10f;
 
         [Header("Detection")]
-        public string playerTag = "Player";
-        public LayerMask lineOfSightMask;
+        public string playerTag { get; private set; } = "Player";
+        public LayerMask lineOfSightMask{ get; private set; }
 
         [Header("Gizmo Colors")] 
         private readonly Color alertGizmoColor = Color.yellow;
@@ -39,15 +39,15 @@ namespace MachineGunner
         private Color suppressiveArcColor = new Color(1f, 0.5f, 0f, 0.5f); // Orange with alpha
 
         [Header("Idle Rotation")]
-        public float idleRotationSpeed = 10f;
+        public float idleRotationSpeed { get; private set; }= 10f;
         [Range(0f, 180f)]
-        public float idleRotationAngle = 60f; // Total angle of rotation
-        public float idleRotationOffset = 0f; // Starting offset for the rotation
+        public float idleRotationAngle { get; private set; }= 60f; // Total angle of rotation
+        public float idleRotationOffset{ get; private set; } = 0f; // Starting offset for the rotation
 
         [Header("Shoot State")]
         [Range(0f, 90f)]
-        public float burstSweepAngle = 30f; // Total sweep angle during burst
-        public float burstSweepSpeed = 60f; // Degrees per second of sweep
+        public float burstSweepAngle { get; private set; } = 30f; // Total sweep angle during burst
+        public float burstSweepSpeed { get; private set; } = 60f; // Degrees per second of sweep
 
         #endregion
 
@@ -272,13 +272,7 @@ namespace MachineGunner
                 }
             }
         }
-
-        public void Die()
-        {
-            Debug.Log("Machine Gunner Died!");
-            // Implement death effects, like explosion
-            Destroy(gameObject);
-        }
+        
 
         #endregion
     }
