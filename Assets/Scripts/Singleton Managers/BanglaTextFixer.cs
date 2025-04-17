@@ -111,5 +111,29 @@ namespace TextProcessing
 
             return indent;
         }
+
+        /// <summary>
+        /// Safely applies Bangla text fixing using the Singleton instance.
+        /// Returns the original text if the instance is not available.
+        /// </summary>
+        /// <param name="originalText">The text to fix.</param>
+        /// <returns>The fixed text, or the original text if fixing is not possible.</returns>
+        public static string ApplyTextFix(string originalText)
+        {
+            if (string.IsNullOrEmpty(originalText)) 
+            {
+                return ""; // Return empty for null/empty input
+            }
+            
+            if (Instance != null) 
+            {
+                return Instance.FixBanglaText(originalText); // Use the instance method
+            }
+            else 
+            {
+                Debug.LogWarning("BanglaTextFixer instance not found. Returning original text.");
+                return originalText; // Return original if instance is missing
+            }
+        }
     }
 }
