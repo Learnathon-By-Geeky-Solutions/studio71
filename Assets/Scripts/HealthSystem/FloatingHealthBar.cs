@@ -14,7 +14,7 @@ namespace HealthSystem
 
         private Health healthComponent;
         private Camera mainCamera;
-        private float lastHealthValue;
+        private int lastHealthValue;
 
         private void Awake()
         {
@@ -78,7 +78,7 @@ namespace HealthSystem
             if (healthComponent == null || mainCamera == null || canvas == null) 
                 return;
 
-            // Only update the slider value if health has changed
+            // Compare int to int - this is safe and accurate
             if (lastHealthValue != healthComponent.CurrentHealth)
             {
                 healthSlider.value = healthComponent.CurrentHealth;
