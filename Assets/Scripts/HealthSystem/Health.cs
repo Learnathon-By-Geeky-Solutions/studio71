@@ -15,17 +15,27 @@ namespace HealthSystem
         [Header("Events")]
         [SerializeField] private bool _destroyOnDeath = true;
         
+        [Tooltip("Event triggered when health changes. Passes current health value.")]
+        [SerializeField] private UnityEvent<int> _onHealthChanged = new UnityEvent<int>();
+        
+        [Tooltip("Event triggered when entity dies.")]
+        [SerializeField] private UnityEvent _onDeath = new UnityEvent();
+        
         private int _currentHealth;
         
+        #region Public Events (Read-Only Access)
         /// <summary>
         /// Event triggered when health changes. Passes current health value.
+        /// Subscribe to this event to react to health updates.
         /// </summary>
-        public UnityEvent<int> OnHealthChanged = new UnityEvent<int>();
+        public UnityEvent<int> OnHealthChanged => _onHealthChanged;
         
         /// <summary>
         /// Event triggered when entity dies.
+        /// Subscribe to this event to react to the entity's death.
         /// </summary>
-        public UnityEvent OnDeath = new UnityEvent();
+        public UnityEvent OnDeath => _onDeath;
+        #endregion
         
         #region Properties
         /// <summary>Maximum possible health.</summary>
@@ -58,7 +68,7 @@ namespace HealthSystem
                 _currentHealth = 0;
                 
             // Notify listeners about health change
-            OnHealthChanged.Invoke(_currentHealth);
+            _onHealthChanged.Invoke(_currentHealth);
             
             // Check if entity has died from this damage
             if (_currentHealth <= 0)
@@ -76,7 +86,7 @@ namespace HealthSystem
             if (!IsAlive) return;
             
             _currentHealth = Mathf.Min(_currentHealth + healAmount, _maxHealth);
-            OnHealthChanged.Invoke(_currentHealth);
+            _onHealthChanged.Invoke(_currentHealth);
         }
         
         /// <summary>
@@ -85,7 +95,7 @@ namespace HealthSystem
         public void ResetHealth()
         {
             _currentHealth = _maxHealth;
-            OnHealthChanged.Invoke(_currentHealth);
+            _onHealthChanged.Invoke(_currentHealth);
         }
         
         /// <summary>
@@ -94,7 +104,7 @@ namespace HealthSystem
         private void HandleDeath()
         {
             // Trigger death event
-            OnDeath.Invoke();
+            _onDeath.Invoke();
             
             // Destroy object if it's an enemy or destroyOnDeath is true
             if (_destroyOnDeath || gameObject.CompareTag("Enemy"))
