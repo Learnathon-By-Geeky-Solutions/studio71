@@ -18,6 +18,10 @@ namespace HealthSystem
         {
             _currentHealth = _maxHealth;
         }
+
+        //todo: Again abusing update. Don't abuse update, write code update in only and only necessary. This is always good practice. 
+        //todo: here problem is you're checking health every frame even if no change has occurred. Move the destroy logic into TakeDmg() or a CheckDeath() method.
+        
         private void Update()
         {
             if (gameObject.CompareTag("Enemy") && _currentHealth <= 0)
@@ -32,5 +36,20 @@ namespace HealthSystem
             if (_currentHealth < 0)
                 _currentHealth = 0;
         }
+
+
+        //todo: lack of healing or reset support. If this class will be reused for players or allies, write this
+        // public void Heal(int amount)
+        // { 
+        // _currentHealth = Mathf.Min(_currentHealth + amount, _maxHealth);
+        // OnHealthChanged?.Invoke(_currentHealth);
+        // }
+
+        // public void ResetHealth()
+        //{
+        // _currentHealth = _maxHealth;
+        //  OnHealthChanged?.Invoke(_currentHealth);
+        // }
+        
     }
 }
