@@ -180,7 +180,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92fc155c0b8eeda478f5fec6f113f68d, type: 2}
+  - {fileID: 2100000, guid: 7567d139402316a4da5148c05ec71daf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7308,13 +7308,15 @@ MonoBehaviour:
   - layerTransform: {fileID: 1600730340}
     parallaxFactor: 0.1
   - layerTransform: {fileID: 551831951}
-    parallaxFactor: 0.2
+    parallaxFactor: 0
   - layerTransform: {fileID: 1072365140}
     parallaxFactor: 0.3
   - layerTransform: {fileID: 128955107}
-    parallaxFactor: 0.2
-  - layerTransform: {fileID: 0}
-    parallaxFactor: 0.2
+    parallaxFactor: 0.5
+  - layerTransform: {fileID: 1363168146}
+    parallaxFactor: 0.5
+  - layerTransform: {fileID: 1072365140}
+    parallaxFactor: 0
   - layerTransform: {fileID: 186534884}
     parallaxFactor: 0.3
   - layerTransform: {fileID: 1703229288}
@@ -12817,7 +12819,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92fc155c0b8eeda478f5fec6f113f68d, type: 2}
+  - {fileID: 2100000, guid: 7567d139402316a4da5148c05ec71daf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
