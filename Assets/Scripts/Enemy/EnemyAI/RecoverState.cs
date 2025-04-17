@@ -41,6 +41,7 @@ namespace patrolEnemy
                     if (UnityEngine.AI.NavMesh.SamplePosition(retreatPosition, out UnityEngine.AI.NavMeshHit hit, 10f,
                             UnityEngine.AI.NavMesh.AllAreas))
                     {
+                        //todo: check navmesh is disabled or not => if (_enemy.navMeshAgent.enabled)
                         _enemy.navMeshAgent.SetDestination(hit.position);
                         _isTakingCover = true;
                     }
@@ -58,7 +59,10 @@ namespace patrolEnemy
 
                 if (_enemy.currentHealth >= _enemy.maxHealth)
                 {
-                    _enemy.currentHealth = Mathf.Clamp(_enemy.currentHealth, 0, _enemy.maxHealth); // Ensuring health doesn't exceed max
+                    //todo: you don't have to do this if you've already this if (_enemy.currentHealth >= _enemy.maxHealth) my suggestion is either clamp when updating or remove the redundant check
+                    //_enemy.currentHealth = Mathf.Min(_enemy.currentHealth + _enemy.recoveryRate * Time.deltaTime, _enemy.maxHealth);
+                    
+                    _enemy.currentHealth = Mathf.Clamp(_enemy.currentHealth, 0, _enemy.maxHealth); // Ensuring health doesn't exceed max 
                     HandlePostHealingState();
                 }
             }
