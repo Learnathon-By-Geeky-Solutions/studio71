@@ -7,6 +7,10 @@ namespace patrolEnemy
 {
     public class EnemyAI : MonoBehaviour
     {
+
+        //Todo: This class handles state logic, combat, pathfinding, grenade logic, line of sight, cover detection, patrol logic, and visualization.
+        // Split into separate classes/services: EnemyCombatHandler, EnemyAwareness, EnemyPatrolSystem, EnemyStateMachine
+    
         // State Machine
         private IEnemyState currentState;
         public IdleState idleState{ get; private set; }
@@ -23,7 +27,8 @@ namespace patrolEnemy
         [SerializeField]public Transform grenadeThrowPoint{ get; private set; }
 
         // Detection and Attack
-        [SerializeField]public float detectionRange{ get; private set; } = 15f;
+        [SerializeField]public float detectionRange{ get; private set; } = 15f;  //todo: You're exposing many variables publicly just to get/set them within the class or inspector.
+                                                                                // Use [SerializeField] private for variables only meant for the Inspector. Expose them via public float DetectionRange => detectionRange; only if needed.
         [SerializeField]public float attackRange { get; private set; } = 8f;
         [SerializeField]public LayerMask  obstacleLayer{ get; private set; }
 
@@ -164,7 +169,8 @@ namespace patrolEnemy
 
             // Play reload animation or sound
 
-            yield return new WaitForSeconds(reloadTime);
+            yield return new WaitForSeconds(reloadTime);        //use unitask instead of coroutine, cz coroutine are bound to monobehaviour which can block logic flow and hard to cancel like this method Reload
+                                                                //convert into async unitask 
 
             currentAmmo = maxAmmo;
             isReloading = false;
@@ -179,8 +185,8 @@ namespace patrolEnemy
             float throwForce = 10f; // Adjust based on distance
 
             // Instantiate grenade
-            GameObject grenade = Instantiate(grenadePrefab, grenadeThrowPoint.position, Quaternion.identity);
-            Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
+            GameObject grenade = Instantiate(grenadePrefab, grenadeThrowPoint.position, Quaternion.identity);  //Todo: Nope use object pooling here, this could messed up ur performance ,Use Object Pooling for bullets and grenades.
+            Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();                                          
 
             if (grenadeRb != null)
             {
@@ -292,10 +298,11 @@ namespace patrolEnemy
             // If no valid point found, return starting position
             return startPosition;
         }
-
+ 
         public string GetCurrentStateName()
         {
-            return currentState.GetType().Name; // Returns "IdleState", "ShootState", etc.
+            return currentState.GetType().Name; // Returns "IdleState", "ShootState", etc.   //Todo: using reflection is costly, my suggestion is let IEnemeyState define a string StateName {get;} property 
+                                                // ,then implement in state like public string StateName => "IdleState";
         }
 
         void OnDrawGizmos()
