@@ -84,7 +84,7 @@ namespace UI.MainMenu
         /// <summary>
         /// Plays the button hover sound effect
         /// </summary>
-        private void PlayHoverSound()
+        private static void PlayHoverSound()
         {
             AudioManager.PlaySound(SoundKeys.ButtonHover);
         }
