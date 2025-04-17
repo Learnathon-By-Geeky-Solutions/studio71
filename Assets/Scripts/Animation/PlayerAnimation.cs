@@ -14,7 +14,7 @@ namespace Player
         //Animator related Variables.
         private Animator _playerAnimator;
         private string _currentAnimation;
-        public Dictionary<string, float> _animationLengths { get; private set; } = new Dictionary<string, float>();
+        public Dictionary<string, float> _animationLengths { get; private set; } = new Dictionary<string, float>(); //todo: change name AnimationLength, public -> X private-> _x
 
         //Bools to check different state.
         public bool IsBusy {get; private set;}
@@ -26,7 +26,7 @@ namespace Player
         //Reference to Other Player Scripts to work with them.
         private InteractionSystem _interactionSystem;
         private PlayerController _playerController;
-        private Health _PlayerHealth;
+        private Health _PlayerHealth; //Todo: change name here _playerHealth
         /// <summary>
         /// Initialize Variables for animation.
         /// </summary>
@@ -145,8 +145,9 @@ namespace Player
         {
             if (IsBusy || IsDead || _playerController.GrenadeCount<=0) return;
             IsBusy = true;
-            PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", 0.1f, 1);
-            StartCoroutine(DelayedAction(_animationLengths["Grenade Throw"], () => { IsThrowingGrenade = false; }));
+            PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", 0.1f, 1); //Todo: Hardcoded animation name change it my suggestion is to define constants, make a static class name animationstate and there define it like this
+                                                                                //private const string ANIM_GRENADE_THROW = "Grenade Throw";
+            StartCoroutine(DelayedAction(_animationLengths["Grenade Throw"], () => { IsThrowingGrenade = false; })); 
 
         }
         private void DeathAnimation()
