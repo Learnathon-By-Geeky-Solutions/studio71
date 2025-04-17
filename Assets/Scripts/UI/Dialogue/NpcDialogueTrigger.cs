@@ -1,27 +1,35 @@
 using UnityEngine;
 
-
-/// <summary>
-/// Represents an NPC with a dialogue trigger.
-/// </summary>
-namespace dialogue{
- public class NpcDialogueTrigger : MonoBehaviour
+namespace dialogue
+{
+    /// <summary>
+    /// Represents an NPC that can trigger dialogue interactions.
+    /// Provides functionality to start a dialogue sequence using an Ink JSON file.
+    /// </summary>
+    public class NpcDialogueTrigger : MonoBehaviour
     {
         [SerializeField] private TextAsset inkJSON;
         private InkDialogueManager dialogueManager;
 
         private void Awake()
         {
-            // Get the InkDialogueManager component
+            // Try to get the InkDialogueManager component
             dialogueManager = GetComponent<InkDialogueManager>();
             
             // If not found on this object, try to find it in the scene
             if (dialogueManager == null)
             {
                 dialogueManager = FindFirstObjectByType<InkDialogueManager>();
+                if (dialogueManager == null)
+                {
+                    Debug.LogWarning($"No InkDialogueManager found for NPC {gameObject.name}. Dialogue will not function.");
+                }
             }
         }
 
+        /// <summary>
+        /// Starts the dialogue sequence using the assigned Ink JSON file.
+        /// </summary>
         public void TriggerDialogue()
         {
             if (inkJSON == null)

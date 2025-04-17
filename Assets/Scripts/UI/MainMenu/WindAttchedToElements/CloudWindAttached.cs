@@ -4,45 +4,119 @@ using System.Collections;
 
 namespace UI.MainMenu
 {
+    /// <summary>
+    /// Controls cloud movement with simulated wind effects including horizontal drift,
+    /// vertical movement, and occasional pauses to create natural cloud behavior.
+    /// </summary>
     public class CloudWindAttached : MonoBehaviour
     {
+        #region Configuration
         [Header("Movement Settings")]
+        [Tooltip("Base horizontal movement speed")]
         [SerializeField] private float horizontalSpeed = 2f;
-        [SerializeField] private float maxHorizontalSpeed = 5f;
-        [SerializeField] private float minHorizontalSpeed = 1f;
-        [SerializeField] private float verticalMovementChance = 0.3f;
-        [SerializeField] private float verticalDistance = 1f;
-        [SerializeField] private float verticalDuration = 3f;
-        [SerializeField] private float screenWidth;
-        [SerializeField] private float pauseChance = 0.2f;
-        [SerializeField] private float pauseDuration = 1.5f;
         
+        [Tooltip("Maximum random horizontal speed")]
+        [SerializeField] private float maxHorizontalSpeed = 5f;
+        
+        [Tooltip("Minimum random horizontal speed")]
+        [SerializeField] private float minHorizontalSpeed = 1f;
+        
+        [Tooltip("Probability (0-1) of vertical movement during travel")]
+        [Range(0f, 1f)]
+        [SerializeField] private float verticalMovementChance = 0.3f;
+        
+        [Tooltip("Distance to move vertically (up or down)")]
+        [SerializeField] private float verticalDistance = 1f;
+        
+        [Tooltip("Duration of vertical movement")]
+        [SerializeField] private float verticalDuration = 3f;
+        
+        [Tooltip("Width of the screen in world units (auto-calculated if 0)")]
+        [SerializeField] private float screenWidth;
+        
+        [Tooltip("Probability (0-1) of pausing during travel")]
+        [Range(0f, 1f)]
+        [SerializeField] private float pauseChance = 0.2f;
+        
+        [Tooltip("Duration of pause when it occurs")]
+        [SerializeField] private float pauseDuration = 1.5f;
+        #endregion
+        
+        #region Private Fields
         private bool movingRight = true;
         private SpriteRenderer _spriteRenderer;
+        private bool isInitialized = false;
+        #endregion
+        
+        #region Unity Lifecycle Methods
+        private void Awake()
+        {
+            InitializeComponents();
+        }
         
         private void Start()
         {
-            _spriteRenderer = GetComponent<SpriteRenderer>();
-            if (_spriteRenderer == null)
-            {
-                Debug.LogError("cloudWind requires a SpriteRenderer component.", this);
-                enabled = false; // Disable script if no renderer
-                return;
-            }
+            if (!isInitialized) return;
             
-            // Calculate screen width in world units using the main camera
-            if (Camera.main == null)
+            // Calculate screen width in world units using the main camera if not set
+            if (screenWidth <= 0)
             {
-                 Debug.LogError("Main Camera not found. Cannot calculate screen width.", this);
-                 enabled = false;
-                 return;
+                CalculateScreenWidth();
             }
-            screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
             
             // Start the movement sequence
             StartHorizontalMovement();
         }
         
+        private void OnDisable()
+        {
+            // Clean up any active tweens when disabled
+            DOTween.Kill(transform);
+        }
+        #endregion
+        
+        #region Initialization Methods
+        /// <summary>
+        /// Initialize required components and validate setup
+        /// </summary>
+        private void InitializeComponents()
+        {
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+            if (_spriteRenderer == null)
+            {
+                Debug.LogError("CloudWindAttached requires a SpriteRenderer component.", this);
+                enabled = false; // Disable script if no renderer
+                return;
+            }
+            
+            isInitialized = true;
+        }
+        
+        /// <summary>
+        /// Calculate the screen width in world units
+        /// </summary>
+        private void CalculateScreenWidth()
+        {
+            if (Camera.main == null)
+            {
+                Debug.LogError("Main Camera not found. Cannot calculate screen width.", this);
+                enabled = false;
+                return;
+            }
+            
+            screenWidth = Camera.main.orthographicSize * Camera.main.aspect * 2;
+            if (screenWidth <= 0)
+            {
+                Debug.LogError("Invalid screen width calculation. Setting to default value.", this);
+                screenWidth = 20f; // Fallback default
+            }
+        }
+        #endregion
+        
+        #region Movement Methods
+        /// <summary>
+        /// Begin horizontal cloud movement from one side of the screen to the other
+        /// </summary>
         private void StartHorizontalMovement()
         {
             if (_spriteRenderer == null) return; // Safety check
@@ -59,7 +133,7 @@ namespace UI.MainMenu
             // Calculate duration based on distance and speed
             float distance = Mathf.Abs(targetX - transform.position.x);
             // Avoid division by zero if speed is somehow zero
-            float duration = currentSpeed > 0 ? distance / currentSpeed : float.MaxValue; 
+            float duration = currentSpeed > 0 ? distance / currentSpeed : 10f; 
             
             // Create the horizontal movement sequence
             Sequence moveSequence = DOTween.Sequence();
@@ -74,9 +148,13 @@ namespace UI.MainMenu
             moveSequence.OnComplete(HandleMovementCompletion);
         }
 
-        // Extracted method to schedule segment checks
+        /// <summary>
+        /// Schedule periodic checkpoints during cloud movement for potential vertical shifts or pauses
+        /// </summary>
         private void ScheduleMovementSegments(Sequence moveSequence, float totalDuration)
         {
+            if (totalDuration <= 0) return;
+            
             float timeElapsed = 0;
             while (timeElapsed < totalDuration)
             {
@@ -97,7 +175,9 @@ namespace UI.MainMenu
             }
         }
 
-        // Extracted method to handle logic within a movement segment
+        /// <summary>
+        /// Handle behavior at a movement segment checkpoint - may cause vertical shifts or pauses
+        /// </summary>
         private void HandleMovementSegment(Sequence sequence)
         {
             // Random chance to move vertically
@@ -109,21 +189,24 @@ namespace UI.MainMenu
             }
             
             // Random chance to pause
-            if (Random.value < pauseChance)
+            if (Random.value < pauseChance && sequence != null && sequence.IsActive())
             {
                 sequence.Pause();
-                DOVirtual.DelayedCall(pauseDuration, () => { if (sequence != null && sequence.IsActive()) sequence.Play(); });
+                DOVirtual.DelayedCall(pauseDuration, () => { 
+                    if (sequence != null && sequence.IsActive()) 
+                        sequence.Play(); 
+                });
             }
-            
-            // Random chance to change speed (Note: This doesn't change the current tween's duration)
-            // horizontalSpeed = Random.Range(minHorizontalSpeed, maxHorizontalSpeed); // This doesn't affect the *current* tween
         }
 
-        // Extracted method to handle sequence completion
+        /// <summary>
+        /// Handle completion of the horizontal movement - reset position and start again in opposite direction
+        /// </summary>
         private void HandleMovementCompletion()
         {
             if (_spriteRenderer == null) return; // Safety check
 
+            // Flip direction
             movingRight = !movingRight;
             
             // Reset position to just off screen on the opposite side
@@ -137,5 +220,6 @@ namespace UI.MainMenu
             // Start the sequence again
             StartHorizontalMovement();
         }
+        #endregion
     }
 }
