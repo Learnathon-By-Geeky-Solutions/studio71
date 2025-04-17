@@ -5311,7 +5311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -1276527611549838597, guid: 73aa5285f459f314eb967ae9b01cd341, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.56
+      value: 9.6
       objectReference: {fileID: 0}
     - target: {fileID: -469542070303478727, guid: 73aa5285f459f314eb967ae9b01cd341, type: 3}
       propertyPath: m_Name
@@ -7307,9 +7307,9 @@ MonoBehaviour:
     parallaxFactor: 0.1
   - layerTransform: {fileID: 1600730340}
     parallaxFactor: 0.1
-  - layerTransform: {fileID: 551831951}
-    parallaxFactor: 0
   - layerTransform: {fileID: 1072365140}
+    parallaxFactor: 0.3
+  - layerTransform: {fileID: 551831951}
     parallaxFactor: 0.3
   - layerTransform: {fileID: 128955107}
     parallaxFactor: 0.5
@@ -7319,8 +7319,6 @@ MonoBehaviour:
     parallaxFactor: 0.5
   - layerTransform: {fileID: 1639939201}
     parallaxFactor: 0.5
-  - layerTransform: {fileID: 1072365140}
-    parallaxFactor: 0
   - layerTransform: {fileID: 186534884}
     parallaxFactor: 0.3
   - layerTransform: {fileID: 1703229288}
