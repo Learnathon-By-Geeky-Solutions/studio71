@@ -68,11 +68,7 @@ namespace UI.MainMenu
             StartHorizontalMovement();
         }
         
-        private void OnDisable()
-        {
-            // Clean up any active tweens when disabled
-            DOTween.Kill(transform);
-        }
+       
         #endregion
         
         #region Initialization Methods
