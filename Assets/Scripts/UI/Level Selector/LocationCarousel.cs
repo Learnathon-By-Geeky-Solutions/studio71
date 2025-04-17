@@ -121,7 +121,7 @@ namespace LevelSelection
             if (_nameText == null) return;
 
             string originalName = data?.name ?? "";
-            _nameText.text = ApplyTextFix(originalName);
+            _nameText.text = BanglaTextFixer.ApplyTextFix(originalName);
         }
 
         /// <summary>
@@ -132,15 +132,10 @@ namespace LevelSelection
             if (_descriptionText == null) return;
 
             string originalDescription = data?.description ?? "";
-            _descriptionText.text = ApplyTextFix(originalDescription);
+            _descriptionText.text = BanglaTextFixer.ApplyTextFix(originalDescription);
         }
 
-        /// <summary>
-        /// Applies Bangla text fixing if the service is available.
-        /// </summary>
-        private string ApplyTextFix(string originalText)
-        {
-            return BanglaTextFixer.ApplyTextFix(originalText);
-        }
+      
+        
     }
 }
