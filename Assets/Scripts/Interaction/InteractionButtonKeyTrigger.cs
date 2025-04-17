@@ -18,7 +18,6 @@ namespace Interaction
             {
                 Debug.LogError("Interaction button reference is missing!", this);
                 enabled = false;
-                return;
             }
         }
 
