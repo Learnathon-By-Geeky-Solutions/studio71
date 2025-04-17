@@ -187,7 +187,7 @@ namespace dialogue
             if (story.canContinue)
             {
                 string text = story.Continue();
-                text = BanglaTextFixer.Instance != null ? BanglaTextFixer.Instance.FixBanglaText(text) : text;
+                text = BanglaTextFixer.ApplyTextFix(text);
                 HandleTags(story.currentTags);
                 
                 if (dialogueText != null)
@@ -271,9 +271,7 @@ namespace dialogue
             {
                 if (ActorName != null)
                 {
-                    ActorName.text = BanglaTextFixer.Instance != null 
-                        ? BanglaTextFixer.Instance.FixBanglaText(character.characterName) 
-                        : character.characterName;
+                    ActorName.text = BanglaTextFixer.ApplyTextFix(character.characterName);
                 }
                 
                 if (Avatar != null)
@@ -375,9 +373,7 @@ namespace dialogue
                 TextMeshProUGUI choiceText = choiceButtons[i].GetComponentInChildren<TextMeshProUGUI>();
                 if (choiceText != null)
                 {
-                    choiceText.text = BanglaTextFixer.Instance != null 
-                        ? BanglaTextFixer.Instance.FixBanglaText(choices[i].text) 
-                        : choices[i].text;
+                    choiceText.text = BanglaTextFixer.ApplyTextFix(choices[i].text);
                 }
 
                 int choiceIndex = i;

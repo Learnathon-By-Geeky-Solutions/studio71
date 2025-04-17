@@ -90,7 +90,14 @@ namespace SingletonManagers
 
         public static void PlaySound(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)
         {
-            Instance.PlaySoundInternal(soundName, position, volumeMultiplier, pitchMultiplier);
+            if (Instance != null)
+            {
+                Instance.PlaySoundInternal(soundName, position, volumeMultiplier, pitchMultiplier);
+            }
+            else
+            {
+                Debug.LogWarning($"AudioManager instance not found. Cannot play sound: {soundName}");
+            }
         }
 
         private void PlaySoundInternal(string soundName, Vector3 position, float volumeMultiplier = 1f, float pitchMultiplier = 1f)

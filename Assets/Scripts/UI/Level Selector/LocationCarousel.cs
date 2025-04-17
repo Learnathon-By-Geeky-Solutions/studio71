@@ -140,11 +140,7 @@ namespace LevelSelection
         /// </summary>
         private string ApplyTextFix(string originalText)
         {
-            if (string.IsNullOrEmpty(originalText)) return "";
-            
-            return BanglaTextFixer.Instance != null 
-                ? BanglaTextFixer.Instance.FixBanglaText(originalText) 
-                : originalText;
+            return BanglaTextFixer.ApplyTextFix(originalText);
         }
     }
 }
