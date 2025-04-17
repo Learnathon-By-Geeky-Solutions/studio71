@@ -64,7 +64,7 @@ namespace UI.MainMenu
         /// <summary>
         /// Plays the background music for the main menu.
         /// </summary>
-        private void PlayBackgroundMusic()
+        private static void PlayBackgroundMusic()
         {
             AudioManager.PlaySound(SoundKeys.BackgroundMusic);
         }
@@ -72,7 +72,7 @@ namespace UI.MainMenu
         /// <summary>
         /// Plays the button press sound effect.
         /// </summary>
-        private void PlayButtonSound()
+        private static void PlayButtonSound()
         {
             AudioManager.PlaySound(SoundKeys.ButtonPress);
         }
@@ -80,7 +80,7 @@ namespace UI.MainMenu
         /// <summary>
         /// Loads the game scene asynchronously.
         /// </summary>
-        private void LoadGameScene()
+        private  void LoadGameScene()
         {
             try
             {
@@ -95,7 +95,7 @@ namespace UI.MainMenu
         /// <summary>
         /// Quits the application.
         /// </summary>
-        private void QuitApplication()
+        private static void QuitApplication()
         {
             #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
