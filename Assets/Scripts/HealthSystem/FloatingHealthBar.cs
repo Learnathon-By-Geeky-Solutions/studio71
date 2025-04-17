@@ -48,6 +48,7 @@ namespace HealthSystem
             position.y += heightOffset;
             canvas.transform.position = position;
 
+            //todo: no here the problem will be the billboard can cause flip, use LookAt => canvas.transform.LookAt(canvas.transform.position + mainCamera.transform.forward, Vector3.up);
             // Make the health bar face the camera (billboard effect)
             canvas.transform.rotation = mainCamera.transform.rotation;
         }
