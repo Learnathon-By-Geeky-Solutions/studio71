@@ -382,6 +382,7 @@ GameObject:
   - component: {fileID: 4778515123375737937}
   - component: {fileID: 1812690494600329343}
   - component: {fileID: 6766413069110737215}
+  - component: {fileID: 6308612035760956662}
   m_Layer: 5
   m_Name: Avatar
   m_TagString: Untagged
@@ -446,6 +447,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!95 &6308612035760956662
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2827003219231956539}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aa623fc18ae461c4dbcd33b49cd7d049, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2946354965500897384
 GameObject:
   m_ObjectHideFlags: 0

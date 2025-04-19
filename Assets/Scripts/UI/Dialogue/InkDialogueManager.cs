@@ -21,7 +21,7 @@ namespace dialogue
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI dialogueText;
         [SerializeField] private TextMeshProUGUI ActorName;
-        [SerializeField] private Image Avatar;
+        [SerializeField] private Animator Avatar;
         [SerializeField] private GameObject dialoguePanel;
         [SerializeField] private GameObject choicePanel;
         [SerializeField] private GameObject[] choiceButtons;
@@ -61,7 +61,7 @@ namespace dialogue
         {
             public int id;
             public string characterName;
-            public Sprite characterSprite;
+            public string animationState;
         }
         #endregion
 
@@ -141,7 +141,7 @@ namespace dialogue
         {
             if (dialogueText == null) Debug.LogError("Dialogue text component is missing!", this);
             if (ActorName == null) Debug.LogError("Actor name component is missing!", this);
-            if (Avatar == null) Debug.LogError("Avatar image component is missing!", this);
+            if (Avatar == null) Debug.LogError("Avatar animator component is missing!", this);
         }
 
         private void HideDialogueUI()
@@ -276,7 +276,14 @@ namespace dialogue
                 
                 if (Avatar != null)
                 {
-                    Avatar.sprite = character.characterSprite;
+                    if (string.IsNullOrEmpty(character.animationState))
+                    {
+                        Debug.LogWarning($"No animation state defined for character {character.characterName}", this);
+                    }
+                    else
+                    {
+                        Avatar.Play(character.animationState);
+                    }
                 }
             }
 
