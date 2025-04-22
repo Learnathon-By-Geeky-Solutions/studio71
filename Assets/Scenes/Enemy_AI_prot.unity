@@ -312,33 +312,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e99297a3645854a8a6cabe6b8e8bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firePoint: {fileID: 875301282}
+  grenadePoint: {fileID: 875301282}
+  bulletPrefab: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
+  grenadePrefab: {fileID: 1207142880592337251, guid: 34881f261669ade428f4526bdbcd60ca, type: 3}
   patrolRange: 10
-  followRange: 15
-  shootRange: 8
-  lineOfSightAngle: 60
+  detectionRange: 15
+  attackRange: 8
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 256
-  Agent: {fileID: 282473501}
-  CurrentTarget: {fileID: 0}
+  maxAmmo: 30
+  reloadTime: 2
+  maxGrenades: 3
+  grenadeThrowCooldown: 5
   maxHealth: 100
   recoveryThreshold: 30
-  recoveryAmount: 1
-  maxGrenades: 3
-  reloadTime: 2
-  bulletPrefab: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
-  grenadePrefab: {fileID: 1207142880592337251, guid: 34881f261669ade428f4526bdbcd60ca, type: 3}
-  eyePosition: {fileID: 282473502}
---- !u!195 &282473501 stripped
-NavMeshAgent:
-  m_CorrespondingSourceObject: {fileID: 7513518096679223944, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
-  m_PrefabInstance: {fileID: 1435037748}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &282473502 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5215540016411575538, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
-  m_PrefabInstance: {fileID: 1435037748}
-  m_PrefabAsset: {fileID: 0}
+  recoveryRate: 5
+  alertCountdown: 3
+  CurrentHealth: 0
 --- !u!4 &347949657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
@@ -843,6 +835,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
+--- !u!4 &875301282 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3560689963113532092, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
+  m_PrefabInstance: {fileID: 1435037748}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1191335840
 GameObject:
   m_ObjectHideFlags: 0

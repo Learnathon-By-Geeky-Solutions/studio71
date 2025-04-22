@@ -8,6 +8,17 @@ namespace PatrolEnemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
     {
+        // State types enum
+        public enum EnemyStateType
+        {
+            Idle,
+            Alert,
+            Follow,
+            Shoot,
+            GrenadeThrow,
+            Recovery
+        }
+        
         // References
         [SerializeField] private Transform firePoint;
         [SerializeField] private Transform grenadePoint;
@@ -28,6 +39,7 @@ namespace PatrolEnemy
         [SerializeField] private int maxGrenades = 3;
         [SerializeField] private float grenadeThrowCooldown = 5f;
         [SerializeField] private float maxHealth = 100f;
+        [SerializeField] private float currentHealth;
         [SerializeField] private float recoveryThreshold = 30f;
         [SerializeField] private float recoveryRate = 5f;
         
@@ -47,13 +59,18 @@ namespace PatrolEnemy
         // Public properties
         public NavMeshAgent Agent { get; private set; }
         public Transform CurrentTarget { get; private set; }
-        public float CurrentHealth ;
+        public float CurrentHealth
+        {
+            get { return currentHealth; }
+            private set { currentHealth = value; }
+        }
         public int CurrentAmmo { get; set; }
         public int CurrentGrenades { get; set; }
         public float AlertTime { get; set; }
         public bool IsReloading { get; set; }
         public bool IsThrowingGrenade { get; set; }
         public bool HasLineOfSight { get; private set; }
+        public Vector3 InitialPosition { get; private set; }
         
         // Public accessors for ranges
         public float PatrolRange => patrolRange;
@@ -78,11 +95,12 @@ namespace PatrolEnemy
             CurrentAmmo = maxAmmo;
             CurrentGrenades = maxGrenades;
             AlertTime = alertCountdown;
+            InitialPosition = transform.position;
         }
         
         private void Start()
         {
-            ChangeState(idleState);
+            ChangeState(EnemyStateType.Idle);
         }
         
         private void Update()
@@ -135,7 +153,7 @@ namespace PatrolEnemy
                 RaycastHit hit;
                 Debug.DrawRay(firePoint.position, direction * detectionRange, Color.red);
                 
-                if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange, obstacleLayer))
+                if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange))
                 {
                     if (hit.transform.CompareTag("Player"))
                     {
@@ -157,6 +175,50 @@ namespace PatrolEnemy
             }
         }
         
+        public void ChangeState(EnemyStateType stateType)
+        {
+            IEnemyState newState;
+            
+            switch(stateType)
+            {
+                case EnemyStateType.Idle:
+                    newState = idleState;
+                    break;
+                case EnemyStateType.Alert:
+                    newState = alertState;
+                    break;
+                case EnemyStateType.Follow:
+                    newState = followState;
+                    break;
+                case EnemyStateType.Shoot:
+                    newState = shootState;
+                    break;
+                case EnemyStateType.GrenadeThrow:
+                    newState = grenadeThrowState;
+                    break;
+                case EnemyStateType.Recovery:
+                    newState = recoveryState;
+                    break;
+                default:
+                    newState = idleState;
+                    break;
+            }
+            
+            if (currentState != null)
+            {
+                currentState.ExitState(this);
+            }
+            
+            currentState = newState;
+            
+            if (currentState != null)
+            {
+                Debug.Log($"Changing to {currentState.GetType().Name}");
+                currentState.EnterState(this);
+            }
+        }
+        
+        // For backward compatibility with existing state scripts
         public void ChangeState(IEnemyState newState)
         {
             if (currentState != null)
@@ -182,10 +244,16 @@ namespace PatrolEnemy
             {
                 Die();
             }
-            else if (CurrentHealth < recoveryThreshold && currentState != recoveryState)
+            else if (CurrentHealth < recoveryThreshold && !(currentState is RecoveryState))
             {
-                ChangeState(recoveryState);
+                ChangeState(EnemyStateType.Recovery);
             }
+        }
+        
+        public void RecoverHealth(float amount)
+        {
+            CurrentHealth = Mathf.Min(CurrentHealth + amount, maxHealth);
+            Debug.Log($"Recovered {amount} health. Current health: {CurrentHealth}");
         }
         
         private void Die()
@@ -195,55 +263,19 @@ namespace PatrolEnemy
             Destroy(gameObject);
         }
         
-        public void FireBullet()
-        {
-            if (CurrentAmmo > 0 && !IsReloading)
-            {
-                Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-                CurrentAmmo--;
-                Debug.Log($"Fired bullet. Ammo remaining: {CurrentAmmo}");
-                
-                if (CurrentAmmo <= 0)
-                {
-                    StartCoroutine(ReloadWeapon());
-                }
-            }
-        }
-        
-        public void ThrowGrenade()
-        {
-            if (CurrentGrenades > 0 && !IsThrowingGrenade)
-            {
-                Instantiate(grenadePrefab, grenadePoint.position, grenadePoint.rotation);
-                CurrentGrenades--;
-                Debug.Log($"Threw grenade. Grenades remaining: {CurrentGrenades}");
-                
-                StartCoroutine(GrenadeCooldown());
-            }
-        }
-        
-        private IEnumerator ReloadWeapon()
-        {
-            Debug.Log("Reloading weapon...");
-            IsReloading = true;
-            yield return new WaitForSeconds(reloadTime);
-            CurrentAmmo = maxAmmo;
-            IsReloading = false;
-            Debug.Log("Weapon reloaded!");
-        }
-        
-        private IEnumerator GrenadeCooldown()
-        {
-            IsThrowingGrenade = true;
-            yield return new WaitForSeconds(grenadeThrowCooldown);
-            IsThrowingGrenade = false;
-        }
         
         private void OnDrawGizmos()
         {
             // Draw patrol range
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, patrolRange);
+            if (Application.isPlaying)
+            {
+                Gizmos.DrawWireSphere(InitialPosition, patrolRange);
+            }
+            else
+            {
+                Gizmos.DrawWireSphere(transform.position, patrolRange);
+            }
             
             // Draw detection range
             Gizmos.color = Color.yellow;
@@ -260,4 +292,7 @@ namespace PatrolEnemy
             }
         }
     }
+    
+    
+    
 }
