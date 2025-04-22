@@ -14,8 +14,6 @@ namespace TextProcessing
 
     public class BanglaTextFixer : Singleton.SingletonPersistent
     {
-        public new static BanglaTextFixer Instance { get; private set; }
-
         [SerializeField]
         private string characterPrefixFix;
         public string CharacterPrefixFix
@@ -38,19 +36,6 @@ namespace TextProcessing
         {
             get => characterToIgnore;
             set => characterToIgnore = value;
-        }
-
-        protected override void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
         }
 
         public string FixBanglaText(string text)
@@ -125,9 +110,11 @@ namespace TextProcessing
                 return ""; // Return empty for null/empty input
             }
             
-            if (Instance != null) 
+            // Get the instance using the base class method
+            BanglaTextFixer instance = Singleton.SingletonPersistent.GetInstance<BanglaTextFixer>();
+            if (instance != null) 
             {
-                return Instance.FixBanglaText(originalText); // Use the instance method
+                return instance.FixBanglaText(originalText); // Use the retrieved instance method
             }
             else 
             {

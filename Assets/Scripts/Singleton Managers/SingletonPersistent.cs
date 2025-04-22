@@ -24,6 +24,7 @@ namespace Singleton
             else
             {
                 Instances[type] = this;
+                DontDestroyOnLoad(gameObject);
             }
 
             OnAwake();

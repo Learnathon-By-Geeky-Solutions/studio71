@@ -9,11 +9,8 @@ namespace UI.MainMenu
     /// </summary>
     public class MainMenuTransitioner : MonoBehaviour
     {
-        [Header("Scene Configuration")]
-        [Tooltip("Index of the game scene to load when Play is clicked")]
-        [SerializeField] private int gameSceneIndex = 1;
         
-       
+        
 
         #region Unity Lifecycle Methods
         private void Start()
@@ -31,8 +28,8 @@ namespace UI.MainMenu
         public void PlayGame()
         {
             PlayButtonSound();
-           
-            LoadGameScene();
+            AudioManager.StopSound(SoundKeys.BackgroundMusic);
+            SceneIndexes.LoadSceneByIndex(SceneIndexes.SlidingMenuScene);
         }
 
         /// <summary>
@@ -75,20 +72,7 @@ namespace UI.MainMenu
             AudioManager.PlaySound(SoundKeys.ButtonPress);
         }
 
-        /// <summary>
-        /// Loads the game scene asynchronously.
-        /// </summary>
-        private  void LoadGameScene()
-        {
-            try
-            {
-                SceneManager.LoadSceneAsync(gameSceneIndex);
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"Failed to load game scene at index {gameSceneIndex}: {e.Message}");
-            }
-        }
+      
 
         /// <summary>
         /// Quits the application.

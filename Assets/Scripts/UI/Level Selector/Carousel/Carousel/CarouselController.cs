@@ -217,15 +217,28 @@ namespace Carousel.UI
 
         protected virtual void AdjustIndexForClickedItem(CarouselItem<T> clickedItem)
         {
-            var targetItem = GetCarouselItemAt(_currentIndex + _data.Length);
-            int direction = _positioner.IsItemAfter(targetItem.RectTransform, clickedItem.RectTransform) ? -1 : 1;
+            var initiallyCenteredItem = GetCarouselItemAt(_currentIndex + _data.Length * _indexRepeatOffset);
+            bool wasClickOnCenter = (clickedItem == initiallyCenteredItem);
 
-            while (GetCarouselItemAt(_currentIndex + _data.Length) != clickedItem)
+            // If the click wasn't on the center item, adjust the index to center the clicked item
+            if (!wasClickOnCenter)
             {
-                _currentIndex += direction;
+                int direction = _positioner.IsItemAfter(initiallyCenteredItem.RectTransform, clickedItem.RectTransform) ? -1 : 1;
+                while (GetCarouselItemAt(_currentIndex + _data.Length * _indexRepeatOffset) != clickedItem)
+                {
+                    _currentIndex += direction;
+                }
             }
+            // If click was on center, _currentIndex remains the same
+            
+            UpdateData(); // Update visuals regardless of whether index changed
 
-            UpdateData();
+            // --- Selection Logic ---
+            // Only call Select if the item clicked was the one initially in the center
+            if (wasClickOnCenter)
+            {
+                Select();
+            }
         }
     }
 }

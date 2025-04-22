@@ -2,6 +2,7 @@ using Carousel.UI;
 using TMPro;
 using TextProcessing;
 using UnityEngine;
+using SingletonManagers;
 
 namespace LevelSelection
 {
@@ -22,6 +23,9 @@ namespace LevelSelection
 
         [Header("Positioning")]
         public Vector3 worldPosition;
+
+        [Header("Scene Loading")]
+        public int sceneIndexToLoad = -1; // Default to -1 (no scene)
     }
 
     /// <summary>
@@ -58,6 +62,7 @@ namespace LevelSelection
             OnCurrentItemUpdated.AddListener(UpdateActiveModel);
             OnCurrentItemUpdated.AddListener(UpdateName);
             OnCurrentItemUpdated.AddListener(UpdateDescription);
+            OnItemSelected.AddListener(LoadSelectedLevelScene);
         }
 
         private void UnregisterEventListeners()
@@ -66,6 +71,7 @@ namespace LevelSelection
             OnCurrentItemUpdated.RemoveListener(UpdateActiveModel);
             OnCurrentItemUpdated.RemoveListener(UpdateName);
             OnCurrentItemUpdated.RemoveListener(UpdateDescription);
+            OnItemSelected.RemoveListener(LoadSelectedLevelScene);
         }
 
         private void InitializeModels()
@@ -135,7 +141,19 @@ namespace LevelSelection
             _descriptionText.text = BanglaTextFixer.ApplyTextFix(originalDescription);
         }
 
-      
-        
+        /// <summary>
+        /// Loads the scene associated with the selected location data.
+        /// </summary>
+        private void LoadSelectedLevelScene(LocationData data)
+        {
+            if (data == null) return;
+
+            // Check if a valid scene index is assigned
+            if (data.sceneIndexToLoad >= 0) 
+            {
+                SceneIndexes.LoadSceneByIndex(data.sceneIndexToLoad);
+            }
+            else { Debug.LogWarning($"Selected location '{data.name}' has no valid sceneIndexToLoad assigned ({data.sceneIndexToLoad}).");}
+        }
     }
 }
