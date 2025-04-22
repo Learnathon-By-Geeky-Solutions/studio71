@@ -13,15 +13,13 @@ namespace UI.MainMenu
         [Tooltip("Index of the game scene to load when Play is clicked")]
         [SerializeField] private int gameSceneIndex = 1;
         
-        [Header("Debug Options")]
-        [Tooltip("Whether to log button click events to the console")]
-        [SerializeField] private bool enableDebugLogs = true;
+       
 
         #region Unity Lifecycle Methods
         private void Start()
         {
             PlayBackgroundMusic();
-            LogDebug("MainMenuTransitioner started");
+         
         }
         #endregion
 
@@ -33,7 +31,7 @@ namespace UI.MainMenu
         public void PlayGame()
         {
             PlayButtonSound();
-            LogDebug("Play button clicked");
+           
             LoadGameScene();
         }
 
@@ -44,7 +42,7 @@ namespace UI.MainMenu
         public void Settings()
         {
             PlayButtonSound();
-            LogDebug("Settings button clicked");
+            
             // TODO: Implement settings functionality
         }
 
@@ -55,7 +53,7 @@ namespace UI.MainMenu
         public void QuitGame()
         {
             PlayButtonSound();
-            LogDebug("Quit button clicked");
+           
             QuitApplication();
         }
         #endregion
@@ -107,13 +105,7 @@ namespace UI.MainMenu
         /// <summary>
         /// Logs a debug message if debug logging is enabled.
         /// </summary>
-        private void LogDebug(string message)
-        {
-            if (enableDebugLogs)
-            {
-                Debug.Log(message);
-            }
-        }
+        
         #endregion
     }
 }

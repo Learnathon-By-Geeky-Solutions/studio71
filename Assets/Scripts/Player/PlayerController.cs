@@ -88,7 +88,7 @@ namespace Player
         }
         private void OnDisable()
         {
-            AudioManager.Instance.StopSound(currentMovementSound);
+            AudioManager.StopSound(currentMovementSound);
             InputHandler.Instance.OnCrouch -= Crouch;
             InputHandler.Instance.OnSprint -= Sprint;
             InputHandler.Instance.OnPrimaryWeapon -= PrimaryWeapon;
@@ -353,7 +353,7 @@ namespace Player
                 {
                     // Stop any current movement sound
                     if (isPlayingMovementSound)
-                        AudioManager.Instance.StopSound(currentMovementSound);
+                        AudioManager.StopSound(currentMovementSound);
 
                     // Start new movement sound
                     AudioManager.PlaySound(soundToPlay, transform.position);
@@ -364,7 +364,7 @@ namespace Player
             else if (isPlayingMovementSound)
             {
                 // Stop sound when player stops moving
-                AudioManager.Instance.StopSound(currentMovementSound);
+                AudioManager.StopSound(currentMovementSound);
                 isPlayingMovementSound = false;
                 currentMovementSound = "";
             }

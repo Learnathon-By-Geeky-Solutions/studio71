@@ -46,6 +46,9 @@ namespace SingletonManagers
 
         private readonly Dictionary<string, AudioClipInfo> _clipDictionary = new Dictionary<string, AudioClipInfo>();
         private readonly Queue<AudioSource> _audioSourcePool = new Queue<AudioSource>();
+        private float _sfxVolumeMultiplier = 1.0f; // Global volume multiplier for SFX
+        private float _backgroundMusicVolumeMultiplier = 1.0f; // Global volume multiplier for background music
+        private AudioSource _backgroundMusicSource; // Reference to the current background music source
 
         private void Start()
         {
@@ -69,6 +72,27 @@ namespace SingletonManagers
             for (int i = 0; i < initialPoolSize; i++)
             {
                 CreateAudioSource();
+            }
+        }
+
+        public void SetSfxVolume(float volume)
+        {
+            _sfxVolumeMultiplier = Mathf.Clamp01(volume);
+        }
+
+        public void SetBackgroundMusicVolume(float volume)
+        {
+            _backgroundMusicVolumeMultiplier = Mathf.Clamp01(volume);
+
+            // Update the volume of the currently playing background music source
+            if (_backgroundMusicSource != null && _backgroundMusicSource.isPlaying)
+            {
+                // Find the original AudioClipInfo to get the default volume
+                if (_clipDictionary.TryGetValue(SoundKeys.BackgroundMusic, out AudioClipInfo clipInfo))
+                {
+                    // Apply the multiplier to the clip's default volume
+                    _backgroundMusicSource.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
+                }
             }
         }
 
@@ -113,7 +137,19 @@ namespace SingletonManagers
 
             // Configure the audio source
             audioSource.clip = clipInfo.clip;
-            audioSource.volume = clipInfo.defaultVolume * volumeMultiplier;
+            float finalVolume = clipInfo.defaultVolume * volumeMultiplier;
+
+            // Apply the correct global volume multiplier
+            if (soundName == SoundKeys.BackgroundMusic)
+            {
+                finalVolume *= _backgroundMusicVolumeMultiplier;
+            }
+            else // Apply SFX volume to all other sounds
+            {
+                 finalVolume *= _sfxVolumeMultiplier;
+            }
+
+            audioSource.volume = finalVolume;
             audioSource.pitch = clipInfo.defaultPitch * pitchMultiplier;
             audioSource.loop = clipInfo.isLoop;
             audioSource.spatialBlend = clipInfo.spatialBlend;
@@ -125,14 +161,37 @@ namespace SingletonManagers
             audioSource.gameObject.SetActive(true);
             audioSource.Play();
 
-            // Return to pool when done playing
+            // If this is background music, store the reference
+            if (soundName == SoundKeys.BackgroundMusic)
+            {
+                // Optional: Stop any previously playing background music if desired
+                // if (_backgroundMusicSource != null && _backgroundMusicSource.isPlaying) 
+                // { 
+                //     StopSoundInternal(SoundKeys.BackgroundMusic); // Or just stop the specific source 
+                // }
+                _backgroundMusicSource = audioSource; 
+            }
+
+            // Return to pool when done playing (only for non-looping sounds)
             if (!clipInfo.isLoop)
             {
                 StartCoroutine(ReturnToPool(audioSource, clipInfo.clip.length / audioSource.pitch));
             }
         }
 
-        public void StopSound(string soundName)
+        public static void StopSound(string soundName)
+        {
+            if (Instance != null)
+            {
+                Instance.StopSoundInternal(soundName);
+            }
+            else
+            {
+                Debug.LogWarning($"AudioManager instance not found. Cannot stop sound: {soundName}");
+            }
+        }
+
+        private void StopSoundInternal(string soundName)
         {
             if (!_clipDictionary.ContainsKey(soundName))
             {
@@ -146,6 +205,11 @@ namespace SingletonManagers
             {
                 if (source.isPlaying && source.clip == _clipDictionary[soundName].clip)
                 {
+                    // If stopping the background music source, clear the reference
+                    if (source == _backgroundMusicSource)
+                    {
+                        _backgroundMusicSource = null;
+                    }
                     source.Stop();
                     source.gameObject.SetActive(false);
                     _audioSourcePool.Enqueue(source);
@@ -168,6 +232,11 @@ namespace SingletonManagers
             
             if (audioSource != null)
             {
+                // If returning the background music source, clear the reference
+                if (audioSource == _backgroundMusicSource)
+                {
+                     _backgroundMusicSource = null;
+                }
                 audioSource.Stop();
                 audioSource.gameObject.SetActive(false);
                 _audioSourcePool.Enqueue(audioSource);

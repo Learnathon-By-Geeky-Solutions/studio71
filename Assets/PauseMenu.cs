@@ -7,7 +7,10 @@ public class PauseMenu : MonoBehaviour
 {   
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
+    public GameObject  soundMenuUI;
+    public GameObject pauseMenuButtons;
     private PlayerController _playerController;
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -40,6 +43,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         GameIsPaused = false;
         _playerController.enabled = true; // Enable player controls when resuming
+        AudioManager.StopSound(SoundKeys.BackgroundMusic);
         Debug.Log("Resuming game...");
         // Hide the pause menu UI here
     }
@@ -50,6 +54,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         GameIsPaused = true;
         _playerController.enabled = false; // Disable player controls when paused
+        AudioManager.PlaySound(SoundKeys.BackgroundMusic);
 
     }
         else  {
@@ -66,7 +71,9 @@ public class PauseMenu : MonoBehaviour
     }
     public void Sound()
     {
-        Debug.Log("Sound of  game...");
+        soundMenuUI.SetActive(true);
+        pauseMenuButtons.SetActive(false);
+
         // Restart the current scene here
         // SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Uncomment to restart the current scene
     }
