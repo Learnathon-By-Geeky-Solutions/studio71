@@ -1,83 +1,66 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class AlertState : IEnemyState
     {
-        private readonly EnemyAI enemy;
-        private bool _countdownStarted;
-
-        public AlertState(EnemyAI enemyAI)
+        private float alertTimer = 0f;
+        
+        public void EnterState(EnemyController controller)
         {
-            enemy = enemyAI;
+            Debug.Log("Entered Alert State");
+            alertTimer = 0f;
+            controller.AlertTime = 3f; // Reset alert countdown
+            controller.Agent.isStopped = true; // Stop moving while in alert state
         }
-
-        public void Enter()
+        
+        public void UpdateState(EnemyController controller)
         {
-            Debug.Log("Entering Alert State");
-
-            // Reset alert timer
-            enemy.currentAlertTime = 0f;
-            _countdownStarted = false;
-
-            // Stop moving
-            enemy.navMeshAgent.ResetPath();
-        }
-
-        public void Debuglogcheck()
-        {
-            if (_countdownStarted == false)
+            if (controller.CurrentTarget == null)
             {
-                Debug.Log("Waiting for alert state");
-            }
-        }
-
-        public void Execute()
-        {
-            // Always look at player
-            if (enemy.player != null)
-            {
-                Vector3 lookDirection = enemy.player.position - enemy.transform.position;
-                lookDirection.y = 0;
-                if (lookDirection != Vector3.zero)
-                {
-                    enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
-                }
-            }
-
-            // Check if player is out of detection range
-            if (!enemy.playerInDetectionRange)
-            {
-                enemy.ChangeState(enemy.idleState);
+                controller.ChangeState(new IdleState());
                 return;
             }
-
-            // Check line of sight
-            if (enemy.playerInLineOfSight)
+            
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            
+            // If player moved out of detection range, return to idle
+            if (distanceToPlayer > controller.DetectionRange)
             {
-                // Player is visible, start or continue countdown
-                _countdownStarted = true;
-                enemy.currentAlertTime += Time.deltaTime;
-
-                // If countdown is complete, switch to follow state
-                if (enemy.currentAlertTime >= enemy.alertCountdown)
+                controller.ChangeState(new IdleState());
+                return;
+            }
+            
+            // Look at player on Y axis only
+            Vector3 targetPosition = controller.CurrentTarget.position;
+            targetPosition.y = controller.transform.position.y;
+            controller.transform.LookAt(targetPosition);
+            
+            // If line of sight is clear, count down alert timer
+            if (controller.HasLineOfSight)
+            {
+                alertTimer += Time.deltaTime;
+                Debug.Log($"Alert countdown: {controller.AlertTime - alertTimer}");
+                
+                // When timer reaches alert time, start following
+                if (alertTimer >= controller.AlertTime)
                 {
-                    enemy.ChangeState(enemy.followState);
-                  
+                    controller.ChangeState(new FollowState());
+                    return;
                 }
             }
             else
             {
-                // Player is not visible, pause countdown
-                _countdownStarted = false;
+                // Reset timer if line of sight is lost
+                alertTimer = 0f;
             }
         }
-
-        public void Exit()
+        
+        public void ExitState(EnemyController controller)
         {
-            Debug.Log("Exiting Alert State");
+            Debug.Log("Exited Alert State");
+            controller.Agent.isStopped = false;
         }
+        
     }
-}  
+}
