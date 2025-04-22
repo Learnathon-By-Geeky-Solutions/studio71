@@ -1,80 +1,78 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class FollowState : IEnemyState
     {
-        private readonly EnemyAI enemy;
-        private readonly float updatePathInterval = 0.5f;
-        private float updatePathTimer = 0f;
-
-        public FollowState(EnemyAI enemyAI)
+        public void EnterState(EnemyController controller)
         {
-            enemy = enemyAI;
+            Debug.Log("Entered Follow State");
         }
-
-        public void Enter()
+        
+        public void UpdateState(EnemyController controller)
         {
-            Debug.Log("Entering Follow State");
-
-            // Set agent speed
-            enemy.navMeshAgent.speed = 3.5f;
-
-            // Start following player
-            if (enemy.player != null)
+            if (controller.CurrentTarget == null)
             {
-                enemy.navMeshAgent.SetDestination(enemy.player.position);
-            }
-        }
-
-        public void Execute()
-        {
-            // Check if player is out of detection range
-            if (!enemy.playerInDetectionRange)
-            {
-                enemy.ChangeState(enemy.idleState);
+                controller.ChangeState(new IdleState());
                 return;
             }
-
-            // Check if player is in attack range
-            if (enemy.playerInAttackRange)
+            
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            
+            // If player moved out of detection range, return to idle
+            if (distanceToPlayer > controller.DetectionRange)
             {
-                // Decide between shooting and grenade throwing based on line of sight
-                if (enemy.playerInLineOfSight)
+                controller.ChangeState(new IdleState());
+                return;
+            }
+            
+            // If player is within attack range, switch to appropriate attack state
+            if (distanceToPlayer <= controller.AttackRange)
+            {
+                if (controller.HasLineOfSight)
                 {
-                    enemy.ChangeState(enemy.shootState);
-                    return;
-                }
-                else if (enemy.currentGrenades > 0)
-                {
-                    enemy.ChangeState(enemy.grenadeThrowState);
-                    return;
+                    controller.ChangeState(new ShootState());
                 }
                 else
                 {
-                    // No grenades, try to get line of sight
-                    enemy.ChangeState(enemy.shootState);
-                    return;
+                    // Only switch to grenade throw if we have grenades
+                    if (controller.CurrentGrenades > 0)
+                    {
+                        controller.ChangeState(new GrenadeThrowState());
+                    }
+                    else
+                    {
+                        // Try to move to get line of sight
+                        controller.Agent.SetDestination(controller.CurrentTarget.position);
+                    }
                 }
+                return;
             }
-
-            // Update path to player periodically
-            updatePathTimer += Time.deltaTime;
-            if (updatePathTimer >= updatePathInterval)
-            {
-                updatePathTimer = 0f;
-                if (enemy.player != null)
-                {
-                    enemy.navMeshAgent.SetDestination(enemy.player.position);
-                }
-            }
+            
+            // Follow the player
+            controller.Agent.SetDestination(controller.CurrentTarget.position);
         }
-
-        public void Exit()
+        
+        public void ExitState(EnemyController controller)
         {
-            Debug.Log("Exiting Follow State");
+            Debug.Log("Exited Follow State");
+        }
+        
+        public void OnDrawGizmos(EnemyController controller)
+        {
+            if (controller.CurrentTarget != null)
+            {
+                // Draw path to player
+                Gizmos.color = Color.blue;
+                if (controller.Agent.hasPath)
+                {
+                    Vector3[] corners = controller.Agent.path.corners;
+                    for (int i = 0; i < corners.Length - 1; i++)
+                    {
+                        Gizmos.DrawLine(corners[i], corners[i + 1]);
+                    }
+                }
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
+using UnityEngine;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public interface IEnemyState
     {
-        void Enter();
-        void Execute();
-        void Exit();
+        void EnterState(EnemyController controller);
+        void UpdateState(EnemyController controller);
+        void ExitState(EnemyController controller);
+        void OnDrawGizmos(EnemyController controller);
     }
 }

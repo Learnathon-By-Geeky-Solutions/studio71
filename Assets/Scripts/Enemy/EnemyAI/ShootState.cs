@@ -1,147 +1,68 @@
 using UnityEngine;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class ShootState : IEnemyState
     {
-        private readonly EnemyAI _enemy;
-        private float _shootTimer = 0f;
-        private float _repositionTimer = 0f;
-        private readonly float _repositionInterval = 3f;
-        public bool IsRepositioning { get; private set; } = false;
-
-        public ShootState(EnemyAI enemyAI)
+        private float fireRate = 0.5f;
+        private float nextFireTime = 0f;
+        
+        public void EnterState(EnemyController controller)
         {
-            _enemy = enemyAI;
+            Debug.Log("Entered Shoot State");
+            nextFireTime = 0f;
         }
-
-        public void Enter()
+        
+        public void UpdateState(EnemyController controller)
         {
-            Debug.Log("Entering Shoot State");
-
-            // Reset timers
-            _shootTimer = 0f;
-            _repositionTimer = 0f;
-            IsRepositioning = false;
-
-            // Stop moving initially to shoot
-            _enemy.navMeshAgent.ResetPath();
-        }
-
-        public void Execute()
-        {
-            // Always look at player
-            LookAtPlayer();
-
-            // Check if player is out of attack range
-            if (!_enemy.playerInAttackRange)
+            if (controller.CurrentTarget == null)
             {
-                _enemy.ChangeState(_enemy.followState);
+                controller.ChangeState(new IdleState());
                 return;
             }
-
-            // Handle repositioning when no line of sight
-            if (!_enemy.playerInLineOfSight && _enemy.currentGrenades <= 0)
+            
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            
+            // If player moved out of attack range, switch to follow state
+            if (distanceToPlayer > controller.AttackRange)
             {
-                HandleRepositioning();
+                controller.ChangeState(new FollowState());
                 return;
             }
-
-            // Switch to grenade throw if we have grenades and lose line of sight
-            if (!_enemy.playerInLineOfSight && _enemy.currentGrenades > 0)
+            
+            // If line of sight is lost, switch to grenade throw state if we have grenades
+            if (!controller.HasLineOfSight && controller.CurrentGrenades > 0)
             {
-                _enemy.ChangeState(_enemy.grenadeThrowState);
+                controller.ChangeState(new GrenadeThrowState());
                 return;
             }
-
-            // We have line of sight, stop moving and shoot
-            if (IsRepositioning)
+            
+            // Look at player on Y axis only
+            Vector3 targetPosition = controller.CurrentTarget.position;
+            targetPosition.y = controller.transform.position.y;
+            controller.transform.LookAt(targetPosition);
+            
+            // Shoot at player if we can
+            if (Time.time >= nextFireTime && !controller.IsReloading)
             {
-                StopRepositioning();
-            }
-
-            // Shooting logic
-            HandleShooting();
-        }
-
-        private void LookAtPlayer()
-        {
-            if (_enemy.player != null)
-            {
-                Vector3 lookDirection = _enemy.player.position - _enemy.transform.position;
-                lookDirection.y = 0;
-
-                if (lookDirection != Vector3.zero)
-                {
-                    _enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
-                }
+                controller.FireBullet();
+                nextFireTime = Time.time + fireRate;
             }
         }
-
-        private void HandleRepositioning()
+        
+        public void ExitState(EnemyController controller)
         {
-            if (!IsRepositioning)
+            Debug.Log("Exited Shoot State");
+        }
+        
+        public void OnDrawGizmos(EnemyController controller)
+        {
+            if (controller.CurrentTarget != null)
             {
-                StartRepositioning();
+                // Draw attack line
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(controller.FirePoint.position, controller.CurrentTarget.position);
             }
-            else
-            {
-                CheckRepositionTarget();
-            }
-        }
-
-        private void StartRepositioning()
-        {
-            // Declare repositionTarget as a local variable
-            Vector3 repositionTarget = _enemy.FindPositionWithLineOfSight();
-            _enemy.navMeshAgent.SetDestination(repositionTarget);
-            IsRepositioning = true;
-
-            Debug.Log("Repositioning Target");
-        }
-
-        private void CheckRepositionTarget()
-        {
-            // Declare repositionTarget as a local variable
-            Vector3 repositionTarget = _enemy.FindPositionWithLineOfSight();
-
-            // Check if we've reached the repositioning target
-            if (_enemy.navMeshAgent.remainingDistance <= _enemy.navMeshAgent.stoppingDistance)
-            {
-                _repositionTimer += Time.deltaTime;
-
-                // Try another position after a delay if still no line of sight
-                if (_repositionTimer >= _repositionInterval)
-                {
-                    _repositionTimer = 0f;
-                    _enemy.navMeshAgent.SetDestination(repositionTarget);
-                }
-            }
-        }
-
-        private void StopRepositioning()
-        {
-            _enemy.navMeshAgent.ResetPath();
-            IsRepositioning = false;
-        }
-
-        private void HandleShooting()
-        {
-            if (!_enemy.isReloading)
-            {
-                _shootTimer += Time.deltaTime;
-
-                if (_shootTimer >= 1f / _enemy.fireRate)
-                {
-                    _shootTimer = 0f;
-                    _enemy.Shoot();
-                }
-            }
-        }
-
-        public void Exit()
-        {
-            Debug.Log("Exiting Shoot State");
         }
     }
 }
