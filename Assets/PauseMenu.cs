@@ -1,3 +1,4 @@
+using SingletonManagers;
 using UnityEngine;
 
 public class PauseMenu : MonoBehaviour
@@ -9,34 +10,41 @@ public class PauseMenu : MonoBehaviour
     {
         
     }
+    void OnEnable()
+    {
+        InputHandler.Instance.OnPause += Pause;
+        
+        
+
+    }
+    void OnDisable()
+    {
+        InputHandler.Instance.OnPause -= Pause;
+       
+    }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            if (GameIsPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
-        }
-    }
+    
+    
     public void Resume()
     {   pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
         // Hide the pause menu UI here
     }
+
     void Pause()
-    {   pauseMenuUI.SetActive(true);
+    {   if(!GameIsPaused) {
+        pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+    }
+        else  {
+            Resume();
+        }
         // Show the pause menu UI here
     }
+    
     public void LoadMenu()
     {
         Debug.Log("Loading menu...");

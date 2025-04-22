@@ -26,14 +26,9 @@ namespace SingletonManagers
         public event Action<bool> OnSprint;
         public event OnActionEvent OnInteract;
 
-        protected override void Awake()
-           {
-               base.Awake(); // Important: Call base to preserve singleton behavior
+        public event OnActionEvent OnPause;
 
-               // Dummy fallback to suppress SonarCloud warnings
-               OnAttack += _ => { };
-               OnSprint += _ => { };
-           }
+      
         private void Start()
         {
             MoveInput = gameObject.GetComponent<PlayerInput>().actions.FindAction("Move");
@@ -118,6 +113,13 @@ namespace SingletonManagers
             if (context.performed)
             {
                 OnInteract?.Invoke();
+            }
+        }
+        public void PauseAction(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                OnPause?.Invoke();
             }
         }
 
