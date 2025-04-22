@@ -62,7 +62,7 @@ namespace LevelSelection
             OnCurrentItemUpdated.AddListener(UpdateActiveModel);
             OnCurrentItemUpdated.AddListener(UpdateName);
             OnCurrentItemUpdated.AddListener(UpdateDescription);
-            OnItemSelected.AddListener(LoadSelectedLevelScene);
+            OnItemSelected.AddListener(HandleItemSelected);
         }
 
         private void UnregisterEventListeners()
@@ -71,7 +71,7 @@ namespace LevelSelection
             OnCurrentItemUpdated.RemoveListener(UpdateActiveModel);
             OnCurrentItemUpdated.RemoveListener(UpdateName);
             OnCurrentItemUpdated.RemoveListener(UpdateDescription);
-            OnItemSelected.RemoveListener(LoadSelectedLevelScene);
+            OnItemSelected.RemoveListener(HandleItemSelected);
         }
 
         private void InitializeModels()
@@ -142,9 +142,17 @@ namespace LevelSelection
         }
 
         /// <summary>
+        /// Instance method wrapper to call the static scene loading logic when an item is selected.
+        /// </summary>
+        private void HandleItemSelected(LocationData data)
+        {
+            LoadSelectedLevelScene(data);
+        }
+        
+        /// <summary>
         /// Loads the scene associated with the selected location data.
         /// </summary>
-        private void LoadSelectedLevelScene(LocationData data)
+        private static void LoadSelectedLevelScene(LocationData data)
         {
             if (data == null) return;
 

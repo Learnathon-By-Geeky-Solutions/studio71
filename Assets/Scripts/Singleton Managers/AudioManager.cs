@@ -85,14 +85,12 @@ namespace SingletonManagers
             _backgroundMusicVolumeMultiplier = Mathf.Clamp01(volume);
 
             // Update the volume of the currently playing background music source
-            if (_backgroundMusicSource != null && _backgroundMusicSource.isPlaying)
+            if (_backgroundMusicSource != null && 
+                _backgroundMusicSource.isPlaying && 
+                _clipDictionary.TryGetValue(SoundKeys.BackgroundMusic, out AudioClipInfo clipInfo))
             {
-                // Find the original AudioClipInfo to get the default volume
-                if (_clipDictionary.TryGetValue(SoundKeys.BackgroundMusic, out AudioClipInfo clipInfo))
-                {
-                    // Apply the multiplier to the clip's default volume
-                    _backgroundMusicSource.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
-                }
+                // Apply the multiplier to the clip's default volume
+                _backgroundMusicSource.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
             }
         }
 
@@ -164,11 +162,7 @@ namespace SingletonManagers
             // If this is background music, store the reference
             if (soundName == SoundKeys.BackgroundMusic)
             {
-                // Optional: Stop any previously playing background music if desired
-                // if (_backgroundMusicSource != null && _backgroundMusicSource.isPlaying) 
-                // { 
-                //     StopSoundInternal(SoundKeys.BackgroundMusic); // Or just stop the specific source 
-                // }
+               
                 _backgroundMusicSource = audioSource; 
             }
 
