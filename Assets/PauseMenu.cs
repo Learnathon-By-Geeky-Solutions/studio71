@@ -1,3 +1,4 @@
+using System;
 using Player;
 using SingletonManagers;
 using UnityEngine;
@@ -39,6 +40,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         GameIsPaused = false;
         _playerController.enabled = true; // Enable player controls when resuming
+        Debug.Log("Resuming game...");
         // Hide the pause menu UI here
     }
 
@@ -62,9 +64,9 @@ public class PauseMenu : MonoBehaviour
         // Load the main menu scene here
         // SceneManager.LoadScene("MainMenu"); // Uncomment and replace with your main menu scene name
     }
-    public void restart()
+    public void Sound()
     {
-        Debug.Log("Restarting game...");
+        Debug.Log("Sound of  game...");
         // Restart the current scene here
         // SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Uncomment to restart the current scene
     }

@@ -27,6 +27,7 @@ namespace SingletonManagers
         public event OnActionEvent OnInteract;
 
         public event OnActionEvent OnPause;
+        
 
       
         private void Start()
