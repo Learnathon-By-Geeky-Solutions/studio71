@@ -144,7 +144,7 @@ namespace LevelSelection
         /// <summary>
         /// Loads the scene associated with the selected location data.
         /// </summary>
-        private void LoadSelectedLevelScene(LocationData data)
+        private static void LoadSelectedLevelScene(LocationData data)
         {
             if (data == null) return;
 

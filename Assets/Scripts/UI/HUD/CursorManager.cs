@@ -23,10 +23,7 @@ namespace UI.HUD
             {
                 Debug.LogWarning($"Sprite Field empty on {gameObject.name}");
             }
-            if(SceneManager.GetActiveScene().buildIndex==1)
-            {
-                _image.sprite = _crossHair;
-            }
+            _image.sprite = SceneManager.GetActiveScene().buildIndex >= 2 ? _crossHair : _generalCursor;
         }
         private void Start()
         {
@@ -37,6 +34,11 @@ namespace UI.HUD
         private void Update()
         {
             rectTransform.position = new Vector3(InputHandler.Instance.MousePosition.x, InputHandler.Instance.MousePosition.y + _yOffset, 0);
+        }
+
+        private void CursorMovement()
+        {
+
         }
     }
 }

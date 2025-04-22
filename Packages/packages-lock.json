@@ -14,15 +14,6 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
-    "com.lazysquirrellabs.terracedterraingenerator": {
-      "version": "https://github.com/lazysquirrellabs/ttg.git?path=Assets/Libraries/TerracedTerrainGenerator",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.collections": "2.4.2"
-      },
-      "hash": "f22abad9aa11e24e36b8f9aebff49c2cecfd2320"
-    },
     "com.nobi.roundedcorners": {
       "version": "https://github.com/kirevdokimov/Unity-UI-Rounded-Corners.git",
       "depth": 0,
@@ -83,18 +74,6 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.collections": {
-      "version": "2.5.1",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.burst": "1.8.17",
-        "com.unity.test-framework": "1.4.5",
-        "com.unity.nuget.mono-cecil": "1.11.4",
-        "com.unity.test-framework.performance": "3.0.3"
-      },
       "url": "https://packages.unity.com"
     },
     "com.unity.editorcoroutines": {
@@ -166,13 +145,6 @@
         "com.unity.modules.uielements": "1.0.0"
       }
     },
-    "com.unity.nuget.mono-cecil": {
-      "version": "1.11.4",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.performance.profile-analyzer": {
       "version": "1.2.2",
       "depth": 0,
@@ -203,16 +175,6 @@
       "dependencies": {
         "com.unity.ext.nunit": "2.0.3",
         "com.unity.modules.imgui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.test-framework.performance": {
-      "version": "3.0.3",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.test-framework": "1.1.31",
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"

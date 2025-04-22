@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7943821007262572593
+--- !u!1 &7643786008768155173
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4473209696506183670}
-  - component: {fileID: 5209904753567926165}
-  - component: {fileID: 4055346295723809225}
+  - component: {fileID: 1998893830251600047}
+  - component: {fileID: 6662397912841019671}
+  - component: {fileID: 2523875752062429168}
   m_Layer: 0
   m_Name: Input Manager
   m_TagString: Untagged
@@ -18,28 +18,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4473209696506183670
+--- !u!4 &1998893830251600047
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7943821007262572593}
+  m_GameObject: {fileID: 7643786008768155173}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 3.3013988, y: 2.4646769, z: 1.8428483}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5209904753567926165
+--- !u!114 &6662397912841019671
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7943821007262572593}
+  m_GameObject: {fileID: 7643786008768155173}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
@@ -68,7 +68,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Look[/Mouse/delta,/Pen/delta]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: AttackAction
         m_Mode: 0
@@ -84,7 +84,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Attack[/Mouse/leftButton,/Keyboard/enter]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: InteractAction
         m_Mode: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Interact[/Keyboard/tab]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: CrouchAction
         m_Mode: 0
@@ -120,7 +120,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Jump[/Keyboard/space]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: PrimaryWeaponAction
         m_Mode: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Primary Weapon[/Keyboard/1]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: SecondaryWeaponAction
         m_Mode: 0
@@ -156,7 +156,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Next Action[/Keyboard/e]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: SprintAction
         m_Mode: 0
@@ -172,7 +172,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Sprint[/Keyboard/leftShift]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: ReloadAction
         m_Mode: 0
@@ -228,7 +228,7 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4055346295723809225}
+      - m_Target: {fileID: 2523875752062429168}
         m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
         m_MethodName: GrenadeAction
         m_Mode: 0
@@ -242,18 +242,34 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 813a636d-9a73-4899-b1ca-623d2b6a4964
     m_ActionName: 'Player/Greande[/Keyboard/g]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2523875752062429168}
+        m_TargetAssemblyTypeName: SingletonManagers.InputHandler, Assembly-CSharp
+        m_MethodName: PauseAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: b52b4af8-fadb-4110-88ef-9bcc68c9b525
+    m_ActionName: 'Player/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &4055346295723809225
+--- !u!114 &2523875752062429168
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7943821007262572593}
+  m_GameObject: {fileID: 7643786008768155173}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0d7c0974860d964e8163e7c14f3f8a3, type: 3}
