@@ -1,97 +1,125 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using SingletonManagers;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class GrenadeThrowState : IEnemyState
     {
-        private readonly EnemyAI _enemy;
-        private float _throwTimer = 0f;
-        private readonly float _throwInterval = 1f;
-        private bool _hasThrown = false;
-
-        public GrenadeThrowState(EnemyAI enemyAI)
+        private CancellationTokenSource grenadeCTS;
+        private bool hasThrown = false;
+        
+        
+        public void EnterState(EnemyController controller)
         {
-            _enemy = enemyAI;
+            Debug.Log("Entered Grenade Throw State");
+            hasThrown = false;
+            grenadeCTS = new CancellationTokenSource();
         }
-
-        public void Enter()
+        
+        public void UpdateState(EnemyController controller)
         {
-            Debug.Log("Entering Grenade Throw State");
-
-            // Reset timers
-            _throwTimer = 0f;
-            _hasThrown = false;
-
-            // Stop moving
-            _enemy.navMeshAgent.ResetPath();
-        }
-
-        public void Execute()
-        {
-            // Look at player
-            if (_enemy.player != null)
+            if (controller.CurrentTarget == null)
             {
-                Vector3 lookDirection = _enemy.player.position - _enemy.transform.position;
-                lookDirection.y = 0;
-                if (lookDirection != Vector3.zero)
-                {
-                    _enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
-                }
-            }
-
-            // Check if player is out of attack range
-            if (!_enemy.playerInAttackRange)
-            {
-                _enemy.ChangeState(_enemy.followState);
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
-
-            // Check if player is now in line of sight
-            if (_enemy.playerInLineOfSight)
+            
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            
+            // If player moved out of attack range, switch to follow state
+            if (distanceToPlayer > controller.AttackRange)
             {
-                _enemy.ChangeState(_enemy.shootState);
+                controller.ChangeState(EnemyController.EnemyStateType.Follow);
                 return;
             }
-
-            // Check if out of grenades
-            if (_enemy.currentGrenades <= 0)
+            
+            // If line of sight is gained, switch to shoot state
+            if (controller.HasLineOfSight)
             {
-                _enemy.ChangeState(_enemy.shootState);
+                controller.ChangeState(EnemyController.EnemyStateType.Shoot);
                 return;
             }
-
-            // Throw grenade if possible
-            if (_enemy.canThrowGrenade && !_hasThrown)
+            
+            // If we're out of grenades, switch to shoot state
+            if (controller.CurrentGrenades <= 0)
             {
-                _throwTimer += Time.deltaTime;
-
-                if (_throwTimer >= _throwInterval)
-                {
-                    _enemy.ThrowGrenade();
-                    _hasThrown = true;
-
-                    // Wait a bit after throwing before potentially changing state
-                    _throwTimer = 0f;
-                }
+                controller.ChangeState(EnemyController.EnemyStateType.Shoot);
+                return;
             }
-            else if (_hasThrown && _throwTimer < 2f)
+            
+            // Look at player position
+            Vector3 targetPosition = controller.CurrentTarget.position;
+            targetPosition.y = controller.transform.position.y;
+            controller.transform.LookAt(targetPosition);
+            
+            // Throw grenade if we haven't already
+            if (!hasThrown && !controller.IsThrowingGrenade && controller.CurrentGrenades > 0)
             {
-                // Wait a bit after throwing to see if the situation changes
-                _throwTimer += Time.deltaTime;
+                ThrowGrenadeAsync(controller);
+                hasThrown = true;
             }
-            else if (_hasThrown)
+            
+            // Wait for cooldown then switch back to follow state
+            if (hasThrown && !controller.IsThrowingGrenade)
             {
-                // After waiting, reassess the situation
-                _hasThrown = false;
-                _throwTimer = 0f;
+                controller.ChangeState(EnemyController.EnemyStateType.Follow);
             }
         }
-
-        public void Exit()
+        
+        public void ExitState(EnemyController controller)
         {
-            Debug.Log("Exiting Grenade Throw State");
+            Debug.Log("Exited Grenade Throw State");
+            grenadeCTS?.Cancel();
+            grenadeCTS?.Dispose();
+            grenadeCTS = null;
         }
+
+        private async void ThrowGrenadeAsync(EnemyController controller)
+        {
+            if (controller.CurrentGrenades <= 0)
+                return;
+                
+            controller.IsThrowingGrenade = true;
+            
+            // Use the model of the particle manager for our grenade
+            Vector3 targetPosition = controller.CurrentTarget.position;
+            GameObject grenade = GameObject.Instantiate(controller.GrenadePrefab, controller.GrenadePoint.position, controller.GrenadePoint.rotation);
+            
+            // Setup grenade trajectory (this would need a separate component on the grenade prefab)
+            Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
+            if (grenadeRb != null)
+            {
+                // Calculate arc trajectory
+                Vector3 directionToTarget = (targetPosition - controller.GrenadePoint.position).normalized;
+                float distanceToTarget = Vector3.Distance(controller.GrenadePoint.position, targetPosition);
+                
+                // Adjust force based on distance
+                float throwForce = Mathf.Clamp(distanceToTarget * 2f, 10f, 20f);
+                Vector3 throwDirection = directionToTarget + Vector3.up * 0.5f;
+                grenadeRb.AddForce(throwDirection.normalized * throwForce, ForceMode.Impulse);
+            }
+            
+            // Play explosion effect after delay
+            
+            controller.CurrentGrenades--;
+            Debug.Log($"Threw grenade. Grenades remaining: {controller.CurrentGrenades}");
+            
+            try
+            {
+                await Task.Delay((int)(controller.GrenadeThrowCooldown * 1000), grenadeCTS.Token);
+                controller.IsThrowingGrenade = false;
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Grenade cooldown interrupted");
+                controller.IsThrowingGrenade = false;
+            }
+        }
+        
     }
+    
+   
 }

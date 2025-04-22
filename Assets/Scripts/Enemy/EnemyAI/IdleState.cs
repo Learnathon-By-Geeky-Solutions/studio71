@@ -1,80 +1,99 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class IdleState : IEnemyState
     {
-        private readonly EnemyAI _enemy;
-        private readonly float _patrolWaitTime = 2f;
-        private float _patrolTimer = 0f;
-        public bool IsWaiting{ get; private set; } = false;
-        private bool _hasDestination = false;
-
-        public IdleState(EnemyAI enemyAI)
+       
+         private Vector3 patrolPoint;
+    private float patrolWaitTime = 2f;
+    private float patrolTimer = 0f;
+    private bool hasPatrolPoint = false;
+    private bool returningToZone = false;
+        
+        public void EnterState(EnemyController controller)
         {
-            _enemy = enemyAI;
+           Debug.Log("Entered Idle State");
+        patrolTimer = 0f;
+        hasPatrolPoint = false;
+        
+        // Check if enemy is outside patrol zone
+        float distanceFromStart = Vector3.Distance(controller.transform.position, controller.InitialPosition);
+        if (distanceFromStart > controller.PatrolRange * 0.8f)
+        {
+            // Need to return to patrol zone first
+            returningToZone = true;
+            patrolPoint = controller.InitialPosition;
+            controller.Agent.SetDestination(patrolPoint);
+            hasPatrolPoint = true;
         }
-
-        public void Enter()
-        {
-            Debug.Log("Entering Idle State");
-
-            // Reset patrol timer
-            _patrolTimer = 0f;
-            IsWaiting = false;
-            _hasDestination = false;
-
-            // Set agent speed for patrolling
-            _enemy.navMeshAgent.speed = 2f;
         }
-
-        public void Execute()
+        
+        public void UpdateState(EnemyController controller)
         {
-            // Check if player is in detection range
-            if (_enemy.playerInDetectionRange)
+            // If player detected, switch to alert state
+        if (controller.CurrentTarget != null)
+        {
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            
+            if (distanceToPlayer <= controller.DetectionRange)
             {
-                _enemy.ChangeState(_enemy.alertState);
+                controller.ChangeState(EnemyController.EnemyStateType.Alert);
                 return;
             }
-
-            // Random patrol behavior
-            if (IsWaiting)
+        }
+        
+        // Patrol behavior
+        if (!hasPatrolPoint)
+        {
+            GetPatrolPoint(controller);
+        }
+        
+        // Check if we've reached the patrol point
+        if (hasPatrolPoint && controller.Agent.remainingDistance <= controller.Agent.stoppingDistance)
+        {
+            if (returningToZone)
             {
-                _patrolTimer += Time.deltaTime;
-                if (_patrolTimer >= _patrolWaitTime)
-                {
-                    IsWaiting = false;
-                    _hasDestination = false;
-                    _patrolTimer = 0f;
-                }
+                // We've returned to patrol zone, now patrol normally
+                returningToZone = false;
+                hasPatrolPoint = false;
             }
             else
             {
-                if (!_hasDestination)
+                // Wait for a bit at the patrol point
+                patrolTimer += Time.deltaTime;
+                
+                if (patrolTimer >= patrolWaitTime)
                 {
-                    // Get a new random patrol point
-                    Vector3 newDestination = _enemy.GetRandomPatrolPoint();
-                    _enemy.navMeshAgent.SetDestination(newDestination);
-                    _hasDestination = true;
-                }
-                else
-                {
-                    // Check if we've reached the destination
-                    if (_enemy.navMeshAgent.remainingDistance <= _enemy.navMeshAgent.stoppingDistance &&
-                        !_enemy.navMeshAgent.pathPending)
-                    {
-                        IsWaiting = true;
-                        _patrolTimer = 0f;
-                    }
+                    // Reset and get a new patrol point
+                    hasPatrolPoint = false;
+                    patrolTimer = 0f;
                 }
             }
         }
-
-        public void Exit()
-        {
-            Debug.Log("Exiting Idle State");
         }
+
+         private void GetPatrolPoint(EnemyController controller)
+    {
+        // Generate a random point within the patrol range from initial position
+        Vector2 randomCirclePoint = Random.insideUnitCircle * controller.PatrolRange;
+        Vector3 randomPoint = controller.InitialPosition + new Vector3(randomCirclePoint.x, 0f, randomCirclePoint.y);
+        
+        // Try to find a valid NavMesh point
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, controller.PatrolRange, NavMesh.AllAreas))
+        {
+            patrolPoint = hit.position;
+            controller.Agent.SetDestination(patrolPoint);
+            hasPatrolPoint = true;
+        }
+    }
+        
+        public void ExitState(EnemyController controller)
+        {
+            Debug.Log("Exited Idle State");
+        }
+        
     }
 }

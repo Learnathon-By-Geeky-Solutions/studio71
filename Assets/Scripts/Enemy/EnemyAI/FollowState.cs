@@ -1,80 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class FollowState : IEnemyState
     {
-        private readonly EnemyAI enemy;
-        private readonly float updatePathInterval = 0.5f;
-        private float updatePathTimer = 0f;
-
-        public FollowState(EnemyAI enemyAI)
+        public void EnterState(EnemyController controller)
         {
-            enemy = enemyAI;
+            Debug.Log("Entered Follow State");
+            controller.Agent.isStopped = false; // Ensure agent movement is enabled when entering follow
         }
 
-        public void Enter()
+        public void UpdateState(EnemyController controller)
         {
-            Debug.Log("Entering Follow State");
-
-            // Set agent speed
-            enemy.navMeshAgent.speed = 3.5f;
-
-            // Start following player
-            if (enemy.player != null)
+            if (controller.CurrentTarget == null)
             {
-                enemy.navMeshAgent.SetDestination(enemy.player.position);
-            }
-        }
-
-        public void Execute()
-        {
-            // Check if player is out of detection range
-            if (!enemy.playerInDetectionRange)
-            {
-                enemy.ChangeState(enemy.idleState);
+                controller.ChangeState(new IdleState());
                 return;
             }
 
-            // Check if player is in attack range
-            if (enemy.playerInAttackRange)
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+
+            // If player moved out of detection range, return to idle
+            if (distanceToPlayer > controller.DetectionRange)
             {
-                // Decide between shooting and grenade throwing based on line of sight
-                if (enemy.playerInLineOfSight)
-                {
-                    enemy.ChangeState(enemy.shootState);
-                    return;
-                }
-                else if (enemy.currentGrenades > 0)
-                {
-                    enemy.ChangeState(enemy.grenadeThrowState);
-                    return;
-                }
-                else
-                {
-                    // No grenades, try to get line of sight
-                    enemy.ChangeState(enemy.shootState);
-                    return;
-                }
+                controller.ChangeState(new IdleState());
+                return;
             }
 
-            // Update path to player periodically
-            updatePathTimer += Time.deltaTime;
-            if (updatePathTimer >= updatePathInterval)
+            // If player is within attack range, halt movement and switch to attack state
+            if (distanceToPlayer <= controller.AttackRange)
             {
-                updatePathTimer = 0f;
-                if (enemy.player != null)
+                controller.Agent.isStopped = true; // Stop the agent's movement
+
+                if (controller.HasLineOfSight)
                 {
-                    enemy.navMeshAgent.SetDestination(enemy.player.position);
+                    controller.ChangeState(new ShootState());
                 }
+                else if (controller.CurrentGrenades > 0)
+                {
+                    controller.ChangeState(new GrenadeThrowState());
+                }
+                // If no line of sight and no grenades, maybe do nothing or try to reposition (optional)
+                return;
             }
+
+            // If not in attack range, continue following the player
+            controller.Agent.SetDestination(controller.CurrentTarget.position);
+            controller.Agent.isStopped = false; // Ensure agent moves if outside attack range
         }
 
-        public void Exit()
+        public void ExitState(EnemyController controller)
         {
-            Debug.Log("Exiting Follow State");
+            Debug.Log("Exited Follow State");
+            controller.Agent.isStopped = false; // Ensure agent movement is enabled when exiting follow
         }
     }
 }

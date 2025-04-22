@@ -1,147 +1,106 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using System.Threading;
+using System;
 
-namespace patrolEnemy
+namespace PatrolEnemy
 {
     public class ShootState : IEnemyState
     {
-        private readonly EnemyAI _enemy;
-        private float _shootTimer = 0f;
-        private float _repositionTimer = 0f;
-        private readonly float _repositionInterval = 3f;
-        public bool IsRepositioning { get; private set; } = false;
+        private float fireRate = 0.5f;
+        private float nextFireTime = 0f;
+        private CancellationTokenSource reloadCTS;
 
-        public ShootState(EnemyAI enemyAI)
+
+        public void EnterState(EnemyController controller)
         {
-            _enemy = enemyAI;
+            Debug.Log("Entered Shoot State");
+            nextFireTime = 0f;
+            reloadCTS = new CancellationTokenSource();
         }
 
-        public void Enter()
+        public void UpdateState(EnemyController controller)
         {
-            Debug.Log("Entering Shoot State");
-
-            // Reset timers
-            _shootTimer = 0f;
-            _repositionTimer = 0f;
-            IsRepositioning = false;
-
-            // Stop moving initially to shoot
-            _enemy.navMeshAgent.ResetPath();
-        }
-
-        public void Execute()
-        {
-            // Always look at player
-            LookAtPlayer();
-
-            // Check if player is out of attack range
-            if (!_enemy.playerInAttackRange)
+            if (controller.CurrentTarget == null)
             {
-                _enemy.ChangeState(_enemy.followState);
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
 
-            // Handle repositioning when no line of sight
-            if (!_enemy.playerInLineOfSight && _enemy.currentGrenades <= 0)
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+
+            // If player moved out of attack range, switch to follow state
+            if (distanceToPlayer > controller.AttackRange)
             {
-                HandleRepositioning();
+                controller.ChangeState(EnemyController.EnemyStateType.Follow);
                 return;
             }
 
-            // Switch to grenade throw if we have grenades and lose line of sight
-            if (!_enemy.playerInLineOfSight && _enemy.currentGrenades > 0)
+            // If line of sight is lost, switch to grenade throw state if we have grenades
+            if (!controller.HasLineOfSight && controller.CurrentGrenades > 0)
             {
-                _enemy.ChangeState(_enemy.grenadeThrowState);
+                controller.ChangeState(EnemyController.EnemyStateType.GrenadeThrow);
                 return;
             }
 
-            // We have line of sight, stop moving and shoot
-            if (IsRepositioning)
+            // Look at player on Y axis only
+            Vector3 targetPosition = controller.CurrentTarget.position;
+            targetPosition.y = controller.transform.position.y;
+            controller.transform.LookAt(targetPosition);
+
+            // Shoot at player if we can
+            if (Time.time >= nextFireTime && !controller.IsReloading)
             {
-                StopRepositioning();
-            }
-
-            // Shooting logic
-            HandleShooting();
-        }
-
-        private void LookAtPlayer()
-        {
-            if (_enemy.player != null)
-            {
-                Vector3 lookDirection = _enemy.player.position - _enemy.transform.position;
-                lookDirection.y = 0;
-
-                if (lookDirection != Vector3.zero)
+                if (controller.CurrentAmmo > 0)
                 {
-                    _enemy.transform.rotation = Quaternion.LookRotation(lookDirection);
+                    FireBullet(controller);
+                    nextFireTime = Time.time + fireRate;
+                }
+                else
+                {
+                    ReloadWeaponAsync(controller).Forget();
                 }
             }
         }
 
-        private void HandleRepositioning()
+        public void ExitState(EnemyController controller)
         {
-            if (!IsRepositioning)
-            {
-                StartRepositioning();
-            }
-            else
-            {
-                CheckRepositionTarget();
-            }
+            Debug.Log("Exited Shoot State");
+            reloadCTS?.Cancel();
+            reloadCTS?.Dispose();
+            reloadCTS = null;
         }
 
-        private void StartRepositioning()
+        private void FireBullet(EnemyController controller)
         {
-            // Declare repositionTarget as a local variable
-            Vector3 repositionTarget = _enemy.FindPositionWithLineOfSight();
-            _enemy.navMeshAgent.SetDestination(repositionTarget);
-            IsRepositioning = true;
+            // Use object pooling if you have a pooling system
+            GameObject bullet = GameObject.Instantiate(controller.BulletPrefab, controller.FirePoint.position, controller.FirePoint.rotation);
+            controller.CurrentAmmo--;
+            Debug.Log($"Fired bullet. Ammo remaining: {controller.CurrentAmmo}");
 
-            Debug.Log("Repositioning Target");
-        }
-
-        private void CheckRepositionTarget()
-        {
-            // Declare repositionTarget as a local variable
-            Vector3 repositionTarget = _enemy.FindPositionWithLineOfSight();
-
-            // Check if we've reached the repositioning target
-            if (_enemy.navMeshAgent.remainingDistance <= _enemy.navMeshAgent.stoppingDistance)
+            if (controller.CurrentAmmo <= 0)
             {
-                _repositionTimer += Time.deltaTime;
-
-                // Try another position after a delay if still no line of sight
-                if (_repositionTimer >= _repositionInterval)
-                {
-                    _repositionTimer = 0f;
-                    _enemy.navMeshAgent.SetDestination(repositionTarget);
-                }
+                ReloadWeaponAsync(controller).Forget();
             }
         }
 
-        private void StopRepositioning()
+        private async UniTaskVoid ReloadWeaponAsync(EnemyController controller)
         {
-            _enemy.navMeshAgent.ResetPath();
-            IsRepositioning = false;
-        }
+            Debug.Log("Reloading weapon...");
+            controller.IsReloading = true;
 
-        private void HandleShooting()
-        {
-            if (!_enemy.isReloading)
+            try
             {
-                _shootTimer += Time.deltaTime;
-
-                if (_shootTimer >= 1f / _enemy.fireRate)
-                {
-                    _shootTimer = 0f;
-                    _enemy.Shoot();
-                }
+                await UniTask.Delay((int)(controller.ReloadTime * 1000), cancellationToken: reloadCTS.Token);
+                controller.CurrentAmmo = controller.MaxAmmo;
+                controller.IsReloading = false;
+                Debug.Log("Weapon reloaded!");
             }
-        }
-
-        public void Exit()
-        {
-            Debug.Log("Exiting Shoot State");
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Reload interrupted");
+                controller.IsReloading = false;
+            }
         }
     }
 }
