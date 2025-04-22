@@ -5,9 +5,12 @@ using UnityEngine;
 namespace UI.PauseMenu{
 public class PauseMenu : MonoBehaviour
 {   
-    // Encapsulated the state with a private field and a public static getter method
+   
     private static bool s_gameIsPaused = false;
-    public static bool IsGamePaused() => s_gameIsPaused;
+    public static bool IsGamePaused()
+    {
+        return s_gameIsPaused;
+    }
 
     [SerializeField] private GameObject pauseMenuUI;
     
@@ -42,7 +45,7 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {   pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        s_gameIsPaused = false; // Set private field
+        s_gameIsPaused = false; 
         _playerController.enabled = true; // Enable player controls when resuming
         AudioManager.StopSound(SoundKeys.BackgroundMusic);
         Debug.Log("Resuming game...");
@@ -54,7 +57,7 @@ public class PauseMenu : MonoBehaviour
         {
             pauseMenuUI.SetActive(true);
             Time.timeScale = 0f;
-            s_gameIsPaused = true; // Set private field
+            s_gameIsPaused = true; 
             _playerController.enabled = false; // Disable player controls when paused
             AudioManager.PlaySound(SoundKeys.BackgroundMusic);
 
