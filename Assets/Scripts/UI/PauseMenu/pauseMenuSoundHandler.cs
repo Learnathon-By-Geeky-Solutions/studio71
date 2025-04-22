@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using SingletonManagers;
-
+namespace UI.PauseMenu{
 public class pauseMenuSoundHandler : MonoBehaviour
 {     
     [Header("UI References")]
@@ -62,4 +62,5 @@ public class pauseMenuSoundHandler : MonoBehaviour
         pauseMenuButtons.SetActive(true);
     }
 
+}
 }

@@ -2,7 +2,7 @@ using System;
 using Player;
 using SingletonManagers;
 using UnityEngine;
-
+namespace UI.PauseMenu{
 public class PauseMenu : MonoBehaviour
 {   
     // Encapsulated the state
@@ -74,4 +74,5 @@ public class PauseMenu : MonoBehaviour
         soundMenuUI.SetActive(true);
         pauseMenuButtons.SetActive(false);
     }
+}
 }
