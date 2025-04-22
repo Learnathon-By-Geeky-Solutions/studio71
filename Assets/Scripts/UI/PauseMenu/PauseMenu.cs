@@ -67,16 +67,11 @@ public class PauseMenu : MonoBehaviour
     
     public void LoadMenu()
     {
-        Debug.Log("Loading menu...");
-        // Load the main menu scene here
-        // SceneManager.LoadScene("MainMenu"); // Uncomment and replace with your main menu scene name
+        SceneIndexes.LoadSceneByIndex(SceneIndexes.MaineMenuScene);
     }
     public void Sound()
     {
         soundMenuUI.SetActive(true);
         pauseMenuButtons.SetActive(false);
-
-        // Restart the current scene here
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Uncomment to restart the current scene
     }
 }
