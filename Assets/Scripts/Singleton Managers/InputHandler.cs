@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Singleton;
@@ -16,13 +15,14 @@ namespace SingletonManagers
         public Vector2 MoveDirection { get; private set; }
         public Vector2 MousePosition { get; private set; }
         public bool GrenadeThrowStart { get; private set; }
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3264:Events should not be declared but never used", Justification = "Used via runtime subscriptions")]
         public event Action<bool> OnAttack;
         public event OnActionEvent OnReload;
         public event OnActionEvent OnPrimaryWeapon;
         public event OnActionEvent OnSecondaryWeapon;
         public event OnActionEvent OnCrouch;
         public event OnActionEvent OnGrenade;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3264:Events should not be declared but never used", Justification = "Used via runtime subscriptions")]
         public event Action<bool> OnSprint;
         public event OnActionEvent OnInteract;
 
