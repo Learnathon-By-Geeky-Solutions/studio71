@@ -34,13 +34,9 @@ public class PauseMenuSoundHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     
-    public void OnSfxSliderChanged(float value)
+    
+    public static void OnSfxSliderChanged(float value)
     {
         if (AudioManager.Instance != null)
         {
@@ -48,7 +44,7 @@ public class PauseMenuSoundHandler : MonoBehaviour
         }
     }
 
-    public void OnBackgroundMusicSliderChanged(float value)
+    public static void OnBackgroundMusicSliderChanged(float value)
     {
         if (AudioManager.Instance != null)
         {
