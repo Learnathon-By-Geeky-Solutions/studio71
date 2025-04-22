@@ -8,7 +8,7 @@ public class BulletCountUI : MonoBehaviour
     [SerializeField] private Gun gunReference;
     [SerializeField] private Transform bulletIconContainer;
     [SerializeField] private GameObject bulletIconPrefab;
-    [SerializeField] private int spacingBetweenIcons = 2;
+    
     [SerializeField] private Vector2 iconSize = new Vector2(20, 20);
     
     private readonly List<GameObject> bulletIcons = new List<GameObject>();

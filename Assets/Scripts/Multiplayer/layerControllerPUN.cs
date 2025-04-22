@@ -83,7 +83,7 @@ namespace PUNPlayer
 
         private void OnDisable()
         {
-            AudioManager.Instance.StopSound(currentMovementSound);
+            AudioManager.StopSound(currentMovementSound);
             InputHandler.Instance.OnCrouch -= Crouch;
             InputHandler.Instance.OnSprint -= Sprint;
             InputHandler.Instance.OnPrimaryWeapon -= PrimaryWeapon;
@@ -371,7 +371,7 @@ namespace PUNPlayer
                 if (!isPlayingMovementSound || currentMovementSound != soundToPlay)
                 {
                     if (isPlayingMovementSound)
-                        AudioManager.Instance.StopSound(currentMovementSound);
+                        AudioManager.StopSound(currentMovementSound);
 
                     AudioManager.PlaySound(soundToPlay, transform.position);
                     isPlayingMovementSound = true;
@@ -380,7 +380,7 @@ namespace PUNPlayer
             }
             else if (isPlayingMovementSound)
             {
-                AudioManager.Instance.StopSound(currentMovementSound);
+                AudioManager.StopSound(currentMovementSound);
                 isPlayingMovementSound = false;
                 currentMovementSound = "";
             }
