@@ -6,9 +6,10 @@ using UnityEngine;
 public class PauseMenu : MonoBehaviour
 {   
     public static bool GameIsPaused = false;
-    public GameObject pauseMenuUI;
-    public GameObject  soundMenuUI;
-    public GameObject pauseMenuButtons;
+    [SerializeField] private GameObject pauseMenuUI;
+    
+    [SerializeField] private GameObject  soundMenuUI;
+    [SerializeField] private GameObject pauseMenuButtons;
     private PlayerController _playerController;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
