@@ -1,3 +1,4 @@
+using Player;
 using SingletonManagers;
 using UnityEngine;
 
@@ -5,9 +6,16 @@ public class PauseMenu : MonoBehaviour
 {   
     public static bool GameIsPaused = false;
     public GameObject pauseMenuUI;
+    private PlayerController _playerController;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
+        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        if (_playerController == null)
+        {
+            Debug.LogError("PlayerController not found in the scene.");
+        }
         
     }
     void OnEnable()
@@ -30,6 +38,7 @@ public class PauseMenu : MonoBehaviour
     {   pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         GameIsPaused = false;
+        _playerController.enabled = true; // Enable player controls when resuming
         // Hide the pause menu UI here
     }
 
@@ -38,6 +47,8 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPaused = true;
+        _playerController.enabled = false; // Disable player controls when paused
+
     }
         else  {
             Resume();
