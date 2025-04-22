@@ -5,13 +5,13 @@ namespace UI.PauseMenu{
 public class PauseMenuSoundHandler : MonoBehaviour
 {     
     [Header("UI References")]
-    public GameObject  soundMenuUI;
-    public GameObject pauseMenuButtons;
-    public Slider sfxSlider;
-    public Slider backgroundMusicSlider;
+    [SerializeField]private GameObject  soundMenuUI;
+    [SerializeField]private GameObject pauseMenuButtons;
+    [SerializeField]private Slider sfxSlider;
+    [SerializeField]private Slider backgroundMusicSlider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
         if (sfxSlider != null)
         {
