@@ -2,80 +2,85 @@ using System;
 using Player;
 using SingletonManagers;
 using UnityEngine;
-namespace UI.PauseMenu{
-public class PauseMenu : MonoBehaviour
-{   
-   
-    private static bool s_gameIsPaused = false;
-    public static bool IsGamePaused()
+namespace UI
+{
+    public class PauseMenu : MonoBehaviour
     {
-        return s_gameIsPaused;
-    }
 
-    [SerializeField] private GameObject pauseMenuUI;
-    
-    [SerializeField] private GameObject  soundMenuUI;
-    [SerializeField] private GameObject pauseMenuButtons;
-    private PlayerController _playerController;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Awake()
-    {
-        _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        if (_playerController == null)
+        private static bool s_gameIsPaused = false;
+        public static bool IsGamePaused()
         {
-            Debug.LogError("PlayerController not found in the scene.");
+            return s_gameIsPaused;
         }
-        
-    }
-    private void OnEnable()
-    {
-        InputHandler.Instance.OnPause += Pause;
-        
-    }
-    private void OnDisable()
-    {
-        InputHandler.Instance.OnPause -= Pause;
-       
-    }
 
-    // Update is called once per frame
-    
-    
-    public void Resume()
-    {   pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
-        s_gameIsPaused = false; 
-        _playerController.enabled = true; // Enable player controls when resuming
-        AudioManager.StopSound(SoundKeys.BackgroundMusic);
-        Debug.Log("Resuming game...");
-        // Hide the pause menu UI here
-    }
+        [SerializeField] private GameObject pauseMenuUI;
 
-    void Pause()
-    {   if(!IsGamePaused()) // Use getter method
+        [SerializeField] private GameObject soundMenuUI;
+        [SerializeField] private GameObject pauseMenuButtons;
+        private PlayerController _playerController;
+
+        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        private void Awake()
         {
-            pauseMenuUI.SetActive(true);
-            Time.timeScale = 0f;
-            s_gameIsPaused = true; 
-            _playerController.enabled = false; // Disable player controls when paused
-            AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+            _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            if (_playerController == null)
+            {
+                Debug.LogError("PlayerController not found in the scene.");
+            }
 
         }
-        else  {
-            Resume();
+        private void OnEnable()
+        {
+            InputHandler.Instance.OnPause += Pause;
+
         }
-        // Show the pause menu UI here
-    }
-    
-    public static void LoadMenu()
-    {
-        SceneIndexes.LoadSceneByIndex(SceneIndexes.MaineMenuScene);
-    }
-    public void Sound()
-    {
-        soundMenuUI.SetActive(true);
-        pauseMenuButtons.SetActive(false);
+        private void OnDisable()
+        {
+            InputHandler.Instance.OnPause -= Pause;
+
+        }
+
+        // Update is called once per frame
+
+
+        public void Resume()
+        {
+            pauseMenuUI.SetActive(false);
+            Time.timeScale = 1f;
+            s_gameIsPaused = false;
+            _playerController.enabled = true; // Enable player controls when resuming
+            AudioManager.StopSound(SoundKeys.BackgroundMusic);
+            Debug.Log("Resuming game...");
+            // Hide the pause menu UI here
+        }
+
+        private void Pause()
+        {
+            if (!IsGamePaused()) // Use getter method
+            {
+                pauseMenuUI.SetActive(true);
+                Time.timeScale = 0f;
+                s_gameIsPaused = true;
+                _playerController.enabled = false; // Disable player controls when paused
+                AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+
+            }
+            else
+            {
+                Resume();
+            }
+            // Show the pause menu UI here
+        }
+
+        public static void LoadMenu()
+        {
+            SceneIndexes.LoadSceneByIndex(SceneIndexes.MaineMenuScene);
+        }
+        public void Sound()
+        {
+            soundMenuUI.SetActive(true);
+            pauseMenuButtons.SetActive(false);
+        }
     }
 }
-}
+

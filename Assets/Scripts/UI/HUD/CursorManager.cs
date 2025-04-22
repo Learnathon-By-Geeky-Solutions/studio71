@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using SingletonManagers;
 using UnityEngine.UI;
@@ -11,12 +12,12 @@ namespace UI.HUD
         [SerializeField] private Sprite _generalCursor;
         [SerializeField] private float _yOffset;
 
-        private RectTransform rectTransform;
+        private RectTransform _rectTransform;
         private Image _image;
         private void Awake()
         {
             _image = GetComponent<Image>();
-            rectTransform = GetComponent<RectTransform>();
+            _rectTransform = GetComponent<RectTransform>();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
             if (_crossHair == null||_generalCursor==null)
@@ -24,6 +25,14 @@ namespace UI.HUD
                 Debug.LogWarning($"Sprite Field empty on {gameObject.name}");
             }
             _image.sprite = SceneManager.GetActiveScene().buildIndex >= 2 ? _crossHair : _generalCursor;
+        }
+        private void OnEnable()
+        {
+            InputHandler.Instance.OnPause += CursorChange;
+        }
+        private void OnDisable()
+        {
+            InputHandler.Instance.OnPause -= CursorChange;
         }
         private void Start()
         {
@@ -33,12 +42,17 @@ namespace UI.HUD
 
         private void Update()
         {
-            rectTransform.position = new Vector3(InputHandler.Instance.MousePosition.x, InputHandler.Instance.MousePosition.y + _yOffset, 0);
+            _rectTransform.position = new Vector3(InputHandler.Instance.MousePosition.x, InputHandler.Instance.MousePosition.y + _yOffset, 0);
         }
 
-        private void CursorMovement()
+        private void CursorChange()
         {
-
+            if (PauseMenu.IsGamePaused())
+            {
+                _yOffset = 35;
+                _image.sprite = _crossHair;
+            }
+            else { _yOffset = 0; _image.sprite = _generalCursor; }
         }
     }
 }
