@@ -6,6 +6,7 @@ namespace UI.HUD
     {
         private RectTransform rectTransform;
         [SerializeField] private Texture2D _transparentCursor;
+        [SerializeField] private float _yOffset;
         private void Awake()
         {
             rectTransform = GetComponent<RectTransform>();
@@ -20,7 +21,7 @@ namespace UI.HUD
 
         private void Update()
         {
-            rectTransform.position = InputHandler.Instance.MousePosition;
+            rectTransform.position = new Vector3(InputHandler.Instance.MousePosition.x, InputHandler.Instance.MousePosition.y + _yOffset, 0);
         }
     }
 }

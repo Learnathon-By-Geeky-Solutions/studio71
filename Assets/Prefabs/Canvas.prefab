@@ -321,6 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transparentCursor: {fileID: 2800000, guid: 41514b9bd6b8da84596ce3390e906e02, type: 3}
+  _yOffset: 35
 --- !u!1 &2021221630153148784
 GameObject:
   m_ObjectHideFlags: 0

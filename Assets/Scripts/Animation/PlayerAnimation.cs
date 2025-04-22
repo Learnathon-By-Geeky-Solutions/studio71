@@ -9,12 +9,33 @@ using HealthSystem;
 
 namespace Player
 {
+    public static class AnimationState
+    {
+        public const string Idle = "Idle";
+        public const string IdleUpperBody = "Idle UpperBody";
+        public const string Shoot = "Shoot";
+        public const string Reload = "Reload";
+        public const string GrenadeThrow = "Grenade Throw";
+        public const string Death = "Death";
+        public const string PickUp = "Pick Up";
+        public const string Walk = "Walk";
+        public const string Crouch = "Crouch";
+        public const string Sprint = "Sprint";
+        public const string Forward = "Forward";
+        public const string Backward = "Backward";
+        public const string Left = "Left";
+        public const string Right = "Right";
+        public const string ForwardLeft = "Forward Left";
+        public const string BackwardLeft = "Backward Left";
+        public const string ForwardRight = "Forward Right";
+        public const string BackwardRight = "Backward Right";
+    }
     public class PlayerAnimation : MonoBehaviour
     {
         //Animator related Variables.
         private Animator _playerAnimator;
         private string _currentAnimation;
-        public Dictionary<string, float> _animationLengths { get; private set; } = new Dictionary<string, float>();
+        public Dictionary<string, float> AnimationLength { get; private set; } = new Dictionary<string, float>();
 
         //Bools to check different state.
         public bool IsBusy {get; private set;}
@@ -26,7 +47,7 @@ namespace Player
         //Reference to Other Player Scripts to work with them.
         private InteractionSystem _interactionSystem;
         private PlayerController _playerController;
-        private Health _PlayerHealth;
+        private Health _playerHealth;
         /// <summary>
         /// Initialize Variables for animation.
         /// </summary>
@@ -46,7 +67,7 @@ namespace Player
             _playerController=GetComponent<PlayerController>();
 
             //Health System Initialization
-            _PlayerHealth = gameObject.GetComponent<Health>();
+            _playerHealth = gameObject.GetComponent<Health>();
             IsDead = false;
 
         }
@@ -62,7 +83,7 @@ namespace Player
 
         private void OnDisable()
         {
-            PlayAnimation("Idle", 0.1f, 0);
+            PlayAnimation(AnimationState.Idle, 0.1f, 0);
             InputHandler.Instance.OnCrouch -= CrouchAnimation;
             InputHandler.Instance.OnReload -= ReloadAnimation;
             InputHandler.Instance.OnGrenade -= GrenadeAnimation;
@@ -82,7 +103,7 @@ namespace Player
 
             MoveAnimation();
 
-            if (_PlayerHealth.CurrentHealth <= 0)
+            if (_playerHealth.CurrentHealth <= 0)
             {
                 DeathAnimation();
             }
@@ -95,7 +116,7 @@ namespace Player
         {
             if (InputHandler.Instance.MoveDirection == Vector2.zero)
             {
-                PlayAnimation(_isCrouching ? "Crouch" : "Idle", 0.1f, 0);
+                PlayAnimation(_isCrouching ? AnimationState.Crouch : AnimationState.Idle, 0.1f, 0);
             }
             else
             {
@@ -105,7 +126,7 @@ namespace Player
         private void CrouchAnimation()
         {
             _isCrouching = !_isCrouching; // Toggle crouch state
-            PlayAnimation(_isCrouching ? "Crouch" : EightWayLocomotion(), 0.1f, 0);
+            PlayAnimation(_isCrouching ? AnimationState.Crouch : EightWayLocomotion(), 0.1f, 0);
         }
         private void ShootAnimation(bool isPressed)
         {
@@ -114,10 +135,10 @@ namespace Player
                 switch (isPressed)
                 {
                     case true:
-                        PlayAnimation("Shoot", 0.1f, 1);
+                        PlayAnimation(AnimationState.Shoot, 0.1f, 1);
                         break;
                     case false:
-                        PlayAnimation("Idle UpperBody", 0.1f, 1);
+                        PlayAnimation(AnimationState.IdleUpperBody, 0.1f, 1);
                         break;
                 }
             }
@@ -130,30 +151,30 @@ namespace Player
             IsBusy = true;
             _isPickingUp = true;
             _playerController.enabled = false;
-            PlayAnimationAndReturn("Pick Up", "Idle", 0.15f, 0);
-            StartCoroutine(DelayedAction(_animationLengths["Pick Up"],
+            PlayAnimationAndReturn(AnimationState.PickUp, AnimationState.Idle, 0.15f, 0);
+            StartCoroutine(DelayedAction(AnimationLength[AnimationState.PickUp],
                 () => { _isPickingUp = false; _playerController.enabled = true; }));
         }
         private void ReloadAnimation()
         {
             if (IsBusy||IsDead) return;
             IsBusy = true;     
-            PlayAnimationAndReturn("Reload", "Idle UpperBody", 0.1f, 1);   
+            PlayAnimationAndReturn(AnimationState.Reload, AnimationState.IdleUpperBody, 0.1f, 1);   
             
         }
         private void GrenadeAnimation()
         {
             if (IsBusy || IsDead || _playerController.GrenadeCount<=0) return;
             IsBusy = true;
-            PlayAnimationAndReturn("Grenade Throw", "Idle UpperBody", 0.1f, 1);
-            StartCoroutine(DelayedAction(_animationLengths["Grenade Throw"], () => { IsThrowingGrenade = false; }));
+            PlayAnimationAndReturn(AnimationState.GrenadeThrow, AnimationState.IdleUpperBody, 0.1f, 1);
+            StartCoroutine(DelayedAction(AnimationLength[AnimationState.GrenadeThrow], () => { IsThrowingGrenade = false; }));
 
         }
         private void DeathAnimation()
         {
             IsDead = true;
             _playerController.enabled=false;
-            PlayAnimation("Death", 0.1f, 0);
+            PlayAnimation(AnimationState.Death, 0.1f, 0);
             _playerAnimator.SetLayerWeight(1, 0);
         }
 
@@ -174,27 +195,25 @@ namespace Player
 
             return $"{statePrefix} {directionSuffix}";
         }
-
         private string GetMovementStatePrefix()
         {
-            if (_playerController._isSprinting) return "Sprint";
-            if (_isCrouching) return "Crouch";
-            return "Walk";
+            if (_playerController._isSprinting) return AnimationState.Sprint;
+            if (_isCrouching) return AnimationState.Crouch;
+            return AnimationState.Walk;
         }
-
         private static string GetDirectionFromAngle(float angle)
         {
             var directions = new (float min, float max, string direction)[]
             {
-                (-22.5f, 22.5f, "Forward"),
-                (22.5f, 67.5f, "Forward Right"),
-                (67.5f, 112.5f, "Right"),
-                (112.5f, 157.5f, "Backward Right"),
-                (157.5f, 180f, "Backward"),
-                (-180f, -157.5f, "Backward"),
-                (-157.5f, -112.5f, "Backward Left"),
-                (-112.5f, -67.5f, "Left"),
-                (-67.5f, -22.5f, "Forward Left"),
+                (-22.5f, 22.5f, AnimationState.Forward),
+                (22.5f, 67.5f, AnimationState.ForwardRight),
+                (67.5f, 112.5f, AnimationState.Right),
+                (112.5f, 157.5f, AnimationState.BackwardRight),
+                (157.5f, 180f, AnimationState.Backward),
+                (-180f, -157.5f, AnimationState.Backward),
+                (-157.5f, -112.5f, AnimationState.BackwardLeft),
+                (-112.5f, -67.5f, AnimationState.Left),
+                (-67.5f, -22.5f, AnimationState.ForwardLeft),
             };
 
             foreach (var (min, max, dir) in directions)
@@ -214,7 +233,7 @@ namespace Player
         }
         private void PlayAnimationAndReturn(string animationName,string returnAnimation,float SmoothFrame,int WorkingLayer)
         {
-            if (!_animationLengths.ContainsKey(animationName))
+            if (!AnimationLength.ContainsKey(animationName))
             {
                 Debug.LogWarning($"Animation '{animationName}' not found!");
                 return;
@@ -226,15 +245,15 @@ namespace Player
         {
             foreach (AnimationClip clip in _playerAnimator.runtimeAnimatorController.animationClips)
             {
-                _animationLengths[clip.name] = clip.length;
+                AnimationLength[clip.name] = clip.length;
             }
         }
         private IEnumerator ReturnAnimation(string animationName,string returnAnimation,float SmoothFrame,int WorkingLayer)
         {
-            yield return new WaitForSeconds(_animationLengths[animationName]);
+            yield return new WaitForSeconds(AnimationLength[animationName]);
             _playerAnimator.CrossFade(returnAnimation, SmoothFrame, WorkingLayer);
             IsBusy = false;
-            if(animationName=="Grenade Throw")
+            if(animationName== AnimationState.GrenadeThrow)
             {
                 IsThrowingGrenade = false;
             }

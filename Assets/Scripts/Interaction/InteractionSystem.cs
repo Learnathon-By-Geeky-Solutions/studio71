@@ -138,9 +138,9 @@ namespace Interaction
             }
             else if (_currentTarget.CompareTag("Interactable"))
             {
-                if (_playerAnimation != null && _playerAnimation._animationLengths.ContainsKey("Pick Up"))
+                if (_playerAnimation != null && _playerAnimation.AnimationLength.ContainsKey("Pick Up"))
                 {
-                    StartCoroutine(DelayedAction(_playerAnimation._animationLengths["Pick Up"], () =>
+                    StartCoroutine(DelayedAction(_playerAnimation.AnimationLength["Pick Up"], () =>
                     {
                         HandleItemPickup(_currentTarget.gameObject);
                     }));
