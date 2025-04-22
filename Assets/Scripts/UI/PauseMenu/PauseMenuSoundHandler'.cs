@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using SingletonManagers;
 namespace UI.PauseMenu{
-public class pauseMenuSoundHandler : MonoBehaviour
+public class PauseMenuSoundHandler : MonoBehaviour
 {     
     [Header("UI References")]
     public GameObject  soundMenuUI;
