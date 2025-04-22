@@ -87,7 +87,6 @@ namespace PatrolEnemy
             patrolPoint = hit.position;
             controller.Agent.SetDestination(patrolPoint);
             hasPatrolPoint = true;
-            Debug.Log($"Moving to patrol point: {patrolPoint}");
         }
     }
         
@@ -96,16 +95,5 @@ namespace PatrolEnemy
             Debug.Log("Exited Idle State");
         }
         
-
-        
-        public void OnDrawGizmos(EnemyController controller)
-        {
-            if (hasPatrolPoint)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawSphere(patrolPoint, 0.5f);
-                Gizmos.DrawLine(controller.transform.position, patrolPoint);
-            }
-        }
     }
 }

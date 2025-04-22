@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace PatrolEnemy
 {
     public interface IEnemyState
@@ -7,6 +5,6 @@ namespace PatrolEnemy
         void EnterState(EnemyController controller);
         void UpdateState(EnemyController controller);
         void ExitState(EnemyController controller);
-        void OnDrawGizmos(EnemyController controller);
+        
     }
 }

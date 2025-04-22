@@ -1,4 +1,7 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using System.Threading;
+using System;
 
 namespace PatrolEnemy
 {
@@ -6,62 +9,97 @@ namespace PatrolEnemy
     {
         private float fireRate = 0.5f;
         private float nextFireTime = 0f;
-        
+        private CancellationTokenSource reloadCTS;
+
+
         public void EnterState(EnemyController controller)
         {
             Debug.Log("Entered Shoot State");
             nextFireTime = 0f;
+            reloadCTS = new CancellationTokenSource();
         }
-        
+
         public void UpdateState(EnemyController controller)
         {
             if (controller.CurrentTarget == null)
             {
-                controller.ChangeState(new IdleState());
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
-            
+
             float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
-            
+
             // If player moved out of attack range, switch to follow state
             if (distanceToPlayer > controller.AttackRange)
             {
-                controller.ChangeState(new FollowState());
+                controller.ChangeState(EnemyController.EnemyStateType.Follow);
                 return;
             }
-            
+
             // If line of sight is lost, switch to grenade throw state if we have grenades
             if (!controller.HasLineOfSight && controller.CurrentGrenades > 0)
             {
-                controller.ChangeState(new GrenadeThrowState());
+                controller.ChangeState(EnemyController.EnemyStateType.GrenadeThrow);
                 return;
             }
-            
+
             // Look at player on Y axis only
             Vector3 targetPosition = controller.CurrentTarget.position;
             targetPosition.y = controller.transform.position.y;
             controller.transform.LookAt(targetPosition);
-            
+
             // Shoot at player if we can
             if (Time.time >= nextFireTime && !controller.IsReloading)
             {
-                controller.FireBullet();
-                nextFireTime = Time.time + fireRate;
+                if (controller.CurrentAmmo > 0)
+                {
+                    FireBullet(controller);
+                    nextFireTime = Time.time + fireRate;
+                }
+                else
+                {
+                    ReloadWeaponAsync(controller).Forget();
+                }
             }
         }
-        
+
         public void ExitState(EnemyController controller)
         {
             Debug.Log("Exited Shoot State");
+            reloadCTS?.Cancel();
+            reloadCTS?.Dispose();
+            reloadCTS = null;
         }
-        
-        public void OnDrawGizmos(EnemyController controller)
+
+        private void FireBullet(EnemyController controller)
         {
-            if (controller.CurrentTarget != null)
+            // Use object pooling if you have a pooling system
+            GameObject bullet = GameObject.Instantiate(controller.BulletPrefab, controller.FirePoint.position, controller.FirePoint.rotation);
+            controller.CurrentAmmo--;
+            Debug.Log($"Fired bullet. Ammo remaining: {controller.CurrentAmmo}");
+
+            if (controller.CurrentAmmo <= 0)
             {
-                // Draw attack line
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(controller.FirePoint.position, controller.CurrentTarget.position);
+                ReloadWeaponAsync(controller).Forget();
+            }
+        }
+
+        private async UniTaskVoid ReloadWeaponAsync(EnemyController controller)
+        {
+            Debug.Log("Reloading weapon...");
+            controller.IsReloading = true;
+
+            try
+            {
+                await UniTask.Delay((int)(controller.ReloadTime * 1000), cancellationToken: reloadCTS.Token);
+                controller.CurrentAmmo = controller.MaxAmmo;
+                controller.IsReloading = false;
+                Debug.Log("Weapon reloaded!");
+            }
+            catch (OperationCanceledException)
+            {
+                Debug.Log("Reload interrupted");
+                controller.IsReloading = false;
             }
         }
     }

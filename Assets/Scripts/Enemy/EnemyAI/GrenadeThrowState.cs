@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using PatrolEnemy;
+using SingletonManagers;
 
 namespace PatrolEnemy
 {
@@ -10,6 +10,7 @@ namespace PatrolEnemy
     {
         private CancellationTokenSource grenadeCTS;
         private bool hasThrown = false;
+        
         
         public void EnterState(EnemyController controller)
         {
@@ -83,26 +84,25 @@ namespace PatrolEnemy
                 
             controller.IsThrowingGrenade = true;
             
-            // Try to find the ObjectPool instance in the scene
-            ObjectPool objectPool = GameObject.FindObjectOfType<ObjectPool>();
-            GameObject grenade;
+            // Use the model of the particle manager for our grenade
+            Vector3 targetPosition = controller.CurrentTarget.position;
+            GameObject grenade = GameObject.Instantiate(controller.GrenadePrefab, controller.GrenadePoint.position, controller.GrenadePoint.rotation);
             
-            if (objectPool != null)
+            // Setup grenade trajectory (this would need a separate component on the grenade prefab)
+            Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
+            if (grenadeRb != null)
             {
-                // Use object pooling
-                grenade = objectPool.SpawnFromPool("Grenade", controller.GrenadePoint.position, controller.GrenadePoint.rotation);
+                // Calculate arc trajectory
+                Vector3 directionToTarget = (targetPosition - controller.GrenadePoint.position).normalized;
+                float distanceToTarget = Vector3.Distance(controller.GrenadePoint.position, targetPosition);
                 
-                // Fallback if pool doesn't have "Grenade" tag
-                if (grenade == null)
-                {
-                    grenade = GameObject.Instantiate(controller.GrenadePrefab, controller.GrenadePoint.position, controller.GrenadePoint.rotation);
-                }
+                // Adjust force based on distance
+                float throwForce = Mathf.Clamp(distanceToTarget * 2f, 10f, 20f);
+                Vector3 throwDirection = directionToTarget + Vector3.up * 0.5f;
+                grenadeRb.AddForce(throwDirection.normalized * throwForce, ForceMode.Impulse);
             }
-            else
-            {
-                // Fallback to instantiation if no ObjectPool exists
-                grenade = GameObject.Instantiate(controller.GrenadePrefab, controller.GrenadePoint.position, controller.GrenadePoint.rotation);
-            }
+            
+            // Play explosion effect after delay
             
             controller.CurrentGrenades--;
             Debug.Log($"Threw grenade. Grenades remaining: {controller.CurrentGrenades}");
@@ -119,29 +119,7 @@ namespace PatrolEnemy
             }
         }
         
-        public void OnDrawGizmos(EnemyController controller)
-        {
-            if (controller.CurrentTarget != null)
-            {
-                // Draw grenade trajectory
-                Gizmos.color = Color.yellow;
-                Vector3 grenadeStart = controller.GrenadePoint.position;
-                Vector3 grenadeEnd = controller.CurrentTarget.position;
-                
-                // Simple arc
-                Vector3 mid = (grenadeStart + grenadeEnd) / 2f + Vector3.up * 2f;
-                
-                const int segments = 20;
-                Vector3 prev = grenadeStart;
-                for (int i = 1; i <= segments; i++)
-                {
-                    float t = i / (float)segments;
-                    Vector3 point = Vector3.Lerp(Vector3.Lerp(grenadeStart, mid, t), 
-                                               Vector3.Lerp(mid, grenadeEnd, t), t);
-                    Gizmos.DrawLine(prev, point);
-                    prev = point;
-                }
-            }
-        }
     }
+    
+   
 }

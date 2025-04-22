@@ -62,19 +62,5 @@ namespace PatrolEnemy
             controller.Agent.isStopped = false;
         }
         
-        public void OnDrawGizmos(EnemyController controller)
-        {
-            if (controller.CurrentTarget != null)
-            {
-                // Draw line to player
-                Gizmos.color = controller.HasLineOfSight ? Color.red : Color.gray;
-                Gizmos.DrawLine(controller.transform.position, controller.CurrentTarget.position);
-                
-                // Draw alert progress
-                Vector3 textPosition = controller.transform.position + Vector3.up * 2f;
-                float alertProgress = alertTimer / controller.AlertTime;
-                Debug.DrawLine(textPosition, textPosition + Vector3.right * alertProgress * 2f, Color.yellow);
-            }
-        }
     }
 }
