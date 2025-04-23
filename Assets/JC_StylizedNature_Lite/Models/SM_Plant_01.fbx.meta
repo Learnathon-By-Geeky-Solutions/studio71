@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: d3ad37627eaf8774cb0fd9a549b22a5d
+AssetOrigin:
+  serializedVersion: 1
+  productId: 275732
+  packageName: Stylized Low Poly Nature Lite
+  packageVersion: 1.01
+  assetPath: Assets/JC_StylizedNature_Lite/Models/SM_Plant_01.fbx
+  uploadId: 686627
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -32,9 +37,11 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
-    lODScreenPercentages: []
+    lODScreenPercentages:
+    - 0.25
+    - 0.01
     globalScale: 1
     meshCompression: 0
     addColliders: 0
@@ -107,10 +114,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 275732
-  packageName: Stylized Low Poly Nature Lite
-  packageVersion: 1.01
-  assetPath: Assets/JC_StylizedNature_Lite/Models/SM_Plant_01.fbx
-  uploadId: 686627

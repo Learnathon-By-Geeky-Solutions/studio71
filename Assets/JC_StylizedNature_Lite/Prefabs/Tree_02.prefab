@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5939965517729921639}
   - component: {fileID: 1084315773606417846}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 4585832280221203452}
   - component: {fileID: 7046216020114406646}
   - component: {fileID: 6313499685519657687}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_01_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 2843845798911076933}
   - component: {fileID: 2030439665762990539}
   - component: {fileID: 6500336619890170486}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_01_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 2580582416961359500}
   - component: {fileID: 3515092056070315834}
   - component: {fileID: 5313500107738055207}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tree_01_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,6 +406,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Plant_02
       objectReference: {fileID: 0}
+    - target: {fileID: 1196787590941772358, guid: 4a37d39bea4517644b027dd51ce68252, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 3651951497081373321, guid: 4a37d39bea4517644b027dd51ce68252, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5220440903280162422, guid: 4a37d39bea4517644b027dd51ce68252, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.3981967
@@ -446,6 +454,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6116090977928133115, guid: 4a37d39bea4517644b027dd51ce68252, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -464,9 +476,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5939965517729921639}
     m_Modifications:
+    - target: {fileID: 2372533286210872296, guid: bfe27f8cafcf4ee48b93d84baa8389f3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2524649163739838287, guid: bfe27f8cafcf4ee48b93d84baa8389f3, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2940557043030206389, guid: bfe27f8cafcf4ee48b93d84baa8389f3, type: 3}
       propertyPath: m_Name
       value: SM_Plant_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2940557043030206389, guid: bfe27f8cafcf4ee48b93d84baa8389f3, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4980462379348410893, guid: bfe27f8cafcf4ee48b93d84baa8389f3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -526,9 +550,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5939965517729921639}
     m_Modifications:
+    - target: {fileID: 1439940871099555605, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 6141652758128337264, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
       propertyPath: m_Name
       value: SM_Branch_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6141652758128337264, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6171281997878598166, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7530913732543248565, guid: d45e9e9837680e8448990bc088ba7b07, type: 3}
       propertyPath: m_LocalPosition.x
@@ -632,6 +668,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Mushroom_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3853006350848721261, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7008095688054614620, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777220652751387545, guid: 13db1919278a0e74db4dcc7d8e260718, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -650,6 +698,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5939965517729921639}
     m_Modifications:
+    - target: {fileID: 505150136346833364, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -664,31 +716,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.42255402
+      value: -0.43
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.23541665
+      value: 0.094
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.36428642
+      value: -0.207
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.9914563
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: -0.13043973
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -696,7 +748,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -14.99
       objectReference: {fileID: 0}
     - target: {fileID: 4074332399339427780, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -706,11 +758,20 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6852797787990927511, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7088034624560197325, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
       propertyPath: m_Name
       value: SM_Rock_01
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7088034624560197325, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 3447313376563957250, guid: 02323f354a4cb6343a4c4466e3cabdcb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

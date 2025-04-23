@@ -11,6 +11,7 @@ namespace CameraManager
     public class CameraFollow : MonoBehaviour
     {
         private Transform _player; // Reference to the player's transform
+        private Camera _camera;
         [SerializeField] private Vector3 _offset = new Vector3(0f, 5f, -10f);  // Default offset position
         [SerializeField] private Vector3 _rotation = new Vector3(30f, 0f, 0f); // Camera rotation
         [SerializeField] private float followSpeed = 5f; // Speed at which the camera adjusts its position
@@ -18,9 +19,10 @@ namespace CameraManager
 
         private Vector3 _targetOffset; // The dynamically adjusted offset
 
-        private void Start()
+        private void Awake()
         {
             _player = GameObject.FindGameObjectWithTag("Player").transform;
+            _camera=GetComponentInChildren<Camera>();
             _targetOffset = _offset;
         }
 

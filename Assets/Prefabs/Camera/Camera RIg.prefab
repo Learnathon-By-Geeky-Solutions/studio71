@@ -47,8 +47,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _offset: {x: 0.66, y: 12.4, z: -6.73}
   _rotation: {x: 60.7, y: 10, z: 0}
-  followSpeed: 5
-  movementOffsetMultiplier: 2
+  _followSpeed: 5
+  _movementOffsetMultiplier: 2
+  _treeLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _fadedLeavesMaterial: {fileID: 2100000, guid: dfec1ce645a4cc34a91c58514b1eff3d, type: 2}
 --- !u!1 &1369071285357971069
 GameObject:
   m_ObjectHideFlags: 0
