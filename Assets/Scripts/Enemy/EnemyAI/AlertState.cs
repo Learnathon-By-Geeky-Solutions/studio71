@@ -46,7 +46,6 @@ namespace PatrolEnemy
                 if (alertTimer >= controller.AlertTime)
                 {
                     controller.ChangeState(new FollowState());
-                    return;
                 }
             }
             else

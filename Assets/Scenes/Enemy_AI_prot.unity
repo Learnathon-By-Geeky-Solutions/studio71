@@ -312,7 +312,6 @@ GameObject:
   - component: {fileID: 590028429}
   - component: {fileID: 590028428}
   - component: {fileID: 590028431}
-  - component: {fileID: 590028432}
   m_Layer: 8
   m_Name: wall1
   m_TagString: Untagged
@@ -382,7 +381,7 @@ Transform:
   m_GameObject: {fileID: 590028425}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.16153538, z: -0, w: 0.98686695}
-  m_LocalPosition: {x: -10.5, y: 5.5, z: 15.9}
+  m_LocalPosition: {x: -13.7, y: 3.5, z: 25.5}
   m_LocalScale: {x: 15, y: 15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -409,33 +408,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &590028432
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 590028425}
-  serializedVersion: 4
-  m_Mass: 0.0000001
-  m_Drag: 0
-  m_AngularDrag: 0
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1001 &874814428
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -674,7 +646,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.4
+      value: 1.3
       objectReference: {fileID: 0}
     - target: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -682,7 +654,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.5
+      value: 58.1
       objectReference: {fileID: 0}
     - target: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -778,7 +750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.7996311
+      value: 0.7996321
       objectReference: {fileID: 0}
     - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.y
@@ -786,7 +758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.034173965
+      value: -0.034172058
       objectReference: {fileID: 0}
     - target: {fileID: 8444777621952922230, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1523,7 +1495,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6365984327254782489, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
       propertyPath: attackRange
-      value: 18.2
+      value: 35.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365984327254782489, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
+      propertyPath: maxGrenades
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6365984327254782489, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
       propertyPath: recoveryRate
@@ -1531,7 +1507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6365984327254782489, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
       propertyPath: detectionRange
-      value: 27.5
+      value: 54.7
       objectReference: {fileID: 0}
     - target: {fileID: 6731532419585859169, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
       propertyPath: m_Layer

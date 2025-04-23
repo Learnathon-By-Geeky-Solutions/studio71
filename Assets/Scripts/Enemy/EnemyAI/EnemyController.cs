@@ -47,12 +47,12 @@ namespace PatrolEnemy
 
         // State management
         private IEnemyState currentState;
-        private IdleState idleState = new IdleState();
-        private AlertState alertState = new AlertState();
-        private FollowState followState = new FollowState();
-        private ShootState shootState = new ShootState();
-        private GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
-        private RecoveryState recoveryState = new RecoveryState();
+        private readonly IdleState idleState = new IdleState();
+        private readonly AlertState alertState = new AlertState();
+        private readonly FollowState followState = new FollowState();
+        private readonly ShootState shootState = new ShootState();
+        private readonly GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
+        private readonly RecoveryState recoveryState = new RecoveryState();
 
         // Public properties
         public NavMeshAgent Agent { get; private set; }
@@ -111,12 +111,9 @@ namespace PatrolEnemy
 
             TakeDamage();
         }
-
-       private void DetectPlayer()
+private void DetectPlayer()
 {
-    // Find all players with "Player" tag
-    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
+    GameObject[] players = FindActivePlayers();
     if (players.Length == 0)
     {
         CurrentTarget = null;
@@ -124,69 +121,59 @@ namespace PatrolEnemy
         return;
     }
 
-    // Find closest player (rest of the closest player detection code remains the same)
-    Transform closestPlayer = null;
+    Transform closestPlayer = FindClosestPlayer(players);
+    CurrentTarget = closestPlayer;
+
+    if (CurrentTarget == null || Vector3.Distance(transform.position, CurrentTarget.position) > detectionRange)
+    {
+        HasLineOfSight = false;
+        CurrentTarget = null;
+        return;
+    }
+
+    HasLineOfSight = CheckLineOfSight(CurrentTarget);
+}
+
+private GameObject[] FindActivePlayers()
+{
+    return GameObject.FindGameObjectsWithTag("Player");
+}
+
+private Transform FindClosestPlayer(GameObject[] players)
+{
+    Transform closest = null;
     float closestDistance = float.MaxValue;
 
     foreach (GameObject playerObject in players)
     {
-        Transform playerTransform = playerObject.transform;
-        float distanceToEnemy = Vector3.Distance(transform.position, playerTransform.position);
-
-        if (distanceToEnemy < closestDistance)
+        float distance = Vector3.Distance(transform.position, playerObject.transform.position);
+        if (distance < closestDistance)
         {
-            closestDistance = distanceToEnemy;
-            closestPlayer = playerTransform;
+            closestDistance = distance;
+            closest = playerObject.transform;
         }
     }
-
-    if (closestPlayer != null)
-    {
-        CurrentTarget = closestPlayer; // Assign the closest player to the 'player' variable
-    }
-    else
-    {
-        CurrentTarget = null; // No player found
-    }
-
-    // Check line of sight if player is within detection range
-    if (CurrentTarget != null && closestDistance <= detectionRange)
-    {
-        // Look at player on Y axis only (using the targeted point)
-        Vector3 targetPosition = CurrentTarget.position;
-        targetPosition.y = transform.position.y;
-        transform.LookAt(targetPosition);
-
-        // Check line of sight from firePoint to the targeted point
-        Vector3 direction = (CurrentTarget.position - firePoint.position).normalized;
-        RaycastHit hit;
-        Debug.DrawRay(firePoint.position, direction * detectionRange, Color.red);
-
-        if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange, obstacleLayer)) // Now checking IF we hit an obstacle
-        {
-            // We hit an obstacle before hitting the player
-            if (!hit.transform.IsChildOf(closestPlayer) && hit.transform != closestPlayer)
-            {
-                HasLineOfSight = false;
-            }
-            else
-            {
-                // We hit the player, so we have line of sight (even if we also hit their collider which might be on a non-obstacle layer)
-                HasLineOfSight = true;
-            }
-        }
-        else
-        {
-            // We didn't hit any obstacles within the detection range, so we have line of sight
-            HasLineOfSight = true;
-        }
-    }
-    else
-    {
-        HasLineOfSight = false;
-        CurrentTarget = null; // Ensure CurrentTarget is reset if out of range
-    }
+    return closest;
 }
+
+private bool CheckLineOfSight(Transform target)
+{
+    Vector3 targetPosition = target.position;
+    targetPosition.y = transform.position.y;
+    transform.LookAt(targetPosition);
+
+    Vector3 direction = (target.position - firePoint.position).normalized;
+    RaycastHit hit;
+    Debug.DrawRay(firePoint.position, direction * detectionRange, Color.red);
+
+    if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange, obstacleLayer))
+    {
+        return hit.transform.IsChildOf(target) || hit.transform == target;
+    }
+
+    return true;
+}
+
         public void ChangeState(EnemyStateType stateType)
         {
             IEnemyState newState;
@@ -253,7 +240,7 @@ namespace PatrolEnemy
             
             if (CurrentHealth <= 0)
             {
-                Die();
+                //Die
             }
             else if (CurrentHealth < recoveryThreshold && !(currentState is RecoveryState))
             {
@@ -262,12 +249,7 @@ namespace PatrolEnemy
             }
         }
 
-        private void Die()
-        {
-            Debug.Log("Enemy died!");
-            // Implement death logic here
-            Destroy(gameObject);
-        }
+        
 
         private void OnDrawGizmos()
         {

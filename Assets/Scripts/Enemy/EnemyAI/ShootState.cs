@@ -7,7 +7,7 @@ namespace PatrolEnemy
 {
     public class ShootState : IEnemyState
     {
-        private float fireRate = 0.5f;
+        private readonly float fireRate = 0.5f;
         private float nextFireTime = 0f;
         private CancellationTokenSource reloadCTS;
 

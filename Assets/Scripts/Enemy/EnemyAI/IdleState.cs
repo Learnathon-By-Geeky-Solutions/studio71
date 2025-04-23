@@ -5,95 +5,83 @@ namespace PatrolEnemy
 {
     public class IdleState : IEnemyState
     {
-       
-         private Vector3 patrolPoint;
-    private float patrolWaitTime = 2f;
-    private float patrolTimer = 0f;
-    private bool hasPatrolPoint = false;
-    private bool returningToZone = false;
+        private float patrolWaitTime = 2f;
+        private float patrolTimer = 0f;
+        private bool hasPatrolPoint = false;
+        private bool returningToZone = false;
         
         public void EnterState(EnemyController controller)
         {
-           Debug.Log("Entered Idle State");
-        patrolTimer = 0f;
-        hasPatrolPoint = false;
-        
-        // Check if enemy is outside patrol zone
-        float distanceFromStart = Vector3.Distance(controller.transform.position, controller.InitialPosition);
-        if (distanceFromStart > controller.PatrolRange * 0.8f)
-        {
-            // Need to return to patrol zone first
-            returningToZone = true;
-            patrolPoint = controller.InitialPosition;
-            controller.Agent.SetDestination(patrolPoint);
-            hasPatrolPoint = true;
-        }
+            Debug.Log("Entered Idle State");
+            patrolTimer = 0f;
+            hasPatrolPoint = false;
+            
+            // Check if enemy needs to return to patrol zone
+            float distanceFromStart = Vector3.Distance(controller.transform.position, controller.InitialPosition);
+            if (distanceFromStart > controller.PatrolRange * 0.8f)
+            {
+                returningToZone = true;
+                controller.Agent.SetDestination(controller.InitialPosition);
+                hasPatrolPoint = true;
+            }
         }
         
         public void UpdateState(EnemyController controller)
         {
-            // If player detected, switch to alert state
-        if (controller.CurrentTarget != null)
-        {
-            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
-            
-            if (distanceToPlayer <= controller.DetectionRange)
+            // Player detection check
+            if (controller.CurrentTarget != null && 
+                Vector3.Distance(controller.transform.position, controller.CurrentTarget.position) <= controller.DetectionRange)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Alert);
                 return;
             }
-        }
-        
-        // Patrol behavior
-        if (!hasPatrolPoint)
-        {
-            GetPatrolPoint(controller);
-        }
-        
-        // Check if we've reached the patrol point
-        if (hasPatrolPoint && controller.Agent.remainingDistance <= controller.Agent.stoppingDistance)
-        {
-            if (returningToZone)
+            
+            // Patrol behavior
+            if (!hasPatrolPoint)
             {
-                // We've returned to patrol zone, now patrol normally
-                returningToZone = false;
-                hasPatrolPoint = false;
+                Vector3 patrolPoint = GetPatrolPoint(controller); // Now local
+                controller.Agent.SetDestination(patrolPoint);
+                hasPatrolPoint = true;
+                Debug.Log($"New patrol point: {patrolPoint}");
             }
-            else
+            
+            // Check if reached destination
+            if (hasPatrolPoint && controller.Agent.remainingDistance <= controller.Agent.stoppingDistance)
             {
-                // Wait for a bit at the patrol point
-                patrolTimer += Time.deltaTime;
-                
-                if (patrolTimer >= patrolWaitTime)
+                if (returningToZone)
                 {
-                    // Reset and get a new patrol point
+                    returningToZone = false;
                     hasPatrolPoint = false;
-                    patrolTimer = 0f;
+                }
+                else
+                {
+                    patrolTimer += Time.deltaTime;
+                    if (patrolTimer >= patrolWaitTime)
+                    {
+                        hasPatrolPoint = false;
+                        patrolTimer = 0f;
+                    }
                 }
             }
         }
-        }
 
-         private void GetPatrolPoint(EnemyController controller)
-    {
-        // Generate a random point within the patrol range from initial position
-        Vector2 randomCirclePoint = Random.insideUnitCircle * controller.PatrolRange;
-        Vector3 randomPoint = controller.InitialPosition + new Vector3(randomCirclePoint.x, 0f, randomCirclePoint.y);
-        
-        // Try to find a valid NavMesh point
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, controller.PatrolRange, NavMesh.AllAreas))
+        private Vector3 GetPatrolPoint(EnemyController controller)
         {
-            patrolPoint = hit.position;
-            controller.Agent.SetDestination(patrolPoint);
-            hasPatrolPoint = true;
+            // Generate random point within patrol range
+            Vector2 randomCirclePoint = Random.insideUnitCircle * controller.PatrolRange;
+            Vector3 randomPoint = controller.InitialPosition + new Vector3(randomCirclePoint.x, 0f, randomCirclePoint.y);
+            
+            // Validate NavMesh position
+            if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, controller.PatrolRange, NavMesh.AllAreas))
+            {
+                return hit.position;
+            }
+            return controller.InitialPosition; // Fallback
         }
-    }
         
         public void ExitState(EnemyController controller)
         {
             Debug.Log("Exited Idle State");
         }
-        
     }
 }

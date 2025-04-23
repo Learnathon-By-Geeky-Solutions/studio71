@@ -104,7 +104,7 @@ namespace PatrolEnemy
             }
         }
 
-        private void RepositionForLOS(EnemyController controller)
+        private static void RepositionForLOS(EnemyController controller)
         {
             // Try moving sideways to regain LOS
             Vector3 randomOffset = new Vector3(

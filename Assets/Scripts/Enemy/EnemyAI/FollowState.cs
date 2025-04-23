@@ -45,7 +45,7 @@ namespace PatrolEnemy
 
             else if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0)
                 {
-                    controller.ChangeState(new ShootState());;
+                    controller.ChangeState(new ShootState());
                 }
             }
             // If not in attack range, continue following the player

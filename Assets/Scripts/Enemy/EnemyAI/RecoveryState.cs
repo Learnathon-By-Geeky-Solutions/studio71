@@ -7,7 +7,7 @@ namespace PatrolEnemy
     {
         private bool isReturning = false;
          private float lastHealthRecoveryTime = 0f;
-        private float healthRecoveryInterval = 0.5f;
+        private readonly float healthRecoveryInterval = 0.5f;
       
 
         public void EnterState(EnemyController controller)
@@ -45,7 +45,6 @@ namespace PatrolEnemy
             if (controller.CurrentHealth >= controller.MaxHealth)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Idle);
-                return; // Exit UpdateState
             }
         }
     }
@@ -63,7 +62,6 @@ namespace PatrolEnemy
             if (controller.CurrentHealth >= controller.MaxHealth)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Idle);
-                return; // Exit UpdateState
             }
         }
     }
