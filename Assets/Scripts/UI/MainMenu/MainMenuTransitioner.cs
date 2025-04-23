@@ -10,14 +10,15 @@ namespace UI.MainMenu
     public class MainMenuTransitioner : MonoBehaviour
     {
         //For sonarCloud FallBack
-         private int isBackgroundPlaying = 0;
+         
 
         #region Unity Lifecycle Methods
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "start can not be static")]
         private void Start()
         {
-            isBackgroundPlaying = 1;
+           
                 PlayBackgroundMusic();
-                print($"Background music is playing: {isBackgroundPlaying}");
+              
          
         }
         #endregion
@@ -27,12 +28,10 @@ namespace UI.MainMenu
         /// Called when the Play button is clicked.
         /// Loads the game scene asynchronously.
         /// </summary>
-        public void PlayGame()
+        public static void PlayGame()
         {
             PlayButtonSound();
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
-            isBackgroundPlaying = 0;
-            print($"Background music is not playing: {isBackgroundPlaying}");
             SceneIndexes.LoadSceneByIndex(SceneIndexes.SlidingMenuScene);
         }
 
