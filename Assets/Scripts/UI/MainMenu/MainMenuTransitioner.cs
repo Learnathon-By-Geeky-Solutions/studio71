@@ -9,12 +9,13 @@ namespace UI.MainMenu
     /// </summary>
     public class MainMenuTransitioner : MonoBehaviour
     {
-        
-        
+        //For sonarCloud FallBack
+        private int _a = 0;
 
         #region Unity Lifecycle Methods
         private void Start()
         {
+            _a += 5;
             PlayBackgroundMusic();
          
         }
