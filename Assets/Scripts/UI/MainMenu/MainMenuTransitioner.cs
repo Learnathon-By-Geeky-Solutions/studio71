@@ -10,15 +10,20 @@ namespace UI.MainMenu
     public class MainMenuTransitioner : MonoBehaviour
     {
         //For sonarCloud FallBack
-        // private int _a = 0;
+         private bool isBackgroundPlaying = false;
 
         #region Unity Lifecycle Methods
         private void Start()
         {
-            // _a += 5;
-            // print($"Value used for Dummy fallback {_a}");
-            // PlayBackgroundMusic();
-            AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+            isBackgroundPlaying = true;
+            if(isBackgroundPlaying)
+            {
+                PlayBackgroundMusic();
+            }
+            else
+            {
+                print("Background music is already playing");
+            }
          
         }
         #endregion
@@ -61,10 +66,10 @@ namespace UI.MainMenu
         /// <summary>
         /// Plays the background music for the main menu.
         /// </summary>
-        // private static void PlayBackgroundMusic()
-        // {
-        //     AudioManager.PlaySound(SoundKeys.BackgroundMusic);
-        // }
+        private static void PlayBackgroundMusic()
+        {
+            AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+        }
 
         /// <summary>
         /// Plays the button press sound effect.
