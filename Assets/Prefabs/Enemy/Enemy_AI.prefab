@@ -926,6 +926,7 @@ GameObject:
   - component: {fileID: 7513518096679223944}
   - component: {fileID: 1918528883532719747}
   - component: {fileID: 8000808689464795806}
+  - component: {fileID: 1123991800396090758}
   - component: {fileID: 1351081211469183452}
   - component: {fileID: 6365984327254782489}
   m_Layer: 9
@@ -1021,6 +1022,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1123991800396090758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2908617686280616072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b19f3890acd09b4ba131f49a754067b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animationMappings:
+  - state: 0
+    animationName: Idle
+    transitionSpeed: 0.1
+  - state: 1
+    animationName: Alert
+    transitionSpeed: 0.1
+  - state: 2
+    animationName: Run
+    transitionSpeed: 0.1
+  - state: 3
+    animationName: Shoot
+    transitionSpeed: 0.1
+  - state: 4
+    animationName: ThrowGrenade
+    transitionSpeed: 0.1
+  - state: 5
+    animationName: CrouchIdle
+    transitionSpeed: 0.1
 --- !u!114 &1351081211469183452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2776,7 +2808,7 @@ Transform:
   m_GameObject: {fileID: 8790819997226788496}
   serializedVersion: 2
   m_LocalRotation: {x: 0.43591368, y: 0.021873405, z: 0.11875881, w: 0.8918505}
-  m_LocalPosition: {x: -0.060389757, y: 1.0349588, z: 0.21200418}
+  m_LocalPosition: {x: -0.060389638, y: 1.034959, z: 0.21200413}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

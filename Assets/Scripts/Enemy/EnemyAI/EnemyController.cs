@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System; // Add this to resolve the Action error
 
 namespace PatrolEnemy
 {
@@ -86,6 +87,9 @@ namespace PatrolEnemy
         public int MaxAmmo => maxAmmo;
         public int MaxGrenades => maxGrenades;
 
+        // Event for state change
+        public event Action<EnemyStateType> OnStateChanged; // <-- Added this event
+
         private void Awake()
         {
             Agent = GetComponent<NavMeshAgent>();
@@ -111,68 +115,69 @@ namespace PatrolEnemy
 
             TakeDamage();
         }
-private void DetectPlayer()
-{
-    GameObject[] players = FindActivePlayers();
-    if (players.Length == 0)
-    {
-        CurrentTarget = null;
-        HasLineOfSight = false;
-        return;
-    }
 
-    Transform closestPlayer = FindClosestPlayer(players);
-    CurrentTarget = closestPlayer;
-
-    if (CurrentTarget == null || Vector3.Distance(transform.position, CurrentTarget.position) > detectionRange)
-    {
-        HasLineOfSight = false;
-        CurrentTarget = null;
-        return;
-    }
-
-    HasLineOfSight = CheckLineOfSight(CurrentTarget);
-}
-
-private GameObject[] FindActivePlayers()
-{
-    return GameObject.FindGameObjectsWithTag("Player");
-}
-
-private Transform FindClosestPlayer(GameObject[] players)
-{
-    Transform closest = null;
-    float closestDistance = float.MaxValue;
-
-    foreach (GameObject playerObject in players)
-    {
-        float distance = Vector3.Distance(transform.position, playerObject.transform.position);
-        if (distance < closestDistance)
+        private void DetectPlayer()
         {
-            closestDistance = distance;
-            closest = playerObject.transform;
+            GameObject[] players = FindActivePlayers();
+            if (players.Length == 0)
+            {
+                CurrentTarget = null;
+                HasLineOfSight = false;
+                return;
+            }
+
+            Transform closestPlayer = FindClosestPlayer(players);
+            CurrentTarget = closestPlayer;
+
+            if (CurrentTarget == null || Vector3.Distance(transform.position, CurrentTarget.position) > detectionRange)
+            {
+                HasLineOfSight = false;
+                CurrentTarget = null;
+                return;
+            }
+
+            HasLineOfSight = CheckLineOfSight(CurrentTarget);
         }
-    }
-    return closest;
-}
 
-private bool CheckLineOfSight(Transform target)
-{
-    Vector3 targetPosition = target.position;
-    targetPosition.y = transform.position.y;
-    transform.LookAt(targetPosition);
+        private GameObject[] FindActivePlayers()
+        {
+            return GameObject.FindGameObjectsWithTag("Player");
+        }
 
-    Vector3 direction = (target.position - firePoint.position).normalized;
-    RaycastHit hit;
-    Debug.DrawRay(firePoint.position, direction * detectionRange, Color.red);
+        private Transform FindClosestPlayer(GameObject[] players)
+        {
+            Transform closest = null;
+            float closestDistance = float.MaxValue;
 
-    if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange, obstacleLayer))
-    {
-        return hit.transform.IsChildOf(target) || hit.transform == target;
-    }
+            foreach (GameObject playerObject in players)
+            {
+                float distance = Vector3.Distance(transform.position, playerObject.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closest = playerObject.transform;
+                }
+            }
+            return closest;
+        }
 
-    return true;
-}
+        private bool CheckLineOfSight(Transform target)
+        {
+            Vector3 targetPosition = target.position;
+            targetPosition.y = transform.position.y;
+            transform.LookAt(targetPosition);
+
+            Vector3 direction = (target.position - firePoint.position).normalized;
+            RaycastHit hit;
+            Debug.DrawRay(firePoint.position, direction * detectionRange, Color.red);
+
+            if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange, obstacleLayer))
+            {
+                return hit.transform.IsChildOf(target) || hit.transform == target;
+            }
+
+            return true;
+        }
 
         public void ChangeState(EnemyStateType stateType)
         {
@@ -215,6 +220,9 @@ private bool CheckLineOfSight(Transform target)
                 Debug.Log($"Changing to {currentState.GetType().Name}");
                 currentState.EnterState(this);
             }
+
+            // Fire the state change event
+            OnStateChanged?.Invoke(stateType); // <-- Trigger the event
         }
 
         // For backward compatibility with existing state scripts
@@ -232,24 +240,22 @@ private bool CheckLineOfSight(Transform target)
                 Debug.Log($"Changing to {currentState.GetType().Name}");
                 currentState.EnterState(this);
             }
+
+            // Fire the state change event
+            OnStateChanged?.Invoke(EnemyStateType.Idle); // <-- Trigger the event
         }
 
         public void TakeDamage()
         {
-            
-            
             if (CurrentHealth <= 0)
             {
-                //Die
+                // Die
             }
             else if (CurrentHealth < recoveryThreshold && !(currentState is RecoveryState))
             {
                 ChangeState(EnemyStateType.Recovery);
-               
             }
         }
-
-        
 
         private void OnDrawGizmos()
         {
@@ -272,13 +278,11 @@ private bool CheckLineOfSight(Transform target)
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, attackRange);
 
-             if (CurrentTarget != null)
-    {
-        Gizmos.color = HasLineOfSight ? Color.green : Color.yellow;
-        Gizmos.DrawLine(firePoint.position, CurrentTarget.position);
-    }
-
+            if (CurrentTarget != null)
+            {
+                Gizmos.color = HasLineOfSight ? Color.green : Color.yellow;
+                Gizmos.DrawLine(firePoint.position, CurrentTarget.position);
+            }
         }
-
     }
 }
