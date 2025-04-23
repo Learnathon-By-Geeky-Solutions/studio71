@@ -41,10 +41,13 @@ namespace PatrolEnemy
                 {
                     controller.ChangeState(new GrenadeThrowState());
                 }
-                // If no line of sight and no grenades, maybe do nothing or try to reposition (optional)
-                return;
-            }
+                // If no line of sight and no grenades switch to shoot state
 
+            else if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0)
+                {
+                    controller.ChangeState(new ShootState());;
+                }
+            }
             // If not in attack range, continue following the player
             controller.Agent.SetDestination(controller.CurrentTarget.position);
             controller.Agent.isStopped = false; // Ensure agent moves if outside attack range

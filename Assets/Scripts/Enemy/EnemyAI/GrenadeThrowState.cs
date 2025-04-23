@@ -1,71 +1,58 @@
 using UnityEngine;
-using System;
+using UnityEngine.AI;
+using Cysharp.Threading.Tasks;
 using System.Threading;
-using System.Threading.Tasks;
-using SingletonManagers;
+using System;
+using Random = UnityEngine.Random;
 
 namespace PatrolEnemy
 {
     public class GrenadeThrowState : IEnemyState
     {
         private CancellationTokenSource grenadeCTS;
-        private bool hasThrown = false;
-        
+        private bool isThrowing;
         
         public void EnterState(EnemyController controller)
         {
             Debug.Log("Entered Grenade Throw State");
-            hasThrown = false;
             grenadeCTS = new CancellationTokenSource();
+            isThrowing = false;
+            AttemptGrenadeThrow(controller).Forget();
         }
         
         public void UpdateState(EnemyController controller)
         {
+            // Immediately exit if invalid
             if (controller.CurrentTarget == null)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
-            
-            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
-            
-            // If player moved out of attack range, switch to follow state
-            if (distanceToPlayer > controller.AttackRange)
-            {
-                controller.ChangeState(EnemyController.EnemyStateType.Follow);
-                return;
-            }
-            
-            // If line of sight is gained, switch to shoot state
-            if (controller.HasLineOfSight)
+
+            // If player regains LOS or we run out of grenades, switch to shoot
+            if (controller.HasLineOfSight || controller.CurrentGrenades <= 0)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Shoot);
                 return;
             }
-            
-            // If we're out of grenades, switch to shoot state
-            if (controller.CurrentGrenades <= 0)
-            {
-                controller.ChangeState(EnemyController.EnemyStateType.Shoot);
-                return;
-            }
-            
-            // Look at player position
-            Vector3 targetPosition = controller.CurrentTarget.position;
-            targetPosition.y = controller.transform.position.y;
-            controller.transform.LookAt(targetPosition);
-            
-            // Throw grenade if we haven't already
-            if (!hasThrown && !controller.IsThrowingGrenade && controller.CurrentGrenades > 0)
-            {
-                ThrowGrenadeAsync(controller);
-                hasThrown = true;
-            }
-            
-            // Wait for cooldown then switch back to follow state
-            if (hasThrown && !controller.IsThrowingGrenade)
+
+            // If out of attack range, chase player
+            float distance = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            if (distance > controller.AttackRange)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Follow);
+                return;
+            }
+
+            // Face player (Y-axis only)
+            Vector3 lookPos = controller.CurrentTarget.position;
+            lookPos.y = controller.transform.position.y;
+            controller.transform.LookAt(lookPos);
+
+            // Try to reposition for LOS if not already throwing
+            if (!isThrowing && !controller.HasLineOfSight)
+            {
+                RepositionForLOS(controller);
             }
         }
         
@@ -74,52 +61,66 @@ namespace PatrolEnemy
             Debug.Log("Exited Grenade Throw State");
             grenadeCTS?.Cancel();
             grenadeCTS?.Dispose();
-            grenadeCTS = null;
         }
 
-        private async void ThrowGrenadeAsync(EnemyController controller)
+        private async UniTaskVoid AttemptGrenadeThrow(EnemyController controller)
         {
-            if (controller.CurrentGrenades <= 0)
-                return;
+            while (!grenadeCTS.IsCancellationRequested && 
+                   controller.CurrentGrenades > 0 && 
+                   !controller.HasLineOfSight)
+            {
+                isThrowing = true;
                 
-            controller.IsThrowingGrenade = true;
-            
-            // Use the model of the particle manager for our grenade
-            Vector3 targetPosition = controller.CurrentTarget.position;
-            GameObject grenade = GameObject.Instantiate(controller.GrenadePrefab, controller.GrenadePoint.position, controller.GrenadePoint.rotation);
-            
-            // Setup grenade trajectory (this would need a separate component on the grenade prefab)
-            Rigidbody grenadeRb = grenade.GetComponent<Rigidbody>();
-            if (grenadeRb != null)
-            {
-                // Calculate arc trajectory
-                Vector3 directionToTarget = (targetPosition - controller.GrenadePoint.position).normalized;
-                float distanceToTarget = Vector3.Distance(controller.GrenadePoint.position, targetPosition);
+                // Throw grenade
+                GameObject grenade = GameObject.Instantiate(
+                    controller.GrenadePrefab,
+                    controller.GrenadePoint.position,
+                    controller.GrenadePoint.rotation
+                );
+
+                // Calculate trajectory (with slight randomness)
+                Vector3 targetPos = controller.CurrentTarget.position;
+                Vector3 direction = (targetPos - controller.GrenadePoint.position).normalized;
+                float force = Mathf.Clamp(Vector3.Distance(controller.transform.position, targetPos) * 2f, 10f, 20f);
+                grenade.GetComponent<Rigidbody>().AddForce((direction + Vector3.up * 0.5f) * force, ForceMode.Impulse);
                 
-                // Adjust force based on distance
-                float throwForce = Mathf.Clamp(distanceToTarget * 2f, 10f, 20f);
-                Vector3 throwDirection = directionToTarget + Vector3.up * 0.5f;
-                grenadeRb.AddForce(throwDirection.normalized * throwForce, ForceMode.Impulse);
-            }
-            
-            // Play explosion effect after delay
-            
-            controller.CurrentGrenades--;
-            Debug.Log($"Threw grenade. Grenades remaining: {controller.CurrentGrenades}");
-            
-            try
-            {
-                await Task.Delay((int)(controller.GrenadeThrowCooldown * 1000), grenadeCTS.Token);
-                controller.IsThrowingGrenade = false;
-            }
-            catch (OperationCanceledException)
-            {
-                Debug.Log("Grenade cooldown interrupted");
-                controller.IsThrowingGrenade = false;
+                controller.CurrentGrenades--;
+                Debug.Log($"Threw grenade. Left: {controller.CurrentGrenades}");
+
+                // Wait for cooldown (while still checking conditions)
+                try
+                {
+                    await UniTask.Delay(
+                        (int)(controller.GrenadeThrowCooldown * 1000),
+                        cancellationToken: grenadeCTS.Token
+                    );
+                }
+                catch (OperationCanceledException)
+                {
+                    break; // Exit if interrupted
+                }
+
+                isThrowing = false;
             }
         }
-        
+
+        private void RepositionForLOS(EnemyController controller)
+        {
+            // Try moving sideways to regain LOS
+            Vector3 randomOffset = new Vector3(
+                Random.Range(-2f, 2f), 
+                0f, 
+                Random.Range(-2f, 2f)
+            ).normalized;
+
+            Vector3 newPos = controller.CurrentTarget.position + randomOffset * controller.AttackRange;
+            
+            // Sample position on NavMesh
+            if (NavMesh.SamplePosition(newPos, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+            {
+                controller.Agent.SetDestination(hit.position);
+                controller.Agent.isStopped = false;
+            }
+        }
     }
-    
-   
 }

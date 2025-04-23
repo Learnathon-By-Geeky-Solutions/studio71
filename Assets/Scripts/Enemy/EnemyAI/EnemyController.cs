@@ -28,7 +28,7 @@ namespace PatrolEnemy
         [SerializeField] private float patrolRange = 10f;
         [SerializeField] private float detectionRange = 15f;
         [SerializeField] private float attackRange = 8f;
-         public LayerMask obstacleLayer;
+        [SerializeField] private LayerMask obstacleLayer;
 
         // Combat settings
         [Header("Combat Settings")]

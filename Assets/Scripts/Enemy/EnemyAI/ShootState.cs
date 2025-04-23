@@ -1,5 +1,5 @@
-using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 
@@ -21,13 +21,27 @@ namespace PatrolEnemy
 
         public void UpdateState(EnemyController controller)
         {
+            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
+            float desiredDistance = controller.AttackRange * 0.9f; // 70% of attack range ,Maintain distance while attacking
+            Vector3 directionToPlayer = (controller.transform.position - controller.CurrentTarget.position).normalized;
+            Vector3 desiredPosition = controller.CurrentTarget.position + directionToPlayer * desiredDistance;
+
+    // Set destination if too close/far
+    if (Vector3.Distance(controller.transform.position, desiredPosition) > 0.5f)
+    {
+        controller.Agent.SetDestination(desiredPosition);
+        controller.Agent.isStopped = false;
+    }
+    else
+    {
+        controller.Agent.isStopped = true; // Stop if at ideal distance
+    }
+
             if (controller.CurrentTarget == null)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
-
-            float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
 
             // If player moved out of attack range, switch to follow state
             if (distanceToPlayer > controller.AttackRange)
@@ -41,6 +55,13 @@ namespace PatrolEnemy
             {
                 controller.ChangeState(EnemyController.EnemyStateType.GrenadeThrow);
                 return;
+            }
+
+            // If line of sight is lost, gain LOS if we don't have grenades
+             if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0)
+            {
+            controller.Agent.SetDestination(controller.CurrentTarget.position);
+            controller.Agent.isStopped = false; // Ensure agent moves if outside attack range
             }
 
             // Look at player on Y axis only
