@@ -12,11 +12,11 @@ EditorBuildSettings:
     path: Assets/Scenes/SlidingMenu.unity
     guid: e7aea9eb421b31049b7e6c68721786fc
   - enabled: 1
+    path: Assets/Scenes/Nur Muhammad.unity
+    guid: 737d1f3d3f85cd74381d0b123b34a082
+  - enabled: 1
     path: Assets/Scenes/Hamidur Rahman.unity
     guid: 45b3b394b6783fb49af77f750448f09d
-  - enabled: 1
-    path: Assets/Scenes/Level-2.unity
-    guid: 533d5766dcecd4f40ba177083ac436a3
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 60d119ec1edfb284f8c86194aa613daf, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 5f0fa73ad133a3a4ab542b45891aaef2, type: 3}

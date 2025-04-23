@@ -16,14 +16,8 @@ namespace UI.MainMenu
         private void Start()
         {
             isBackgroundPlaying = true;
-            if(isBackgroundPlaying)
-            {
                 PlayBackgroundMusic();
-            }
-            else
-            {
-                print("Background music is already playing");
-            }
+                print($"Background music is playing: {isBackgroundPlaying}");
          
         }
         #endregion
@@ -38,6 +32,7 @@ namespace UI.MainMenu
             PlayButtonSound();
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
             isBackgroundPlaying = false;
+            print($"Background music is not playing: {isBackgroundPlaying}");
             SceneIndexes.LoadSceneByIndex(SceneIndexes.SlidingMenuScene);
         }
 
