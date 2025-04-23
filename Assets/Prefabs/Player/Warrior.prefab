@@ -951,6 +951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactionRadius: 2
+  _detectionInterval: 0.2
   _interactionButton: {fileID: 0}
   _interactionText: {fileID: 0}
 --- !u!114 &1689038584940517072
@@ -1029,6 +1030,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 90
+  _destroyOnDeath: 1
+  _onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeath:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1955199627640716620
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1038,8 +1046,8 @@ Rigidbody:
   m_GameObject: {fileID: 720981123083353901}
   serializedVersion: 4
   m_Mass: 1
-  m_Drag: 55.71
-  m_AngularDrag: 58.66
+  m_Drag: 56
+  m_AngularDrag: 65
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

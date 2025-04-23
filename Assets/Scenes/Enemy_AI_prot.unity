@@ -295,6 +295,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &329064471 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8637382835709171898, guid: b67d17aef7eea8b449973b67222ab260, type: 3}
+  m_PrefabInstance: {fileID: 8352870788050701601}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &347949657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 726546441728292921, guid: 7376d0e381db73a4581fa590b78746a7, type: 3}
@@ -1349,6 +1354,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2908617686280616072, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3038401109736658641, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -1960,8 +1969,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3511774632543437309, guid: b67d17aef7eea8b449973b67222ab260, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7400671243075674923, guid: b67d17aef7eea8b449973b67222ab260, type: 3}
+      propertyPath: FirePoint
+      value: 
+      objectReference: {fileID: 329064471}
+    - target: {fileID: 7400671243075674923, guid: b67d17aef7eea8b449973b67222ab260, type: 3}
+      propertyPath: AlertRadius
+      value: 108.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400671243075674923, guid: b67d17aef7eea8b449973b67222ab260, type: 3}
+      propertyPath: FiringRadius
+      value: 91.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7400671243075674923, guid: b67d17aef7eea8b449973b67222ab260, type: 3}
+      propertyPath: ProjectilePrefab
+      value: 
+      objectReference: {fileID: 1206594183249076, guid: 3d3c84f8cd69b8d4d81f4372600be7c7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
