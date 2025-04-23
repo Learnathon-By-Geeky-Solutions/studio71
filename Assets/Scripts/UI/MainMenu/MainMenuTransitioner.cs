@@ -33,10 +33,11 @@ namespace UI.MainMenu
         /// Called when the Play button is clicked.
         /// Loads the game scene asynchronously.
         /// </summary>
-        public static void PlayGame()
+        public void PlayGame()
         {
             PlayButtonSound();
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
+            isBackgroundPlaying = false;
             SceneIndexes.LoadSceneByIndex(SceneIndexes.SlidingMenuScene);
         }
 
