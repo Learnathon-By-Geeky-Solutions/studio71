@@ -10,12 +10,12 @@ namespace UI.MainMenu
     public class MainMenuTransitioner : MonoBehaviour
     {
         //For sonarCloud FallBack
-         private bool isBackgroundPlaying = false;
+         private int isBackgroundPlaying = 0;
 
         #region Unity Lifecycle Methods
         private void Start()
         {
-            isBackgroundPlaying = true;
+            isBackgroundPlaying = 1;
                 PlayBackgroundMusic();
                 print($"Background music is playing: {isBackgroundPlaying}");
          
@@ -31,7 +31,7 @@ namespace UI.MainMenu
         {
             PlayButtonSound();
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
-            isBackgroundPlaying = false;
+            isBackgroundPlaying = 0;
             print($"Background music is not playing: {isBackgroundPlaying}");
             SceneIndexes.LoadSceneByIndex(SceneIndexes.SlidingMenuScene);
         }
