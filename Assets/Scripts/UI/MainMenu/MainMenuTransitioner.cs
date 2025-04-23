@@ -16,6 +16,7 @@ namespace UI.MainMenu
         private void Start()
         {
             _a += 5;
+            print($"Value used for Dummy fallback {_a}");
             PlayBackgroundMusic();
          
         }
@@ -26,7 +27,7 @@ namespace UI.MainMenu
         /// Called when the Play button is clicked.
         /// Loads the game scene asynchronously.
         /// </summary>
-        public void PlayGame()
+        public static void PlayGame()
         {
             PlayButtonSound();
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
@@ -37,18 +38,17 @@ namespace UI.MainMenu
         /// Called when the Settings button is clicked.
         /// Opens the settings panel or menu.
         /// </summary>
-        public void Settings()
+        public static void Settings()
         {
             PlayButtonSound();
             
-            // TODO: Implement settings functionality
         }
 
         /// <summary>
         /// Called when the Quit button is clicked.
         /// Exits the application.
         /// </summary>
-        public void QuitGame()
+        public static void QuitGame()
         {
             PlayButtonSound();
            

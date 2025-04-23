@@ -13,11 +13,13 @@ namespace UI.HUD
         [SerializeField] private float _yOffset;
 
         private RectTransform _rectTransform;
+        private PauseMenu _pauseMenu;
         private Image _image;
         private void Awake()
         {
             _image = GetComponent<Image>();
             _rectTransform = GetComponent<RectTransform>();
+            _pauseMenu=GetComponentInParent<PauseMenu>();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
             if (_crossHair == null||_generalCursor==null)
@@ -47,7 +49,7 @@ namespace UI.HUD
 
         private void CursorChange()
         {
-            if (PauseMenu.IsGamePaused())
+            if (_pauseMenu.IsGamePaused())
             {
                 _yOffset = 35;
                 _image.sprite = _crossHair;

@@ -1,17 +1,19 @@
 using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
-
-public class NavMeshBake : MonoBehaviour
+namespace InGameNavMesh
 {
-    private NavMeshSurface _navMeshSurface;
-    private void Awake()
+    public class NavMeshBake : MonoBehaviour
     {
-        _navMeshSurface = GetComponent<NavMeshSurface>();
-    }
+        private NavMeshSurface _navMeshSurface;
+        private void Awake()
+        {
+            _navMeshSurface = GetComponent<NavMeshSurface>();
+        }
 
-    private void Start()
-    {
-        _navMeshSurface.BuildNavMesh();
+        private void Start()
+        {
+            _navMeshSurface.BuildNavMesh();
+        }
     }
 }

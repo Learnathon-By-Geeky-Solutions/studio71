@@ -7,8 +7,8 @@ namespace UI
     public class PauseMenu : MonoBehaviour
     {
 
-        private static bool s_gameIsPaused = false;
-        public static bool IsGamePaused()
+        private bool s_gameIsPaused = false;
+        public  bool IsGamePaused()
         {
             return s_gameIsPaused;
         }
@@ -43,7 +43,7 @@ namespace UI
         // Update is called once per frame
 
 
-        public void Resume()
+        private void Resume()
         {
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
