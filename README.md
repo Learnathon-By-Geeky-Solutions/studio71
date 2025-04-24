@@ -4,7 +4,7 @@
 
     *A top-down 2.5D shooting game based on the 1971 Liberation War of Bangladesh.*
 
-[![Game Banner](6 - 1.jpg)](6 - 1.jpg)
+[![Game Banner](https://github.com/Learnathon-By-Geeky-Solutions/studio71/blob/main/Assets/Sprites/3knot3_Banner.png)](https://github.com/Learnathon-By-Geeky-Solutions/studio71/blob/main/Assets/Sprites/3knot3_Banner.png)
 
 [![itch.io](https://img.shields.io/badge/itch.io-3knot3-red?style=for-the-badge&logo=itch.io&logoColor=white)](https://sarwar2arnob.itch.io/3knot3)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -44,9 +44,9 @@
 
 * **Controls:** (See table below)
 * **Requirements:**
-    * Unity [Version] *(Please specify the Unity version)*
+    * Unity \[Version] *(Please specify the Unity version)*
     * WebGL compatible browser (for WebGL build)
-    * Windows [Version(s)] *(Please specify supported Windows versions)*
+    * Windows \[Version(s)] *(Please specify supported Windows versions)*
 * **Installation/Build Instructions:** *(To be added when available)*
 * **Running the Game:** *(To be added when available)*
 
@@ -126,7 +126,6 @@
     <tr>
         <td style="width: 20%; vertical-align: top; text-align: center;">
             <h4>   Ahmed Swaroar Arnob   </h4>
-            <img src="https://avatars.githubusercontent.com/u/46115206?v=4" width="100">
             <br>
             <img src="https://img.shields.io/badge/Role-Game%20Idea%20%26%20Design%20,%20Project%20Management%20,%20Enemy%20System%20Design-blue">
             <br>
@@ -140,7 +139,6 @@
         </td>
         <td style="width: 20%; vertical-align: top; text-align: center;">
             <h4>   Ahmed Safayet Amio   </h4>
-            <img src="https://avatars.githubusercontent.com/u/120937553?v=4" width="100">
             <br>
             <img src="https://img.shields.io/badge/Role-Player%20Controller%20Development%20,%20Level%20Design%20,%20Bug%20fixing%20Support-blue">
             <br>
@@ -150,7 +148,6 @@
         </td>
         <td style="width: 20%; vertical-align: top; text-align: center;">
             <h4>   Oitijya Islam Auvro   </h4>
-            <img src="https://avatars.githubusercontent.com/u/87023098?v=4" width="100">
             <br>
             <img src="https://img.shields.io/badge/Role-UI%20design%20,%20Dialogue%20System%20,%20Audio%20System-blue">
             <br>
@@ -160,7 +157,6 @@
         </td>
          <td style="width: 20%; vertical-align: top; text-align: center;">
             <h4>   Zubair Islam Epty   </h4>
-            <img src="https://avatars.githubusercontent.com/u/43516627?v=4" width="100">
             <br>
             <img src="https://img.shields.io/badge/Role-Mentor-4E9BCD?style=for-the-badge">
             <br>
