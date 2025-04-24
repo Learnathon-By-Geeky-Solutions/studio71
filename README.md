@@ -1,11 +1,12 @@
 <div align="center">
 
-#   🎮 3knot3 🎮
+#   🎮 3knot3 🚀
 
     *A top-down 2.5D shooting game based on the 1971 Liberation War of Bangladesh.*
 
-[![Game Banner](https://drive.google.com/file/d/1pmRtso34eKzbfZmfdd048cpvaLtVSkQ0/view?usp=sharing)](https://drive.google.com/file/d/1pmRtso34eKzbfZmfdd048cpvaLtVSkQ0/view?usp=sharing)
+[![Game Banner](6 - 1.jpg)](6 - 1.jpg)
 
+[![itch.io](https://img.shields.io/badge/itch.io-3knot3-red?style=for-the-badge&logo=itch.io&logoColor=white)](https://sarwar2arnob.itch.io/3knot3)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform: WebGL, Windows](https://img.shields.io/badge/Platform-WebGL%2C%20Windows-blue.svg)](https://unity.com)
 [![Engine: Unity](https://img.shields.io/badge/Engine-Unity-000000?style=for-the-badge&logo=unity&logoColor=white)](https://unity.com)
@@ -117,59 +118,60 @@
 
     <h2>   🔥 Meet Team - <b>Studio71</b></h2>
 
-    <table style="width: 90%;">
-        <tr>
-            <td align="center" width="20%">
-                <h4>   Ahmed Swaroar Arnob   </h4>
-                <img src="https://avatars.githubusercontent.com/u/46115206?v=4" width="100">  *(You can add a team photo here if you want)*
-                <br>
-                <img src="https://img.shields.io/badge/Role-Game%20Idea%20%26%20Design%20,%20Project%20Management%20,%20Enemy%20System%20Design-blue">
-                <br>
-                <a href="https://github.com/sarwar2arnob" target="_blank">
-                    <img src="https://img.shields.io/badge/GitHub-sarwar2arnob-100000?style=flat&logo=github&logoColor=white">
-                </a>
-                <br>
-                <a href="https://sites.google.com/view/ahmedswaroarportfolio/home" target="_blank">
-                    <img src="https://img.shields.io/badge/Portfolio-AhmedSwaroar-orange">
-                </a>
-            </td>
-            <td align="center" width="20%">
-                <h4>   Ahmed Safayet Amio   </h4>
-                <img src="https://avatars.githubusercontent.com/u/120937553?v=4" width="100">  *(You can add a team photo here if you want)*
-                <br>
-                <img src="https://img.shields.io/badge/Role-Player%20Controller%20Development%20,%20Level%20Design%20,%20Bug%20fixing%20Support-blue">
-                <br>
-                <a href="https://github.com/dragonslayer4509" target="_blank">
-                    <img src="https://img.shields.io/badge/GitHub-dragonslayer4509-100000?style=flat&logo=github&logoColor=white">
-                </a>
-            </td>
-            <td align="center" width="20%">
-                <h4>   Oitijya Islam Auvro   </h4>
-                <img src="https://avatars.githubusercontent.com/u/87023098?v=4" width="100">  *(You can add a team photo here if you want)*
-                <br>
-                <img src="https://img.shields.io/badge/Role-UI%20design%20,%20Dialogue%20System%20,%20Audio%20System-blue">
-                <br>
-                <a href="https://github.com/AuvroIslam" target="_blank">
-                    <img src="https://img.shields.io/badge/GitHub-AuvroIslam-100000?style=flat&logo=github&logoColor=white">
-                </a>
-            </td>
-             <td align="center" width="20%">
-                <h4>   Zubair Islam Epty   </h4>
-                <img src="https://avatars.githubusercontent.com/u/43516627?v=4" width="100">  *(You can add a team photo here if you want)*
-                <br>
-                <img src="https://img.shields.io/badge/Role-Mentor-4E9BCD?style=for-the-badge">
-                <br>
-                <a href="https://github.com/zubEpty" target="_blank">
-                    <img src="https://img.shields.io/badge/GitHub-zubEpty-100000?style=flat&logo=github&logoColor=white">
-                </a>
-            </td>
-            <td align="center" width="20%">
-                *(You can add a 5th member here if applicable)*
-            </td>
-        </tr>
-    </table>
-
 </div>
+
+<br>
+
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 20%; vertical-align: top; text-align: center;">
+            <h4>   Ahmed Swaroar Arnob   </h4>
+            <img src="https://avatars.githubusercontent.com/u/46115206?v=4" width="100">
+            <br>
+            <img src="https://img.shields.io/badge/Role-Game%20Idea%20%26%20Design%20,%20Project%20Management%20,%20Enemy%20System%20Design-blue">
+            <br>
+            <a href="https://github.com/sarwar2arnob" target="_blank">
+                <img src="https://img.shields.io/badge/GitHub-sarwar2arnob-100000?style=flat&logo=github&logoColor=white">
+            </a>
+            <br>
+            <a href="https://sites.google.com/view/ahmedswaroarportfolio/home" target="_blank">
+                <img src="https://img.shields.io/badge/Portfolio-AhmedSwaroar-orange">
+            </a>
+        </td>
+        <td style="width: 20%; vertical-align: top; text-align: center;">
+            <h4>   Ahmed Safayet Amio   </h4>
+            <img src="https://avatars.githubusercontent.com/u/120937553?v=4" width="100">
+            <br>
+            <img src="https://img.shields.io/badge/Role-Player%20Controller%20Development%20,%20Level%20Design%20,%20Bug%20fixing%20Support-blue">
+            <br>
+            <a href="https://github.com/dragonslayer4509" target="_blank">
+                <img src="https://img.shields.io/badge/GitHub-dragonslayer4509-100000?style=flat&logo=github&logoColor=white">
+            </a>
+        </td>
+        <td style="width: 20%; vertical-align: top; text-align: center;">
+            <h4>   Oitijya Islam Auvro   </h4>
+            <img src="https://avatars.githubusercontent.com/u/87023098?v=4" width="100">
+            <br>
+            <img src="https://img.shields.io/badge/Role-UI%20design%20,%20Dialogue%20System%20,%20Audio%20System-blue">
+            <br>
+            <a href="https://github.com/AuvroIslam" target="_blank">
+                <img src="https://img.shields.io/badge/GitHub-AuvroIslam-100000?style=flat&logo=github&logoColor=white">
+            </a>
+        </td>
+         <td style="width: 20%; vertical-align: top; text-align: center;">
+            <h4>   Zubair Islam Epty   </h4>
+            <img src="https://avatars.githubusercontent.com/u/43516627?v=4" width="100">
+            <br>
+            <img src="https://img.shields.io/badge/Role-Mentor-4E9BCD?style=for-the-badge">
+            <br>
+            <a href="https://github.com/zubEpty" target="_blank">
+                <img src="https://img.shields.io/badge/GitHub-zubEpty-100000?style=flat&logo=github&logoColor=white">
+            </a>
+        </td>
+    </tr>
+</table>
+
+<br>
 
 ---
 
@@ -185,12 +187,12 @@
 
 ##   🔗 Resources
 
+* [itch.io Page](https://sarwar2arnob.itch.io/3knot3)
 * **SonarCloud Quality:** [https://sonarcloud.io/project/overview?id=Learnathon-By-Geeky-Solutions\_studio71](https://sonarcloud.io/project/overview?id=Learnathon-By-Geeky-Solutions_studio71)
 * **Project Management:** *(Add link if available)*
 * **Game Design Document:** *(Add link if available)*
 * **Wiki/Documentation:** *(Add link if available)*
 * **Website:** *(Add link if available)*
-* **itch.io/Game Jolt:** *(Add link if available)*
 * **Social Media:** *(Add links if available - Twitter, Discord, etc.)*
 * **Devlog:** *(Add link if available)*
 
