@@ -18,7 +18,6 @@ namespace CameraManager
         [SerializeField] private Material _transparentLeavesMaterial;
 
         private Transform _player;
-        private Camera _camera;
         private Vector3 _targetOffset;
 
         private readonly Dictionary<Renderer, Material> _originalLeafMaterials = new();
@@ -27,7 +26,6 @@ namespace CameraManager
         private void Awake()
         {
             _player = GameObject.FindGameObjectWithTag("Player")?.transform;
-            _camera = GetComponentInChildren<Camera>();
             _targetOffset = _offset;
         }
 
@@ -74,18 +72,25 @@ namespace CameraManager
                 rend.materials = materials;
             }
 
-            foreach (var rend in _currentlyFaded)
+            if (newFaded.Count > 0)
             {
-                if (rend == null || newFaded.Contains(rend)) continue;
-                if (!_originalLeafMaterials.ContainsKey(rend)) continue;
+                foreach (var rend in _currentlyFaded)
+                {
+                    if (rend == null || newFaded.Contains(rend)) continue;
+                    if (!_originalLeafMaterials.TryGetValue(rend, out var originalMat)) continue;
 
-                var materials = rend.materials;
-                materials[1] = _originalLeafMaterials[rend];
-                rend.materials = materials;
+                    var materials = rend.materials;
+                    materials[1] = originalMat;
+                    rend.materials = materials;
+                }
             }
 
             _currentlyFaded.Clear();
-            foreach (var r in newFaded) _currentlyFaded.Add(r);
+            foreach (var r in newFaded)
+            {
+                _currentlyFaded.Add(r);
+            }
         }
+
     }
 }
