@@ -72,25 +72,25 @@ namespace CameraManager
                 rend.materials = materials;
             }
 
-            if (newFaded.Count > 0)
+            foreach (var rend in _currentlyFaded)
             {
-                foreach (var rend in _currentlyFaded)
-                {
-                    if (rend == null || newFaded.Contains(rend)) continue;
-                    if (!_originalLeafMaterials.TryGetValue(rend, out var originalMat)) continue;
+                if (newFaded.Contains(rend)) continue;
+                if (!_originalLeafMaterials.ContainsKey(rend)) continue;
 
-                    var materials = rend.materials;
-                    materials[1] = originalMat;
-                    rend.materials = materials;
-                }
+                var materials = rend.materials;
+                materials[1] = _originalLeafMaterials[rend];
+                rend.materials = materials;
             }
 
             _currentlyFaded.Clear();
-            foreach (var r in newFaded)
-            {
-                _currentlyFaded.Add(r);
-            }
+            foreach (var r in newFaded) _currentlyFaded.Add(r);
         }
 
+        private void OnDrawGizmosSelected()
+        {
+            if (_player == null) return;
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(_player.position, _fadeDistance);
+        }
     }
 }
