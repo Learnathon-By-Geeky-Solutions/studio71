@@ -35,7 +35,10 @@ namespace UI
         }
         private void OnDisable()
         {
-            Resume();
+            if (_playerController != null)
+            {
+                Resume();
+            }
             InputHandler.Instance.OnPause -= Pause;
 
         }
@@ -72,7 +75,7 @@ namespace UI
             // Show the pause menu UI here
         }
 
-        public void LoadMenu()
+        public static void LoadMenu()
         {
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
             SceneIndexes.LoadSceneByIndex(SceneIndexes.MaineMenuScene);

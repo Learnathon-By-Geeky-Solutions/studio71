@@ -14,9 +14,7 @@ namespace HealthSystem
         [Header("Health Settings")]
         [SerializeField] private int _maxHealth = 100;
         
-        [Header("Events")]
-        [SerializeField] private bool _destroyOnDeath = true;
-        
+        [Header("Events")] 
         [Tooltip("Event triggered when health changes. Passes current health value.")]
         [SerializeField] private UnityEvent<int> _onHealthChanged = new UnityEvent<int>();
         
@@ -118,7 +116,7 @@ namespace HealthSystem
                 StartCoroutine(InvokeDelayedDeath());
             }
         }
-        private IEnumerator InvokeDelayedDeath()
+        private static IEnumerator InvokeDelayedDeath()
         {
             yield return new WaitForSeconds(3.5f);
             LevelConditionManager.Instance.OnPlayerDeath();

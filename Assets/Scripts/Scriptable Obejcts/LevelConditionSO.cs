@@ -6,21 +6,45 @@ namespace LevelConditions
     public class LevelConditionSO : ScriptableObject
     {
         #region SO Information
-        public string levelName;
-        public int sceneBuildIndex;
+        [SerializeField] private string _levelName;
+        [SerializeField] private int _sceneBuildIndex;
+        public int SceneBuildIndex
+        {
+            get=>_sceneBuildIndex; set => _sceneBuildIndex = value;
+        }
         #endregion
 
         #region Properties for Win.
         [Header("Win Conditions")]
-        public bool winOnAllEnemiesDead;
-        public bool winOnTimerEnd;
-        public float surviveTime;
+        [SerializeField] private bool _winOnAllEnemiesDead;
+        public bool WinOnAllEnemiesDead
+        {
+            get => _winOnAllEnemiesDead;set=>_winOnAllEnemiesDead = value;
+        }
+        [SerializeField] private bool _winOnTimerEnd;
+        public bool WinOnTimerEnd
+        {
+            get => _winOnTimerEnd;set=> _winOnTimerEnd = value;
+        }
+        [SerializeField] private float _surviveTime;
+        public float SurviveTime
+        {
+            get => _surviveTime; set => _surviveTime = value;   
+        }
         #endregion
 
         #region Properties for Lose.
         [Header("Lose Conditions")]
-        public bool loseOnPlayerDeath = true;
-        public bool loseOnBaseDestroyed = false;
+        [SerializeField] private bool _loseOnPlayerDeath = true;
+        public bool LoseOnPlayerDeath
+        {
+            get => _loseOnPlayerDeath;set => _loseOnPlayerDeath = value;
+        }
+        [SerializeField] private bool _loseOnBaseDestroyed = false;
+        public bool LoseOnBaseDestroyed
+        {
+            get => _loseOnBaseDestroyed;set => _loseOnBaseDestroyed = value;
+        }
         #endregion
 
         #region Events to Subscribe/Unsubscribe

@@ -53,7 +53,6 @@ namespace Player
         //Reference to Other Player Scripts to work with them.
         private InteractionSystem _interactionSystem;
         private PlayerController _playerController;
-        private Health _playerHealth;
         #endregion
 
         #region Methods for Functioning
@@ -75,8 +74,6 @@ namespace Player
             //Player Controller Initialization
             _playerController=GetComponent<PlayerController>();
 
-            //Health System Initialization
-            _playerHealth = gameObject.GetComponent<Health>();
             IsDead = false;
 
         }

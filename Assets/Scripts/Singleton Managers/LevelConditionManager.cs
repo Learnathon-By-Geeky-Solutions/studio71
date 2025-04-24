@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using LevelConditions;
 using Singleton;
+using Unity.VisualScripting;
 namespace SingletonManagers {
     public class LevelConditionManager : SingletonPersistent
     {
@@ -30,12 +31,13 @@ namespace SingletonManagers {
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             AssignLevelConditionForScene(scene.buildIndex);
+            mode.HumanName();
             _levelEnded = false;
         }
 
         private void AssignLevelConditionForScene(int buildIndex)
         {
-            _currentConditions = _allLevelConditions.Find(condition => condition.sceneBuildIndex == buildIndex);
+            _currentConditions = _allLevelConditions.Find(condition => condition.SceneBuildIndex == buildIndex);
 
             if (_currentConditions == null)
             {
@@ -50,25 +52,25 @@ namespace SingletonManagers {
         /// </summary>
         public void OnAllEnemiesDefeated()
         {
-            if (_levelEnded || _currentConditions == null || !_currentConditions.winOnAllEnemiesDead) return;
+            if (_levelEnded || _currentConditions == null || !_currentConditions.WinOnAllEnemiesDead) return;
             HandleWin();
         }
 
         public void OnTimerFinished()
         {
-            if (_levelEnded || _currentConditions == null || !_currentConditions.winOnTimerEnd) return;
+            if (_levelEnded || _currentConditions == null || !_currentConditions.WinOnTimerEnd) return;
             HandleWin();
         }
 
         public void OnPlayerDeath()
         {
-            if (_levelEnded || _currentConditions == null || !_currentConditions.loseOnPlayerDeath) return;
+            if (_levelEnded || _currentConditions == null || !_currentConditions.LoseOnPlayerDeath) return;
             HandleLose();
         }
 
         public void OnBaseDestroyed()
         {
-            if (_levelEnded || _currentConditions == null || !_currentConditions.loseOnBaseDestroyed) return;
+            if (_levelEnded || _currentConditions == null || !_currentConditions.LoseOnBaseDestroyed) return;
             HandleLose();
         }
         #endregion
