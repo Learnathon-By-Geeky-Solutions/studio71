@@ -136,7 +136,7 @@ namespace Interaction
             {
                 TriggerNpcDialogue(_currentTarget.gameObject);
             }
-            else if (_currentTarget.CompareTag("Interactable"))
+            if (_currentTarget.CompareTag("Interactable"))
             {
                 if (_playerAnimation != null && _playerAnimation.AnimationLength.ContainsKey("Pick Up"))
                 {

@@ -32,10 +32,10 @@ namespace UI
         private void OnEnable()
         {
             InputHandler.Instance.OnPause += Pause;
-
         }
         private void OnDisable()
         {
+            Resume();
             InputHandler.Instance.OnPause -= Pause;
 
         }
@@ -72,8 +72,9 @@ namespace UI
             // Show the pause menu UI here
         }
 
-        public static void LoadMenu()
+        public void LoadMenu()
         {
+            AudioManager.StopSound(SoundKeys.BackgroundMusic);
             SceneIndexes.LoadSceneByIndex(SceneIndexes.MaineMenuScene);
         }
         public void Sound()

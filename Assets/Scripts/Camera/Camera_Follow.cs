@@ -49,7 +49,7 @@ namespace CameraManager
             transform.position = _player.position + _targetOffset;
             transform.rotation = Quaternion.Euler(_rotation);
         }
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S4158:Remove this call, the collection is known to be empty here.", Justification = "Field will be populated on second iteration")]
         private void HandleTreeTransparency()
         {
             var colliders = Physics.OverlapSphere(_player.position, _fadeDistance, _treeLayer);
@@ -84,13 +84,7 @@ namespace CameraManager
 
             _currentlyFaded.Clear();
             foreach (var r in newFaded) _currentlyFaded.Add(r);
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            if (_player == null) return;
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(_player.position, _fadeDistance);
+           
         }
     }
 }

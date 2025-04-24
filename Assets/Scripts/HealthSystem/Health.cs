@@ -1,6 +1,8 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using SingletonManagers;
+using Player;
 
 namespace HealthSystem
 {
@@ -105,12 +107,21 @@ namespace HealthSystem
         {
             // Trigger death event
             _onDeath.Invoke();
-            
             // Destroy object if it's an enemy or destroyOnDeath is true
-            if (_destroyOnDeath || gameObject.CompareTag("Enemy"))
+            if (gameObject.CompareTag("Enemy"))
             {
                 Destroy(gameObject);
             }
+            else
+            {
+                gameObject.GetComponent<PlayerAnimation>().DeathAnimation();
+                StartCoroutine(InvokeDelayedDeath());
+            }
+        }
+        private IEnumerator InvokeDelayedDeath()
+        {
+            yield return new WaitForSeconds(3.5f);
+            LevelConditionManager.Instance.OnPlayerDeath();
         }
     }
 }

@@ -3,12 +3,12 @@ using SingletonManagers;
 using System.Collections.Generic;
 using System.Collections;
 using Interaction;
-
 using UnityEngine.UIElements;
 using HealthSystem;
 
 namespace Player
 {
+    #region Public Class Holding All Animation Name
     public static class AnimationState
     {
         public const string Idle = "Idle";
@@ -30,24 +30,33 @@ namespace Player
         public const string ForwardRight = "Forward Right";
         public const string BackwardRight = "Backward Right";
     }
+    #endregion
     public class PlayerAnimation : MonoBehaviour
     {
+        #region Animator Variables
         //Animator related Variables.
         private Animator _playerAnimator;
         private string _currentAnimation;
         public Dictionary<string, float> AnimationLength { get; private set; } = new Dictionary<string, float>();
+        #endregion
 
+        #region Bools for State Check
         //Bools to check different state.
         public bool IsBusy {get; private set;}
         public bool IsThrowingGrenade { get; set; }
         private bool _isPickingUp=false;
         public bool IsDead { get;private set;}
         private bool _isCrouching = false;
+        #endregion
 
+        #region Other Scripts Reference
         //Reference to Other Player Scripts to work with them.
         private InteractionSystem _interactionSystem;
         private PlayerController _playerController;
         private Health _playerHealth;
+        #endregion
+
+        #region Methods for Functioning
         /// <summary>
         /// Initialize Variables for animation.
         /// </summary>
@@ -102,13 +111,10 @@ namespace Player
                 return;
 
             MoveAnimation();
-
-            if (_playerHealth.CurrentHealth <= 0)
-            {
-                DeathAnimation();
-            }
         }
+        #endregion
 
+        #region Animation Functions
         /// <summary>
         /// Different Animation Functions.
         /// </summary>
@@ -170,14 +176,16 @@ namespace Player
             StartCoroutine(DelayedAction(AnimationLength[AnimationState.GrenadeThrow], () => { IsThrowingGrenade = false; }));
 
         }
-        private void DeathAnimation()
+        public void DeathAnimation()
         {
             IsDead = true;
             _playerController.enabled=false;
             PlayAnimation(AnimationState.Death, 0.1f, 0);
             _playerAnimator.SetLayerWeight(1, 0);
         }
+        #endregion
 
+        #region Methods that executes Animations
         /// <summary>
         /// Functions that helps execute Animations.
         /// </summary>
@@ -263,6 +271,6 @@ namespace Player
             yield return new WaitForSeconds(delay);
             action?.Invoke();
         }
-
+        #endregion
     }
 }

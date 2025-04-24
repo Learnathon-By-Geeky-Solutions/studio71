@@ -9,12 +9,19 @@ namespace SingletonManagers
     public class InputHandler : SingletonPersistent
     {
         public static InputHandler Instance => GetInstance<InputHandler>();
-        public delegate void OnActionEvent();
 
+        #region Properties of InputSystem Class
+        public delegate void OnActionEvent();
         private InputAction MoveInput;
+        #endregion
+
+        #region General Properties
         public Vector2 MoveDirection { get; private set; }
         public Vector2 MousePosition { get; private set; }
         public bool GrenadeThrowStart { get; private set; }
+        #endregion
+
+        #region Event Properties
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3264:Events should not be declared but never used", Justification = "Used via runtime subscriptions")]
         public event Action<bool> OnAttack;
         public event OnActionEvent OnReload;
@@ -25,11 +32,10 @@ namespace SingletonManagers
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S3264:Events should not be declared but never used", Justification = "Used via runtime subscriptions")]
         public event Action<bool> OnSprint;
         public event OnActionEvent OnInteract;
-
         public event OnActionEvent OnPause;
-        
+        #endregion
 
-      
+        #region General Methods
         private void Start()
         {
             MoveInput = gameObject.GetComponent<PlayerInput>().actions.FindAction("Move");
@@ -41,7 +47,9 @@ namespace SingletonManagers
             MoveAction();
             LookAction();
         }
+        #endregion
 
+        #region Event Methods
         private void MoveAction()
         {
             MoveDirection = MoveInput.ReadValue<Vector2>();
@@ -123,7 +131,7 @@ namespace SingletonManagers
                 OnPause?.Invoke();
             }
         }
-
+        #endregion
         private static IEnumerator DelayedAction(float delay, System.Action action)
         {
             yield return new WaitForSeconds(delay);
