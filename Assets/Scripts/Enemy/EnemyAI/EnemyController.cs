@@ -47,13 +47,13 @@ namespace PatrolEnemy
         [SerializeField] private float alertCountdown = 3f;
 
         // State management
-        private IEnemyState currentState;
-        private readonly IdleState idleState = new IdleState();
-        private readonly AlertState alertState = new AlertState();
-        private readonly FollowState followState = new FollowState();
-        private readonly ShootState shootState = new ShootState();
-        private readonly GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
-        private readonly RecoveryState recoveryState = new RecoveryState();
+        public IEnemyState currentState;
+        private  IdleState idleState = new IdleState();
+        private AlertState alertState = new AlertState();
+        private  FollowState followState = new FollowState();
+        private  ShootState shootState = new ShootState();
+        private  GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
+        private  RecoveryState recoveryState = new RecoveryState();
 
         // Public properties
         public NavMeshAgent Agent { get; private set; }
@@ -70,6 +70,13 @@ namespace PatrolEnemy
         public bool IsThrowingGrenade { get; set; }
         public bool HasLineOfSight { get; private set; }
         public Vector3 InitialPosition { get; private set; }
+
+        // New booleans for animation and state control
+        public bool isAlert;
+        public bool isShooting;
+        public bool isRecovering;
+        public bool isIdle;
+        public bool isFollowing;
 
         // Public accessors for ranges and settings
         public float PatrolRange => patrolRange;
@@ -88,7 +95,7 @@ namespace PatrolEnemy
         public int MaxGrenades => maxGrenades;
 
         // Event for state change
-        public event Action<EnemyStateType> OnStateChanged; // <-- Added this event
+        public event Action<EnemyStateType> OnStateChanged;
 
         private void Awake()
         {
@@ -182,6 +189,7 @@ namespace PatrolEnemy
         public void ChangeState(EnemyStateType stateType)
         {
             IEnemyState newState;
+            Debug.Log($"Changing state to: {stateType}");
 
             switch (stateType)
             {
@@ -221,28 +229,14 @@ namespace PatrolEnemy
                 currentState.EnterState(this);
             }
 
-            // Fire the state change event
-            OnStateChanged?.Invoke(stateType); // <-- Trigger the event
-        }
+            // Update booleans here to match the current state
+            isAlert = stateType == EnemyStateType.Alert;
+            isShooting = stateType == EnemyStateType.Shoot;
+            isRecovering = stateType == EnemyStateType.Recovery;
+            isIdle = stateType == EnemyStateType.Idle;
+            isFollowing = stateType == EnemyStateType.Follow;
 
-        // For backward compatibility with existing state scripts
-        public void ChangeState(IEnemyState newState)
-        {
-            if (currentState != null)
-            {
-                currentState.ExitState(this);
-            }
-
-            currentState = newState;
-
-            if (currentState != null)
-            {
-                Debug.Log($"Changing to {currentState.GetType().Name}");
-                currentState.EnterState(this);
-            }
-
-            // Fire the state change event
-            OnStateChanged?.Invoke(EnemyStateType.Idle); // <-- Trigger the event
+            OnStateChanged?.Invoke(stateType);
         }
 
         public void TakeDamage()
@@ -257,9 +251,11 @@ namespace PatrolEnemy
             }
         }
 
+        // Add this method to return the current state type
+
+
         private void OnDrawGizmos()
         {
-            // Draw patrol range
             Gizmos.color = Color.green;
             if (Application.isPlaying)
             {
@@ -270,11 +266,9 @@ namespace PatrolEnemy
                 Gizmos.DrawWireSphere(transform.position, patrolRange);
             }
 
-            // Draw detection range
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, detectionRange);
 
-            // Draw attack range
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, attackRange);
 

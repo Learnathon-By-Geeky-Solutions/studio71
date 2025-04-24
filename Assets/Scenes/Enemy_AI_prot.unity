@@ -1511,6 +1511,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6365984327254782489, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
+      propertyPath: patrolRange
+      value: 16.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 6365984327254782489, guid: 994bbc923cfae6c47ba99933855ba160, type: 3}
       propertyPath: recoveryRate
       value: 50
       objectReference: {fileID: 0}

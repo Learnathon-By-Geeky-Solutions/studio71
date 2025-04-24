@@ -15,7 +15,7 @@ namespace PatrolEnemy
         {
             if (controller.CurrentTarget == null)
             {
-                controller.ChangeState(new IdleState());
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
 
@@ -24,7 +24,7 @@ namespace PatrolEnemy
             // If player moved out of detection range, return to idle
             if (distanceToPlayer > controller.DetectionRange)
             {
-                controller.ChangeState(new IdleState());
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
 
@@ -35,17 +35,17 @@ namespace PatrolEnemy
 
                 if (controller.HasLineOfSight)
                 {
-                    controller.ChangeState(new ShootState());
+                    controller.ChangeState(EnemyController.EnemyStateType.Shoot);
                 }
                 else if (controller.CurrentGrenades > 0)
                 {
-                    controller.ChangeState(new GrenadeThrowState());
+                    controller.ChangeState(EnemyController.EnemyStateType.GrenadeThrow);
                 }
                 // If no line of sight and no grenades switch to shoot state
 
             else if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0)
                 {
-                    controller.ChangeState(new ShootState());
+                    controller.ChangeState(EnemyController.EnemyStateType.Shoot);
                 }
             }
             // If not in attack range, continue following the player

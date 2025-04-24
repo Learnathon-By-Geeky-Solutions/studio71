@@ -5,7 +5,7 @@ namespace PatrolEnemy
 {
     public class IdleState : IEnemyState
     {
-        private float patrolWaitTime = 2f;
+        private float patrolWaitTime = 4f;
         private float patrolTimer = 0f;
         private bool hasPatrolPoint = false;
         private bool returningToZone = false;
@@ -39,7 +39,7 @@ namespace PatrolEnemy
             // Patrol behavior
             if (!hasPatrolPoint)
             {
-                Vector3 patrolPoint = GetPatrolPoint(controller); // Now local
+                Vector3 patrolPoint = GetPatrolPoint(controller);
                 controller.Agent.SetDestination(patrolPoint);
                 hasPatrolPoint = true;
                 Debug.Log($"New patrol point: {patrolPoint}");
@@ -81,6 +81,7 @@ namespace PatrolEnemy
         
         public void ExitState(EnemyController controller)
         {
+            
             Debug.Log("Exited Idle State");
         }
     }

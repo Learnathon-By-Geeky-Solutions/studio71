@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System;
 using PatrolEnemy;
 
 namespace Enemy_Anim
@@ -57,6 +56,7 @@ namespace Enemy_Anim
 
         private void HandleStateChange(EnemyController.EnemyStateType newState)
         {
+
             if (_stateToAnimation.TryGetValue(newState, out var mapping))
             {
                 PlayAnimation(mapping.animationName, mapping.transitionSpeed);

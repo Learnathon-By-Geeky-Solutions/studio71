@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 namespace PatrolEnemy
 {
     public class AlertState : IEnemyState
@@ -18,7 +19,7 @@ namespace PatrolEnemy
         {
             if (controller.CurrentTarget == null)
             {
-                controller.ChangeState(new IdleState());
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
             
@@ -27,7 +28,7 @@ namespace PatrolEnemy
             // If player moved out of detection range, return to idle
             if (distanceToPlayer > controller.DetectionRange)
             {
-                controller.ChangeState(new IdleState());
+                controller.ChangeState(EnemyController.EnemyStateType.Idle);
                 return;
             }
             
@@ -45,7 +46,7 @@ namespace PatrolEnemy
                 // When timer reaches alert time, start following
                 if (alertTimer >= controller.AlertTime)
                 {
-                    controller.ChangeState(new FollowState());
+                    controller.ChangeState(EnemyController.EnemyStateType.Follow);
                 }
             }
             else
