@@ -1,28 +1,33 @@
-using System;
-using UnityEngine;
 using SingletonManagers;
-using dialogue;
-using Player;
-/// <summary>
-/// Controls the camera movement to follow a controllable player while maintaining a fixed offset and rotation.
-/// </summary>
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace CameraManager
 {
     public class CameraFollow : MonoBehaviour
     {
-        private Transform _player; // Reference to the player's transform
-        private Camera _camera;
-        [SerializeField] private Vector3 _offset = new Vector3(0f, 5f, -10f);  // Default offset position
-        [SerializeField] private Vector3 _rotation = new Vector3(30f, 0f, 0f); // Camera rotation
-        [SerializeField] private float followSpeed = 5f; // Speed at which the camera adjusts its position
-        [SerializeField] private float movementOffsetMultiplier = 2f; // How much movement affects the camera offset
+        [Header("Camera Settings")]
+        [SerializeField] private Vector3 _offset = new Vector3(0f, 5f, -10f);
+        [SerializeField] private Vector3 _rotation = new Vector3(30f, 0f, 0f);
+        [SerializeField] private float followSpeed = 5f;
+        [SerializeField] private float movementOffsetMultiplier = 2f;
 
-        private Vector3 _targetOffset; // The dynamically adjusted offset
+        [Header("Tree Transparency Settings")]
+        [SerializeField] private float _fadeDistance = 3f;
+        [SerializeField] private LayerMask _treeLayer;
+        [SerializeField] private Material _transparentLeavesMaterial;
+
+        private Transform _player;
+        private Camera _camera;
+        private Vector3 _targetOffset;
+
+        private readonly Dictionary<Renderer, Material> _originalLeafMaterials = new();
+        private readonly HashSet<Renderer> _currentlyFaded = new();
 
         private void Awake()
         {
-            _player = GameObject.FindGameObjectWithTag("Player").transform;
-            _camera=GetComponentInChildren<Camera>();
+            _player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            _camera = GetComponentInChildren<Camera>();
             _targetOffset = _offset;
         }
 
@@ -30,21 +35,57 @@ namespace CameraManager
         {
             if (_player == null) return;
 
-            // Get movement direction from singleton input handler
+            HandleCameraMovement();
+            HandleTreeTransparency();
+        }
+
+        private void HandleCameraMovement()
+        {
             var moveDirection =
-                    InkDialogueManager.IsDialogueOpen || _player.gameObject.GetComponent<PlayerAnimation>().IsDead
-                    ? Vector2.zero
-                    : InputHandler.Instance.MoveDirection;
+                dialogue.InkDialogueManager.IsDialogueOpen || _player.gameObject.GetComponent<Player.PlayerAnimation>().IsDead
+                ? Vector2.zero
+                : InputHandler.Instance.MoveDirection;
 
-            // Convert moveDirection into world space offset
             var movementOffset = new Vector3(moveDirection.x, 0, moveDirection.y) * movementOffsetMultiplier;
-
-            // Smoothly adjust the offset based on movement
             _targetOffset = Vector3.Lerp(_targetOffset, _offset + movementOffset, Time.deltaTime * followSpeed);
-
-            // Apply the final position and rotation
             transform.position = _player.position + _targetOffset;
             transform.rotation = Quaternion.Euler(_rotation);
+        }
+
+        private void HandleTreeTransparency()
+        {
+            var colliders = Physics.OverlapSphere(_player.position, _fadeDistance, _treeLayer);
+            var newFaded = new HashSet<Renderer>();
+
+            foreach (var col in colliders)
+            {
+                var rend = col.GetComponent<Renderer>();
+                if (!rend || rend.sharedMaterials.Length < 2) continue;
+
+                newFaded.Add(rend);
+
+                if (!_originalLeafMaterials.ContainsKey(rend))
+                {
+                    _originalLeafMaterials[rend] = rend.sharedMaterials[1];
+                }
+
+                var materials = rend.materials;
+                materials[1] = _transparentLeavesMaterial;
+                rend.materials = materials;
+            }
+
+            foreach (var rend in _currentlyFaded)
+            {
+                if (rend == null || newFaded.Contains(rend)) continue;
+                if (!_originalLeafMaterials.ContainsKey(rend)) continue;
+
+                var materials = rend.materials;
+                materials[1] = _originalLeafMaterials[rend];
+                rend.materials = materials;
+            }
+
+            _currentlyFaded.Clear();
+            foreach (var r in newFaded) _currentlyFaded.Add(r);
         }
     }
 }

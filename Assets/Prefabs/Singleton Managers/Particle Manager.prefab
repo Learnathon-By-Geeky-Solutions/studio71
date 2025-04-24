@@ -53,5 +53,3 @@ MonoBehaviour:
     prefab: {fileID: 198157190901592544, guid: bfdd002af60979e4d9fab865212ee890, type: 3}
   - name: Terrain Hit
     prefab: {fileID: 5460907668144211223, guid: 98f014e3051ab3945bb9ff5ae38c0982, type: 3}
-  - name: GrassGenerator1
-    prefab: {fileID: 7978494867853208113, guid: f0e4002032d3cf44c950d7fbd5ccfa19, type: 3}
