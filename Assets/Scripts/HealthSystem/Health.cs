@@ -53,6 +53,7 @@ namespace HealthSystem
         {
             ResetHealth();
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "Start can not be static")]
         private void Start()
         {
             if (!gameObject.CompareTag("Enemy")) return;
@@ -127,14 +128,16 @@ namespace HealthSystem
             if (gameObject.CompareTag("Enemy"))
             {
                 EnemyChecker.Instance.UnregisterEnemy();
-                if (gameObject.name == "FirstClear")
+                switch (gameObject.name)
                 {
-                    EnemyChecker.Instance.UnregisterFirstClear();
+                    case "FirstClear":
+                        EnemyChecker.Instance.UnregisterFirstClear();
+                        break;
+                    case "SecondClear":
+                        EnemyChecker.Instance.UnregisterSecondClear();
+                        break;
                 }
-                if (gameObject.name == "SecondClear") 
-                { 
-                    EnemyChecker.Instance.UnregisterSecondClear(); 
-                }
+
                 Destroy(gameObject);
             }
             else
