@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using SingletonManagers;
 using Player;
+using LevelSpecific;
 
 namespace HealthSystem
 {
@@ -52,7 +53,24 @@ namespace HealthSystem
         {
             ResetHealth();
         }
-
+        private void Start()
+        {
+            if (!gameObject.CompareTag("Enemy")) return;
+            EnemyChecker.Instance?.RegisterEnemy();
+            switch (gameObject.name)
+            {
+                case "FirstClear":
+                {
+                    EnemyChecker.Instance?.RegisterFirstClear();
+                    break;
+                }
+                case "SecondClear":
+                {
+                    EnemyChecker.Instance?.RegisterSecondClear();
+                    break;
+                }
+            }
+        }
         /// <summary>
         /// Apply damage to this entity.
         /// </summary>
@@ -108,6 +126,15 @@ namespace HealthSystem
             // Destroy object if it's an enemy or destroyOnDeath is true
             if (gameObject.CompareTag("Enemy"))
             {
+                EnemyChecker.Instance.UnregisterEnemy();
+                if (gameObject.name == "FirstClear")
+                {
+                    EnemyChecker.Instance.UnregisterFirstClear();
+                }
+                if (gameObject.name == "SecondClear") 
+                { 
+                    EnemyChecker.Instance.UnregisterSecondClear(); 
+                }
                 Destroy(gameObject);
             }
             else

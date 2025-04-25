@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b39108653d286642b87ada35ac56046, type: 3}
   m_Name: Nur Muhammad
   m_EditorClassIdentifier: 
-  levelName: Nur Muhammad
-  sceneBuildIndex: 2
-  winOnAllEnemiesDead: 0
-  winOnTimerEnd: 1
-  surviveTime: 120
-  loseOnPlayerDeath: 1
-  loseOnBaseDestroyed: 0
+  _levelName: Nur Muhammad
+  _sceneBuildIndex: 2
+  _winOnAllEnemiesDead: 0
+  _winOnTimerEnd: 1
+  _surviveTime: 0
+  _loseOnPlayerDeath: 1
+  _loseOnBaseDestroyed: 0

@@ -16,11 +16,12 @@ namespace SingletonManagers {
         #endregion
 
         #region General Methods
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "OnEnable can not be static")]
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "OnDisable can not be static")]
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -54,6 +55,7 @@ namespace SingletonManagers {
         {
             if (_levelEnded || _currentConditions == null || !_currentConditions.WinOnAllEnemiesDead) return;
             HandleWin();
+            print("ALL ENEMIES DEAD");
         }
 
         public void OnTimerFinished()

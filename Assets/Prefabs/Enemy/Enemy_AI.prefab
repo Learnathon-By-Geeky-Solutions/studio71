@@ -1066,7 +1066,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 90
-  _destroyOnDeath: 1
   _onHealthChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -614,7 +614,7 @@ GameObject:
   - component: {fileID: 7400671243075674923}
   m_Layer: 9
   m_Name: Mortar
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
