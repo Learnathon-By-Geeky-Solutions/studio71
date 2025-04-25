@@ -23,7 +23,7 @@ namespace MachineGunner
             controller.transform.Rotate(Vector3.up * deltaAngle);
             _currentRotationAngle += deltaAngle;
 
-            if (_currentRotationAngle > controller.idleRotationAngle / 2f || _currentRotationAngle < -controller.idleRotationAngle / 2f)
+            if (_currentRotationAngle > controller.IdleRotationAngle / 2f || _currentRotationAngle < -controller.IdleRotationAngle / 2f)
             {
                 _rotationDirection *= -1f; // Reverse direction
             }

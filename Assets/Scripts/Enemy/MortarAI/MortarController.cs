@@ -11,20 +11,24 @@ namespace MortarSystem
         public FiringState FiringState { get; private set; }
 
         [Header("Targeting")]
-        [HideInInspector] public Transform Player{ get; private set; }
-        public float AlertRadius = 575f;
-        public float FiringRadius = 50f;
+        [HideInInspector]public Transform Player{ get; private set; }
+        [SerializeField]private float AlertRadius = 575f;
+        [SerializeField]private float FiringRadius = 50f;
 
         [Header("Idle Behavior")]
-        public float idleScanAngle { get; private set; }= 0f;
-        public float idleScanRange { get; private set; }= 90f;
+        [SerializeField]private float idleScanAngle = 0f;
+        [SerializeField]private float idleScanRange = 90f;
 
         [Header("Firing")]
 
         [SerializeField] public GameObject ProjectilePrefab;
         public Transform FirePoint;
-        public float trajectoryHeight { get; private set; } = 5f; // Adjust for the arc height
-        public int projectilePathResolution { get; private set; }= 10; // Number of points to simulate path
+        [SerializeField]private float trajectoryHeight = 5f; // Adjust for the arc height
+        [SerializeField]private int projectilePathResolution = 10; // Number of points to simulate path
+
+        public float IdleScanAngle => idleScanAngle;
+        public float IdleScanRange => idleScanRange;
+        public float TrajectoryHeight => trajectoryHeight;
 
         private void Awake()
         {

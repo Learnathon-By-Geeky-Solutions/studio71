@@ -25,7 +25,7 @@ namespace MortarSystem
                 mortar.transform.rotation = Quaternion.Euler(mortar.transform.eulerAngles.x, _currentScanAngle, mortar.transform.eulerAngles.z);
 
                 // Basic back and forth scan
-                if (_currentScanAngle > mortar.idleScanAngle + mortar.idleScanRange / 2f || _currentScanAngle < mortar.idleScanAngle - mortar.idleScanRange / 2f)
+                if (_currentScanAngle > mortar.IdleScanAngle + mortar.IdleScanRange / 2f || _currentScanAngle < mortar.IdleScanAngle - mortar.IdleScanRange / 2f)
                 {
                     _scanSpeed *= -1f;
                 }

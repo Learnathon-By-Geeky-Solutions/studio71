@@ -46,7 +46,7 @@ namespace MachineGunner
             }
 
             _burstTimer += Time.deltaTime;
-            if (_burstTimer >= controller.burstDuration)
+            if (_burstTimer >= controller.BurstDuration)
             {
                 controller.firePoint.localRotation = _initialRotation; // Reset rotation after burst
                 _burstTimer = 0f;

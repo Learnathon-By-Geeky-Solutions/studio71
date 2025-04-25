@@ -8,23 +8,23 @@ namespace MachineGunner
         #region Public Variables
 
         [Header("Ranges")]
-        [SerializeField]public float alertRange { get; private set; }= 10f;
+        public float alertRange = 10f;
 
-        [SerializeField]private float SuppressiveRange { get; } = 15f;
-        [SerializeField]private readonly float _shootRange = 7f;
+        [SerializeField]private float SuppressiveRange = 15f;
+        [SerializeField]private float _shootRange = 7f;
 
         [Header("Shooting Configuration")]
-        [SerializeField]public GameObject bulletPrefab{ get; private set; }
-        [SerializeField]public Transform firePoint{ get; private set; }
-        public float fireRate { get; private set; }= 0.1f;
-        public float burstDuration { get; private set; }= 2f; // Duration of a single burst in ShootState
-        public float suppressiveBurstDuration { get; private set; }= 3f;
-        public float overheatThreshold { get; private set; }= 10f;
-        public float coolingRate { get; private set; }= 2f;
-        public float reloadTime { get; private set; }= 3f;
-        public int magazineSize { get; private set; }= 30;
-        public float suppressiveFireSpreadAngle { get; private set; }= 15f; // Angle for bullet spread in suppressive fire
-        public float bulletForce { get; private set; }= 10f;
+        [SerializeField]public GameObject bulletPrefab;
+        [SerializeField]public Transform firePoint;
+        [SerializeField]private float fireRate = 0.1f;
+        [SerializeField]private float burstDuration = 2f; // Duration of a single burst in ShootState
+        [SerializeField]private float suppressiveBurstDuration = 3f;
+        [SerializeField]private float overheatThreshold = 10f;
+        [SerializeField]private float coolingRate = 2f;
+        [SerializeField]private float reloadTime = 3f;
+        [SerializeField]private int magazineSize = 30;
+        [SerializeField]private float suppressiveFireSpreadAngle = 15f; // Angle for bullet spread in suppressive fire
+        [SerializeField]private float bulletForce = 10f;
 
         [Header("Detection")]
         public string playerTag { get; private set; } = "Player";
@@ -41,13 +41,13 @@ namespace MachineGunner
         [Header("Idle Rotation")]
         public float idleRotationSpeed { get; private set; }= 10f;
         [Range(0f, 180f)]
-        public float idleRotationAngle { get; private set; }= 60f; // Total angle of rotation
-        public float idleRotationOffset{ get; private set; } = 0f; // Starting offset for the rotation
+        [SerializeField]private float idleRotationAngle = 60f; // Total angle of rotation
+        [SerializeField]private float idleRotationOffset = 0f; // Starting offset for the rotation
 
         [Header("Shoot State")]
         [Range(0f, 90f)]
-        public float burstSweepAngle { get; private set; } = 30f; // Total sweep angle during burst
-        public float burstSweepSpeed { get; private set; } = 60f; // Degrees per second of sweep
+        [SerializeField]private float burstSweepAngle = 30f; // Total sweep angle during burst
+        [SerializeField]private float burstSweepSpeed = 60f; // Degrees per second of sweep
 
         #endregion
 
@@ -72,9 +72,13 @@ namespace MachineGunner
         public float CurrentHeat => _currentHeat;
         public bool IsOverheated => _isOverheated;
         public int CurrentAmmo => _currentAmmo;
-        public float SuppressiveFireSpreadAngle => suppressiveFireSpreadAngle; // Expose for gizmo
-        public float BurstSweepAngle => burstSweepAngle; // Expose for ShootState
-        public float BurstSweepSpeed => burstSweepSpeed; // Expose for ShootState
+        public float SuppressiveFireSpreadAngle => suppressiveFireSpreadAngle;
+        
+        public float BurstDuration =>  burstDuration ;
+        public float BurstSweepAngle => burstSweepAngle;
+        public float BurstSweepSpeed => burstSweepSpeed;
+        public float SuppressiveBurstDuration => suppressiveBurstDuration;
+        public float IdleRotationAngle => idleRotationAngle;
 
         public Color AlertGizmoColor => alertGizmoColor;
 
@@ -198,8 +202,7 @@ namespace MachineGunner
 
         #endregion
 
-        #region Shooting Methods
-
+        
         public void ShootBullet(Vector3 targetPosition, bool isSuppressive = false)
         {
             if (_currentAmmo > 0 && !_isOverheated && _timeSinceLastShot >= fireRate)
@@ -273,7 +276,5 @@ namespace MachineGunner
             }
         }
         
-
-        #endregion
     }
 }

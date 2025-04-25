@@ -26,7 +26,7 @@ namespace MachineGunner
             }
 
             _burstTimer += Time.deltaTime;
-            if (_burstTimer >= controller.suppressiveBurstDuration)
+            if (_burstTimer >= controller.SuppressiveBurstDuration)
             {
                 _burstTimer = 0f; // Reset burst timer
 

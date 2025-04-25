@@ -714,6 +714,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc7d15de0902c3488ac88317af040da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alertRange: 10
+  SuppressiveRange: 15
+  bulletPrefab: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
+  firePoint: {fileID: 8288080387772714679}
+  fireRate: 0.1
+  burstDuration: 2
+  suppressiveBurstDuration: 3
+  overheatThreshold: 10
+  coolingRate: 2
+  reloadTime: 3
+  magazineSize: 30
+  suppressiveFireSpreadAngle: 15
+  bulletForce: 10
+  idleRotationAngle: 60
+  idleRotationOffset: 0
+  burstSweepAngle: 30
+  burstSweepSpeed: 60
 --- !u!114 &-3683148968396951551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3475,6 +3492,11 @@ PrefabInstance:
 --- !u!4 &2486523429926566596 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4806839015968532, guid: 9b81e64683c3b5146a913703abead367, type: 3}
+  m_PrefabInstance: {fileID: 2490759054264071632}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8288080387772714679 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5878843596935560039, guid: 9b81e64683c3b5146a913703abead367, type: 3}
   m_PrefabInstance: {fileID: 2490759054264071632}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5561499714252081651

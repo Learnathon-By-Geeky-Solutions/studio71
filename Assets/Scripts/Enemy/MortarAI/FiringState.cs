@@ -53,7 +53,7 @@ namespace MortarSystem
     Vector3 targetPosition = mortar.Player.position;
     Vector3 startPosition = mortar.FirePoint.position;
     float gravity = Physics.gravity.magnitude;
-    float trajectoryHeight = mortar.trajectoryHeight;
+    float trajectoryHeight = mortar.TrajectoryHeight;
 
     Debug.Log($"Target Y: {targetPosition.y}, Start Y: {startPosition.y}, Trajectory Height: {trajectoryHeight}, Gravity: {gravity}");
 
