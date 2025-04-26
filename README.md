@@ -1,6 +1,6 @@
 <div align="center">
 
-#   🎮 3knot3 🚀
+#   🎮 3knot3 🎮
 
     *A top-down 2.5D shooting game based on the 1971 Liberation War of Bangladesh.*
 
@@ -70,10 +70,11 @@
 |   Grenade   |   G   |   Throw a grenade   |
 |   Talk   |   Tab   |   Interact with NPCs to advance dialogue/story   |
 |   Reload   |   R   |   Reload the current weapon   |
-|   Pause   |   Esc   |   Pause the game   |
+|   Pickup   |   Tab   |   Pickup Something   |
 |   Look At   |   Mouse   |   Aim the character's view/weapon   |
-|   Sprint   |   Space   |   Increase movement speed temporarily   |
+|   Sprint   |   Shift   |   Increase movement speed temporarily   |
 |   Crouch   |   C   |   Lower the character's profile   |
+|   Pause   |   Esc   |   Pause the game   |
 
 ---
 
@@ -90,7 +91,7 @@
 
 ##   🎨 Art & Design
 
-* **Style:** 3D Low Poly Assets
+* **Style:** 3D Low Poly Stylized Assets
 * **Palette:** The color palette is designed to evoke the atmosphere of Bangladesh and the war environment, utilizing earthy tones, greens, browns, and potentially contrasting colors for emphasis on key elements.
 * **Assets:** A combination of custom-made 3D models and assets from asset stores to create a visually appealing and efficient development process.
 * **Visual Themes:** Themes will include war-torn environments, historical locations, and elements reflecting Bangladeshi culture and heritage.
@@ -116,7 +117,7 @@
 
 <div align="center">
 
-    <h2>   🔥 Meet Team - <b>Studio71</b></h2>
+    <h2>   🔥 Meet Team - Studio71 </h2>
 
 </div>
 
