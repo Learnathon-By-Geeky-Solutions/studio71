@@ -2,13 +2,14 @@ using System;
 using Player;
 using SingletonManagers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 namespace UI
 {
     public class PauseMenu : MonoBehaviour
     {
 
         private bool s_gameIsPaused = false;
-        public  bool IsGamePaused()
+        public bool IsGamePaused()
         {
             return s_gameIsPaused;
         }
@@ -59,18 +60,21 @@ namespace UI
 
         private void Pause()
         {
-            if (!IsGamePaused()) // Use getter method
+            if (SceneManager.GetActiveScene().buildIndex >= 2)
             {
-                pauseMenuUI.SetActive(true);
-                Time.timeScale = 0f;
-                s_gameIsPaused = true;
-                _playerController.enabled = false; // Disable player controls when paused
-                AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+                if (!IsGamePaused())
+                {
+                    pauseMenuUI.SetActive(true);
+                    Time.timeScale = 0f;
+                    s_gameIsPaused = true;
+                    _playerController.enabled = false;
+                    AudioManager.PlaySound(SoundKeys.BackgroundMusic);
 
-            }
-            else
-            {
-                Resume();
+                }
+                else
+                {
+                    Resume();
+                }
             }
             // Show the pause menu UI here
         }
