@@ -479,7 +479,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 2
+      scalar: 3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5123,7 +5123,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Setiings
+  m_text: Settings
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1e451a0b5f60e0448837fb9e4e418f1a, type: 2}
   m_sharedMaterial: {fileID: 1701342395397061525, guid: 1e451a0b5f60e0448837fb9e4e418f1a, type: 2}
@@ -6579,7 +6579,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.38364768, g: 0.105500385, b: 0.056702614, a: 1}
+      maxColor: {r: 0.23921569, g: 0.13937949, b: 0.11764706, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -21513,7 +21513,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.38364768, g: 0.105500385, b: 0.056702614, a: 1}
+      maxColor: {r: 0.23921569, g: 0.14117648, b: 0.11764706, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
