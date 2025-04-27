@@ -648,7 +648,7 @@ Animator:
   m_GameObject: {fileID: 3511774632543437309}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b3a849229c6faea448cb1f0200840e8d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 36b4444f905f18a45b26ac0ea0477494, type: 2}
+  m_Controller: {fileID: 9100000, guid: 9ced0fca6f63bda40b5df7517b7fe1eb, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -674,8 +674,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AlertRadius: 575
   FiringRadius: 50
+  idleScanAngle: 0
+  idleScanRange: 90
   ProjectilePrefab: {fileID: 0}
   FirePoint: {fileID: 0}
+  trajectoryHeight: 5
+  projectilePathResolution: 10
 --- !u!1 &3548791540106319155
 GameObject:
   m_ObjectHideFlags: 0

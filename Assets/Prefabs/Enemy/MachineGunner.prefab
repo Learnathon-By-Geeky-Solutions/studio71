@@ -653,6 +653,7 @@ GameObject:
   - component: {fileID: 17726033687933404}
   - component: {fileID: 1605979983397022802}
   - component: {fileID: 8506959723721032614}
+  - component: {fileID: 5282784132358433930}
   - component: {fileID: -3683148968396951551}
   - component: {fileID: 4551300750202156675}
   m_Layer: 9
@@ -690,7 +691,7 @@ Animator:
   m_GameObject: {fileID: 1962181833536635275}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b3a849229c6faea448cb1f0200840e8d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 36b4444f905f18a45b26ac0ea0477494, type: 2}
+  m_Controller: {fileID: 9100000, guid: 49fe99bfac4f87545b854e2879fa474d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -716,6 +717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   alertRange: 10
   SuppressiveRange: 15
+  _shootRange: 7
   bulletPrefab: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
   firePoint: {fileID: 8288080387772714679}
   fireRate: 0.1
@@ -731,6 +733,19 @@ MonoBehaviour:
   idleRotationOffset: 0
   burstSweepAngle: 30
   burstSweepSpeed: 60
+--- !u!114 &5282784132358433930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962181833536635275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7850f9e54a5e6a48b2f8ce989fb29f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentAnimation: 
 --- !u!114 &-3683148968396951551
 MonoBehaviour:
   m_ObjectHideFlags: 0
