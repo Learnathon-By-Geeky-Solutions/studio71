@@ -4,78 +4,124 @@ using PatrolEnemy;
 
 namespace Enemy_Anim
 {
-    [RequireComponent(typeof(Animator), typeof(EnemyController))]
-    public class EnemyAnimationManager : MonoBehaviour
+    public class EnemyAiAnimation : MonoBehaviour
     {
-        // Configuration
-        [System.Serializable]
-        public class AnimationMapping
-        {
-            public EnemyController.EnemyStateType state;
-            public string animationName;
-            public float transitionSpeed = 0.1f;
-        }
+        private Animator _enemyAnimator;
+        private EnemyController _enemyController;
+        [SerializeField] private string _currentAnimation;
 
-        [SerializeField] private List<AnimationMapping> _animationMappings = new List<AnimationMapping>()
-        {
-            // Default mappings (editable in Inspector)
-            new AnimationMapping{ state = EnemyController.EnemyStateType.Idle, animationName = "Idle" },
-            new AnimationMapping{ state = EnemyController.EnemyStateType.Alert, animationName = "Alert" },
-            new AnimationMapping{ state = EnemyController.EnemyStateType.Follow, animationName = "Run" },
-            new AnimationMapping{ state = EnemyController.EnemyStateType.Shoot, animationName = "Shoot" },
-            new AnimationMapping{ state = EnemyController.EnemyStateType.GrenadeThrow, animationName = "ThrowGrenade" },
-            new AnimationMapping{ state = EnemyController.EnemyStateType.Recovery, animationName = "CrouchIdle" }
-        };
-
-        // Runtime
-        private Animator _animator;
-        private EnemyController _enemyAI;
-        private Dictionary<EnemyController.EnemyStateType, AnimationMapping> _stateToAnimation;
-        private string _currentAnimation;
+        private Dictionary<EnemyController.EnemyStateType, string> _stateToAnimation;
 
         void Awake()
         {
-            _animator = GetComponent<Animator>();
-            _enemyAI = GetComponent<EnemyController>();
+            _enemyAnimator = GetComponent<Animator>();
+            _enemyController = GetComponent<EnemyController>();
 
-            _stateToAnimation = new Dictionary<EnemyController.EnemyStateType, AnimationMapping>();
-            foreach (var mapping in _animationMappings)
+            if (_enemyAnimator == null || _enemyController == null)
             {
-                _stateToAnimation[mapping.state] = mapping;
-            }
-
-            // Subscribe to state changes
-            _enemyAI.OnStateChanged += HandleStateChange;
-        }
-
-        private void OnDestroy()
-        {
-            if (_enemyAI != null)
-                _enemyAI.OnStateChanged -= HandleStateChange;
-        }
-
-        private void HandleStateChange(EnemyController.EnemyStateType newState)
-        {
-
-            if (_stateToAnimation.TryGetValue(newState, out var mapping))
-            {
-                PlayAnimation(mapping.animationName, mapping.transitionSpeed);
-            }
-            else
-            {
-                Debug.LogWarning($"No animation mapping for state: {newState}");
-            }
-        }
-
-        private void PlayAnimation(string newAnimation, float smoothTime = 0.1f)
-        {
-            if (_animator == null || string.IsNullOrEmpty(newAnimation) || newAnimation == _currentAnimation) 
+                Debug.LogError("EnemyAiAnimation: Missing Animator or EnemyController component.");
+                enabled = false;
                 return;
+            }
 
-            _animator.CrossFade(newAnimation, smoothTime);
+            InitializeAnimationMappings();
+        }
+
+        void Update()
+        {
+            HandleAnimation();
+        }
+
+        private void InitializeAnimationMappings()
+        {
+            _stateToAnimation = new Dictionary<EnemyController.EnemyStateType, string>
+            {
+                { EnemyController.EnemyStateType.Idle, "Idle" },
+                { EnemyController.EnemyStateType.Alert, "Alert" },
+                { EnemyController.EnemyStateType.Follow, "Run" },
+                { EnemyController.EnemyStateType.Shoot, "Shoot" },
+                { EnemyController.EnemyStateType.GrenadeThrow, "ThrowGrenade" },
+                { EnemyController.EnemyStateType.Recovery, "CrouchIdle" }
+            };
+        }
+
+        private void HandleAnimation()
+        {
+            if (_enemyController.currentState == null) return;
+
+            EnemyController.EnemyStateType currentState = GetCurrentStateType();
+
+            if (currentState == EnemyController.EnemyStateType.Shoot)
+            {
+                if (_enemyController.IsReloading)
+                {
+                    PlayAnimation("Reload");
+                    return;
+                }
+
+                else if (!_enemyController.HasLineOfSight)
+                {
+                    PlayAnimation("Idle");
+                    return;
+                }
+            }
+
+            else if (currentState == EnemyController.EnemyStateType.Recovery)
+            {
+                if (_enemyController.IsRecoverReturing)
+                {
+                    PlayAnimation("Idle");
+                    return;
+                }
+            }
+
+            else if (currentState == EnemyController.EnemyStateType.Idle)
+            {
+                if (_enemyController.IsIdleAlert)
+                {
+                    PlayAnimation("Alert");
+                    return;
+                }
+                else
+                {
+                    PlayAnimation("Idle");
+                    return;
+                }
+            }
+
+            /*else if (currentState == EnemyController.EnemyStateType.GrenadeThrow)
+            {
+                if (_enemyController.IsNotGrenadeThrowing)
+                {
+                    PlayAnimation("Alert");
+                    return;
+                }              
+            }*/
+
+            if (_stateToAnimation.TryGetValue(currentState, out string animationName))
+            {
+                PlayAnimation(animationName);
+            }
+        }
+
+        private EnemyController.EnemyStateType GetCurrentStateType()
+        {
+            if (_enemyController._isIdle) return EnemyController.EnemyStateType.Idle;
+            if (_enemyController._isAlert) return EnemyController.EnemyStateType.Alert;
+            if (_enemyController._isFollowing) return EnemyController.EnemyStateType.Follow;
+            if (_enemyController._isShooting) return EnemyController.EnemyStateType.Shoot;
+            if (_enemyController._isRecovering) return EnemyController.EnemyStateType.Recovery;
+            if (_enemyController._isThrowingGrenade) return EnemyController.EnemyStateType.GrenadeThrow;
+
+            return EnemyController.EnemyStateType.Idle;
+        }
+
+        private void PlayAnimation(string newAnimation, float smoothTime = 0.1f, int layer = 0)
+        {
+            if (newAnimation == _currentAnimation) return;
+
+            _enemyAnimator.CrossFade(newAnimation, smoothTime, layer);
             _currentAnimation = newAnimation;
         }
-
-       
     }
 }

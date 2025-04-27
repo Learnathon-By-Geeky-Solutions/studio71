@@ -2,6 +2,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
+using UnityEngine.AI;
 
 namespace PatrolEnemy
 {
@@ -9,6 +10,7 @@ namespace PatrolEnemy
     {
         private readonly float fireRate = 0.5f;
         private float nextFireTime = 0f;
+        
         private CancellationTokenSource reloadCTS;
 
 
@@ -22,19 +24,19 @@ namespace PatrolEnemy
         public void UpdateState(EnemyController controller)
         {
             float distanceToPlayer = Vector3.Distance(controller.transform.position, controller.CurrentTarget.position);
-            float desiredDistance = controller.AttackRange * 0.9f; // 70% of attack range ,Maintain distance while attacking
+            float desiredDistance = controller.AttackRange * 0.8f;
             Vector3 directionToPlayer = (controller.transform.position - controller.CurrentTarget.position).normalized;
             Vector3 desiredPosition = controller.CurrentTarget.position + directionToPlayer * desiredDistance;
 
     // Set destination if too close/far
-    if (Vector3.Distance(controller.transform.position, desiredPosition) > 0.5f)
+    if (Vector3.Distance(controller.transform.position, desiredPosition) > 0.8f)
     {
         controller.Agent.SetDestination(desiredPosition);
         controller.Agent.isStopped = false;
     }
     else
     {
-        controller.Agent.isStopped = true; // Stop if at ideal distance
+        controller.Agent.isStopped = true;
     }
 
             if (controller.CurrentTarget == null)
@@ -53,12 +55,13 @@ namespace PatrolEnemy
             // If line of sight is lost, switch to grenade throw state if we have grenades
             if (!controller.HasLineOfSight && controller.CurrentGrenades > 0)
             {
+                controller.Agent.isStopped = true;
                 controller.ChangeState(EnemyController.EnemyStateType.GrenadeThrow);
                 return;
             }
 
             // If line of sight is lost, gain LOS if we don't have grenades
-             if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0)
+             if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0 )
             {
             controller.Agent.SetDestination(controller.CurrentTarget.position);
             controller.Agent.isStopped = false; // Ensure agent moves if outside attack range
@@ -94,8 +97,7 @@ namespace PatrolEnemy
 
         private void FireBullet(EnemyController controller)
         {
-            // Use object pooling if you have a pooling system
-            GameObject bullet = GameObject.Instantiate(controller.BulletPrefab, controller.FirePoint.position, controller.FirePoint.rotation);
+            
             controller.CurrentAmmo--;
             Debug.Log($"Fired bullet. Ammo remaining: {controller.CurrentAmmo}");
 

@@ -5,17 +5,18 @@ namespace PatrolEnemy
 {
     public class IdleState : IEnemyState
     {
-        private float patrolWaitTime = 4f;
+        private float patrolWaitTime = 5f;
         private float patrolTimer = 0f;
-        private bool hasPatrolPoint = false;
+        private bool hasPatrolPoint;
         private bool returningToZone = false;
-        
+
         public void EnterState(EnemyController controller)
         {
             Debug.Log("Entered Idle State");
             patrolTimer = 0f;
             hasPatrolPoint = false;
-            
+            controller.IsIdleAlert = false;
+
             // Check if enemy needs to return to patrol zone
             float distanceFromStart = Vector3.Distance(controller.transform.position, controller.InitialPosition);
             if (distanceFromStart > controller.PatrolRange * 0.8f)
@@ -25,7 +26,7 @@ namespace PatrolEnemy
                 hasPatrolPoint = true;
             }
         }
-        
+
         public void UpdateState(EnemyController controller)
         {
             // Player detection check
@@ -35,16 +36,15 @@ namespace PatrolEnemy
                 controller.ChangeState(EnemyController.EnemyStateType.Alert);
                 return;
             }
-            
+
             // Patrol behavior
             if (!hasPatrolPoint)
             {
                 Vector3 patrolPoint = GetPatrolPoint(controller);
                 controller.Agent.SetDestination(patrolPoint);
                 hasPatrolPoint = true;
-                Debug.Log($"New patrol point: {patrolPoint}");
             }
-            
+
             // Check if reached destination
             if (hasPatrolPoint && controller.Agent.remainingDistance <= controller.Agent.stoppingDistance)
             {
@@ -55,9 +55,18 @@ namespace PatrolEnemy
                 }
                 else
                 {
+                    if (!controller.IsIdleAlert)
+                    {
+                        // Immediately trigger alert animation after reaching
+                        controller.IsIdleAlert = true;
+                        patrolTimer = 0f;
+                    }
+
                     patrolTimer += Time.deltaTime;
                     if (patrolTimer >= patrolWaitTime)
                     {
+                        // After pause, back to normal patrol
+                        controller.IsIdleAlert = false;
                         hasPatrolPoint = false;
                         patrolTimer = 0f;
                     }
@@ -70,7 +79,7 @@ namespace PatrolEnemy
             // Generate random point within patrol range
             Vector2 randomCirclePoint = Random.insideUnitCircle * controller.PatrolRange;
             Vector3 randomPoint = controller.InitialPosition + new Vector3(randomCirclePoint.x, 0f, randomCirclePoint.y);
-            
+
             // Validate NavMesh position
             if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, controller.PatrolRange, NavMesh.AllAreas))
             {
@@ -78,10 +87,9 @@ namespace PatrolEnemy
             }
             return controller.InitialPosition; // Fallback
         }
-        
+
         public void ExitState(EnemyController controller)
         {
-            
             Debug.Log("Exited Idle State");
         }
     }
