@@ -1,76 +1,92 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Cysharp.Threading.Tasks;
 
 namespace PatrolEnemy
 {
     public class IdleState : IEnemyState
     {
-        private float patrolWaitTime = 5f;
-        private float patrolTimer = 0f;
-        private bool hasPatrolPoint;
+        private float patrolWaitTime = 3f;
         private bool returningToZone = false;
+        private bool isRunning = false;
 
         public void EnterState(EnemyController controller)
         {
             Debug.Log("Entered Idle State");
-            patrolTimer = 0f;
-            hasPatrolPoint = false;
-            controller.IsIdleAlert = false;
+            isRunning = true;
 
             // Check if enemy needs to return to patrol zone
             float distanceFromStart = Vector3.Distance(controller.transform.position, controller.InitialPosition);
             if (distanceFromStart > controller.PatrolRange * 0.8f)
             {
                 returningToZone = true;
-                controller.Agent.SetDestination(controller.InitialPosition);
-                hasPatrolPoint = true;
+                MoveToPosition(controller, controller.InitialPosition);
+            }
+            else
+            {
+                // Start the patrol routine
+                StartPatrolRoutine(controller);
             }
         }
 
         public void UpdateState(EnemyController controller)
         {
             // Player detection check
-            if (controller.CurrentTarget != null && 
+            if (controller.CurrentTarget != null &&
                 Vector3.Distance(controller.transform.position, controller.CurrentTarget.position) <= controller.DetectionRange)
             {
+                isRunning = false;
                 controller.ChangeState(EnemyController.EnemyStateType.Alert);
                 return;
             }
+        }
 
-            // Patrol behavior
-            if (!hasPatrolPoint)
+        private async void StartPatrolRoutine(EnemyController controller)
+        {
+            if (!isRunning) return;
+
+            try
             {
-                Vector3 patrolPoint = GetPatrolPoint(controller);
-                controller.Agent.SetDestination(patrolPoint);
-                hasPatrolPoint = true;
+                while (isRunning)
+                {
+                    // 1. Generate random patrol point
+                    Vector3 patrolPoint = GetPatrolPoint(controller);
+
+                    // 2. Move to patrol point with IsIdleAlert = false
+                    controller.IsIdleAlert = false;
+                    await MoveToPosition(controller, patrolPoint);
+
+                    if (!isRunning) break;
+
+                    // 3. Wait at patrol point with IsIdleAlert = true
+                    controller.IsIdleAlert = true;
+                    await UniTask.Delay(System.TimeSpan.FromSeconds(patrolWaitTime));
+
+                    if (!isRunning) break;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error in patrol routine: {e.Message}");
+            }
+        }
+
+        private async UniTask MoveToPosition(EnemyController controller, Vector3 position)
+        {
+            controller.Agent.SetDestination(position);
+
+            // Wait until reaching destination or state is exited
+            while (isRunning && (controller.Agent.pathPending ||
+                  controller.Agent.remainingDistance > controller.Agent.stoppingDistance))
+            {
+                await UniTask.Yield();
             }
 
-            // Check if reached destination
-            if (hasPatrolPoint && controller.Agent.remainingDistance <= controller.Agent.stoppingDistance)
+            // Handle returning to zone completion
+            if (returningToZone && isRunning)
             {
-                if (returningToZone)
-                {
-                    returningToZone = false;
-                    hasPatrolPoint = false;
-                }
-                else
-                {
-                    if (!controller.IsIdleAlert)
-                    {
-                        // Immediately trigger alert animation after reaching
-                        controller.IsIdleAlert = true;
-                        patrolTimer = 0f;
-                    }
-
-                    patrolTimer += Time.deltaTime;
-                    if (patrolTimer >= patrolWaitTime)
-                    {
-                        // After pause, back to normal patrol
-                        controller.IsIdleAlert = false;
-                        hasPatrolPoint = false;
-                        patrolTimer = 0f;
-                    }
-                }
+                returningToZone = false;
+                StartPatrolRoutine(controller);
             }
         }
 
@@ -91,6 +107,7 @@ namespace PatrolEnemy
         public void ExitState(EnemyController controller)
         {
             Debug.Log("Exited Idle State");
+            isRunning = false;
         }
     }
 }
