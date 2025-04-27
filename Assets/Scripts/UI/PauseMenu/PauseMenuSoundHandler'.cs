@@ -13,10 +13,17 @@ public class PauseMenuSoundHandler : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
+        if (AudioManager.Instance == null)
+        {
+            Debug.LogError("AudioManager instance not found in PauseMenuSoundHandler!");
+        }
+
         if (sfxSlider != null)
         {
+            float currentSfxVolume = AudioManager.Instance.SfxVolumeMultiplier;
+            Debug.Log($"PauseMenuSoundHandler: Setting SFX slider initial value to: {currentSfxVolume}");
+            sfxSlider.SetValueWithoutNotify(currentSfxVolume);
             sfxSlider.onValueChanged.AddListener(OnSfxSliderChanged);
-            OnSfxSliderChanged(sfxSlider.value);
         }
         else
         {
@@ -25,8 +32,10 @@ public class PauseMenuSoundHandler : MonoBehaviour
 
         if (backgroundMusicSlider != null)
         {
+            float currentMusicVolume = AudioManager.Instance.BackgroundMusicVolumeMultiplier;
+            Debug.Log($"PauseMenuSoundHandler: Setting Music slider initial value to: {currentMusicVolume}");
+            backgroundMusicSlider.SetValueWithoutNotify(currentMusicVolume);
             backgroundMusicSlider.onValueChanged.AddListener(OnBackgroundMusicSliderChanged);
-            OnBackgroundMusicSliderChanged(backgroundMusicSlider.value);
         }
         else
         {

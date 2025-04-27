@@ -50,6 +50,14 @@ namespace SingletonManagers
         private float _backgroundMusicVolumeMultiplier = 1.0f; // Global volume multiplier for background music
         private AudioSource _backgroundMusicSource; // Reference to the current background music source
 
+        // Public getters for current volume levels
+        public float SfxVolumeMultiplier => _sfxVolumeMultiplier;
+        public float BackgroundMusicVolumeMultiplier => _backgroundMusicVolumeMultiplier;
+
+        // PlayerPrefs keys
+        private const string SfxVolumeKey = "SfxVolume";
+        private const string BackgroundVolumeKey = "BackgroundVolume";
+
         private void Start()
         {
             // Create parent for audio sources if not assigned
@@ -58,6 +66,9 @@ namespace SingletonManagers
                 audioSourceParent = new GameObject("Audio Sources").transform;
                 audioSourceParent.SetParent(transform);
             }
+
+            // Load saved volumes or use defaults
+            LoadVolumes();
 
             // Register all audio clips
             foreach (var entry in audioClips)
@@ -78,11 +89,15 @@ namespace SingletonManagers
         public void SetSfxVolume(float volume)
         {
             _sfxVolumeMultiplier = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat(SfxVolumeKey, _sfxVolumeMultiplier); // Save to PlayerPrefs
+            PlayerPrefs.Save(); // Explicitly save (optional but good practice)
         }
 
         public void SetBackgroundMusicVolume(float volume)
         {
             _backgroundMusicVolumeMultiplier = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat(BackgroundVolumeKey, _backgroundMusicVolumeMultiplier); // Save to PlayerPrefs
+            PlayerPrefs.Save(); // Explicitly save (optional but good practice)
 
             // Update the volume of the currently playing background music source
             if (_backgroundMusicSource != null && 
@@ -92,6 +107,14 @@ namespace SingletonManagers
                 // Apply the multiplier to the clip's default volume
                 _backgroundMusicSource.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
             }
+        }
+
+        private void LoadVolumes()
+        {
+            // Load from PlayerPrefs, using 1.0f as the default if not found
+            _sfxVolumeMultiplier = PlayerPrefs.GetFloat(SfxVolumeKey, 1.0f); 
+            _backgroundMusicVolumeMultiplier = PlayerPrefs.GetFloat(BackgroundVolumeKey, 1.0f);
+            Debug.Log($"Loaded volumes - SFX: {_sfxVolumeMultiplier}, Music: {_backgroundMusicVolumeMultiplier}");
         }
 
         private AudioSource CreateAudioSource()

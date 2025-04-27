@@ -9,7 +9,8 @@ namespace UI.MainMenu
     /// </summary>
     public class MainMenuTransitioner : MonoBehaviour
     {
-        //For sonarCloud FallBack
+        [SerializeField] private GameObject soundMenuUI;
+        [SerializeField] private GameObject pauseMenuButtons;
          
 
         #region Unity Lifecycle Methods
@@ -39,9 +40,11 @@ namespace UI.MainMenu
         /// Called when the Settings button is clicked.
         /// Opens the settings panel or menu.
         /// </summary>
-        public static void Settings()
+        public void Settings()
         {
             PlayButtonSound();
+            soundMenuUI.SetActive(true);
+            pauseMenuButtons.SetActive(false);
             
         }
 
