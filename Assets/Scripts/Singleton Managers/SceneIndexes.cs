@@ -13,9 +13,12 @@ public static class SceneIndexes
     public static readonly int LoadingScene = 2; // Loading scene with videos
     public static readonly int Level1Scene = 3;
     public static readonly int Level2Scene = 4;
-    
-    // Static field to track which scene to load after the loading scene
-    private static int _targetSceneIndex = -1;
+    public static readonly int Level3Scene = 5;
+    public static readonly int Level4Scene = 6;
+    public static readonly int Level5Scene = 7;
+
+        // Static field to track which scene to load after the loading scene
+        private static int _targetSceneIndex = -1;
     
     // Static field to track which video to play in the loading scene
     private static int _videoToPlay = -1;

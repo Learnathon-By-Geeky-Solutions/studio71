@@ -32,6 +32,7 @@ namespace SingletonManagers {
         #region Methods for Scriptable Object
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            Time.timeScale = 1.0f;
             AssignLevelConditionForScene(scene.buildIndex);
             mode.HumanName();
             _levelEnded = false;
@@ -63,6 +64,7 @@ namespace SingletonManagers {
         public void OnTimerFinished()
         {
             if (_levelEnded || _currentConditions == null || !_currentConditions.WinOnTimerEnd) return;
+            Time.timeScale = 0f;
             HandleWin();
         }
 
