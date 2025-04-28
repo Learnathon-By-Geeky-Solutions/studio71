@@ -225,9 +225,9 @@ namespace Carousel.UI
             {
                 int direction = _positioner.IsItemAfter(initiallyCenteredItem.RectTransform, clickedItem.RectTransform) ? -1 : 1;
                 while (GetCarouselItemAt(_currentIndex + _data.Length * _indexRepeatOffset) != clickedItem)
-                {
-                    _currentIndex += direction;
-                }
+            {
+                _currentIndex += direction;
+            }
             }
             // If click was on center, _currentIndex remains the same
             

@@ -747,14 +747,14 @@ MonoBehaviour:
     name: "\u09A8\u09C2\u09B0 \u09AE\u09CB\u09B9\u09BE\u09AE\u09CD\u09AE\u09A6 \u09B6\u09C7\u0996:"
     description: "\u09AC\u09BF\u09A8\u09BF\u09AE\u09DF\u09C7 \u099C\u09C0\u09AC\u09A8"
     worldPosition: {x: 1500, y: 100, z: -60}
-    sceneIndexToLoad: 2
+    sceneIndexToLoad: 3
   - sprite: {fileID: 21300000, guid: ec31e95f07684064795bff9d070c817f, type: 3}
     modelPrefab: {fileID: 6885593462424679172, guid: fd1bb837b5aa68947bacc4300d6e6832, type: 3}
     name: "\u09AE\u09CB\u09B9\u09BE\u09AE\u09CD\u09AE\u09A6 \u09B9\u09BE\u09AE\u09BF\u09A6\u09C1\u09B0
       \u09B0\u09B9\u09AE\u09BE\u09A8"
     description: "\u09AC\u09C0\u09B0\u09C7\u09B0 \u09AC\u09BF\u09A6\u09BE\u09AF\u09BC"
     worldPosition: {x: 1750, y: 0, z: -60}
-    sceneIndexToLoad: 3
+    sceneIndexToLoad: 4
   - sprite: {fileID: 21300000, guid: effcc97618a7fa54d9f31793b23110c3, type: 3}
     modelPrefab: {fileID: 2090565783296823641, guid: 73d52797abc4bc946b2640cd96eeb08d, type: 3}
     name: "\u09AE\u09C1\u09A8\u09CD\u09B8\u09C0 \u0986\u09AC\u09A6\u09C1\u09B0 \u09B0\u0989\u09AB"

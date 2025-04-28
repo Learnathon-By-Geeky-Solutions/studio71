@@ -151,7 +151,8 @@ namespace LevelSelection
             // Check if a valid scene index is assigned
             if (data.sceneIndexToLoad >= 0) 
             {
-                SceneIndexes.LoadSceneByIndex(data.sceneIndexToLoad);
+                // Use the new method to load from sliding menu with appropriate video
+                SceneIndexes.LoadLevelFromSlidingMenu(data.sceneIndexToLoad);
             }
             else { Debug.LogWarning($"Selected location '{data.name}' has no valid sceneIndexToLoad assigned ({data.sceneIndexToLoad}).");}
         }
