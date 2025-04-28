@@ -1,0 +1,51 @@
+name: Build and Deploy PC & WebGL
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Unity License
+      uses: game-ci/activate-license@v3
+      with:
+        unityVersion: 6000.0.32f1
+        allowPersonal: true # Assuming personal license
+
+    - name: Build Windows (PC)
+      uses: game-ci/unity-builder@v4
+      with:
+        unityVersion: 6000.0.32f1
+        targetPlatform: StandaloneWindows64
+        buildName: MyGame-Windows
+        buildDirectory: build/windows
+
+    - name: Build WebGL
+      uses: game-ci/unity-builder@v4
+      with:
+        unityVersion: 6000.0.32f1
+        targetPlatform: WebGL
+        buildName: MyGame-WebGL
+        buildDirectory: build/webgl
+
+    - name: Install Butler
+      run: |
+        curl -L https://broth.itch.io/butler/linux-amd64/latest/archive.tar.gz | tar xz
+        chmod +x butler
+        sudo mv butler /usr/local/bin/
+
+    - name: Deploy to Itch.io (Windows)
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+      run: butler push build/windows sarwar2arnob/3knot3:win
+
+    - name: Deploy to Itch.io (WebGL)
+      env:
+        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+      run: butler push build/webgl sarwar2arnob/3knot3:web
