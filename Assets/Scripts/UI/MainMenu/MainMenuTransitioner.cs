@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using SingletonManagers;
+using UnityEngine.Video;
+using System.Collections;
 
 namespace UI.MainMenu
 {
@@ -11,16 +13,25 @@ namespace UI.MainMenu
     {
         [SerializeField] private GameObject soundMenuUI;
         [SerializeField] private GameObject pauseMenuButtons;
-         
+        [SerializeField] private GameObject _videoGameobject;
+        [SerializeField] private GameObject _rawImageGameObject;
+
 
         #region Unity Lifecycle Methods
+        private void OnEnable()
+        {
+            StartCoroutine(VideoFinished());
+            if (!LevelConditionManager.Instance._videoPlayed) return;
+            _videoGameobject.SetActive(false);
+            _rawImageGameObject.SetActive(false);
+        }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "start can not be static")]
         private void Start()
         {
-           
+            if (!_videoGameobject.activeInHierarchy)
+            {
                 PlayBackgroundMusic();
-              
-         
+            }
         }
         #endregion
 
@@ -91,9 +102,17 @@ namespace UI.MainMenu
             #endif
         }
 
-        /// <summary>
-        /// Logs a debug message if debug logging is enabled.
-        /// </summary>
+        private IEnumerator VideoFinished()
+        {
+
+            yield return new WaitForSeconds((float)_videoGameobject.GetComponent<VideoPlayer>().clip.length);
+            if (_videoGameobject.activeInHierarchy)
+            {
+                PlayBackgroundMusic();
+            }
+            _videoGameobject.SetActive(false);
+            _rawImageGameObject.SetActive(false);
+        }
         
         #endregion
     }

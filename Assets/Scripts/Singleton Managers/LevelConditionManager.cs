@@ -13,6 +13,7 @@ namespace SingletonManagers {
         [SerializeField] private List<LevelConditionSO> _allLevelConditions;
         public LevelConditionSO _currentConditions { get; private set; }
         private bool _levelEnded = false;
+        public bool _videoPlayed { get; private set; }
         #endregion
 
         #region General Methods
@@ -34,6 +35,7 @@ namespace SingletonManagers {
             AssignLevelConditionForScene(scene.buildIndex);
             mode.HumanName();
             _levelEnded = false;
+            _videoPlayed = true;
         }
 
         private void AssignLevelConditionForScene(int buildIndex)
