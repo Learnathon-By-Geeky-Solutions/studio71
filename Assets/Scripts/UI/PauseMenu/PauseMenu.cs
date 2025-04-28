@@ -60,7 +60,7 @@ namespace UI
 
         private void Pause()
         {
-            if (SceneManager.GetActiveScene().buildIndex > 2)
+            if (SceneManager.GetActiveScene().buildIndex >= 3)
             {
                 if (!IsGamePaused())
                 {
