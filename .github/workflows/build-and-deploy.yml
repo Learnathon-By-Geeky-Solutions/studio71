@@ -5,47 +5,43 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  buildForAllSupportedPlatforms:
+    name: Build for ${{ matrix.targetPlatform }}
     runs-on: ubuntu-latest
-
+    strategy:
+      fail-fast: false
+      matrix:
+        targetPlatform:
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - WebGL # WebGL.
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true # If your project uses Git LFS
 
-    - name: Setup Unity License
-      uses: game-ci/activate-license@v3
-      with:
-        unityVersion: 6000.0.32f1
-        allowPersonal: true # Assuming personal license
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ matrix.targetPlatform }}
+          restore-keys: Library-
 
-    - name: Build Windows (PC)
-      uses: game-ci/unity-builder@v4
-      with:
-        unityVersion: 6000.0.32f1
-        targetPlatform: StandaloneWindows64
-        buildName: MyGame-Windows
-        buildDirectory: build/windows
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          unityVersion: 6000.0.32f1
+          targetPlatform: ${{ matrix.targetPlatform }}
+          buildName: MyGame-${{ matrix.targetPlatform }}
+          buildDirectory: build/${{ matrix.targetPlatform }}
 
-    - name: Build WebGL
-      uses: game-ci/unity-builder@v4
-      with:
-        unityVersion: 6000.0.32f1
-        targetPlatform: WebGL
-        buildName: MyGame-WebGL
-        buildDirectory: build/webgl
-
-    - name: Install Butler
-      run: |
-        curl -L https://broth.itch.io/butler/linux-amd64/latest/archive.tar.gz | tar xz
-        chmod +x butler
-        sudo mv butler /usr/local/bin/
-
-    - name: Deploy to Itch.io (Windows)
-      env:
-        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-      run: butler push build/windows sarwar2arnob/3knot3:win
-
-    - name: Deploy to Itch.io (WebGL)
-      env:
-        BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
-      run: butler push build/webgl sarwar2arnob/3knot3:web
+      - name: Deploy to Itch.io
+        uses: manleydev/butler-publish-itchio-action@master
+        env:
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          ITCH_GAME: 3knot3
+          ITCH_USER: sarwar2arnob
+          PACKAGE: ./build/${{ matrix.targetPlatform }}
+          CHANNEL: ${{ matrix.targetPlatform }} # Uses the target platform as the channel

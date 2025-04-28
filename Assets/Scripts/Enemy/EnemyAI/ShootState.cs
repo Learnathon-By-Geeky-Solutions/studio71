@@ -63,8 +63,8 @@ namespace PatrolEnemy
             // If line of sight is lost, gain LOS if we don't have grenades
              if (!controller.HasLineOfSight && controller.CurrentGrenades <= 0 )
             {
-            controller.Agent.SetDestination(controller.CurrentTarget.position);
-            controller.Agent.isStopped = false; // Ensure agent moves if outside attack range
+                controller.Agent.SetDestination(controller.CurrentTarget.position);
+                controller.Agent.isStopped = false; // Ensure agent moves if outside attack range
             }
 
             // Look at player on Y axis only
@@ -97,9 +97,8 @@ namespace PatrolEnemy
 
         private void FireBullet(EnemyController controller)
         {
-            
-            controller.CurrentAmmo--;
-            Debug.Log($"Fired bullet. Ammo remaining: {controller.CurrentAmmo}");
+            GameObject.Instantiate(controller.BulletPrefab, controller.FirePoint.position, controller.FirePoint.rotation);
+            controller.CurrentAmmo--;      
 
             if (controller.CurrentAmmo <= 0)
             {
