@@ -137,7 +137,7 @@ namespace HealthSystem
                         EnemyChecker.Instance.UnregisterSecondClear();
                         break;
                 }
-                Destroy(gameObject);
+                Destroy(gameObject, 3.2f);
             }
             else
             {
