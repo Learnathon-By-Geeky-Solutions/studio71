@@ -26,7 +26,7 @@ namespace UI.HUD
             {
                 Debug.LogWarning($"Sprite Field empty on {gameObject.name}");
             }
-            _image.sprite = SceneManager.GetActiveScene().buildIndex >= 2 ? _crossHair : _generalCursor;
+            _image.sprite = SceneManager.GetActiveScene().buildIndex >= 3 ? _crossHair : _generalCursor;
         }
         private void OnEnable()
         {
@@ -49,7 +49,7 @@ namespace UI.HUD
 
         private void CursorChange()
         {
-            if (SceneManager.GetActiveScene().buildIndex < 2) return;
+            if (SceneManager.GetActiveScene().buildIndex < 3) return;
             if (_pauseMenu.IsGamePaused() )
             {
                 _yOffset = 35;
