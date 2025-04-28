@@ -14,6 +14,9 @@ namespace UI.Loading
         [Header("Video Player")]
         [SerializeField] private VideoPlayer videoPlayer;
         
+        [Header("UI Elements")]
+        [SerializeField] private GameObject skipButton; // Reference to the Skip button
+        
         [Header("Videos")]
         [Tooltip("Video clips to play during loading. Index 0 = Level1, Index 1 = Level2")]
         [SerializeField] private VideoClip[] loadingVideos;
@@ -39,6 +42,12 @@ namespace UI.Loading
             // Validate the target scene
             if (_targetSceneIndex < 0)
             {
+                // Ensure the skip button is disabled initially
+                if (skipButton != null)
+                {
+                    skipButton.SetActive(false);
+                }
+                
                 Debug.LogError("No target scene specified for loading scene.");
                 // Fallback to main menu
                 _targetSceneIndex = SceneIndexes.MaineMenuScene;
@@ -110,32 +119,64 @@ namespace UI.Loading
         
         private IEnumerator LoadTargetSceneAsync()
         {
+            Debug.Log($"Starting to load scene {_targetSceneIndex} in background");
             // Start loading the target scene asynchronously
             _loadOperation = SceneManager.LoadSceneAsync(_targetSceneIndex);
             
             // Don't let the scene activate yet
             _loadOperation.allowSceneActivation = false;
             
+            // Log loading progress periodically
+            float lastProgress = 0f;
+            
             // Wait until the load is nearly complete
             while (_loadOperation.progress < 0.9f)
             {
+                // Log progress updates but only when it changes significantly
+                if (_loadOperation.progress >= lastProgress + 0.1f)
+                {
+                    Debug.Log($"Scene loading progress: {_loadOperation.progress:P0}");
+                    lastProgress = _loadOperation.progress;
+                }
                 yield return null;
             }
+
+            Debug.Log("Scene loading reached 90% complete - ready for activation");
+            
+            // Scene is ready to load, activate the skip button
+            ActivateSkipButton();
             
             // Scene is ready to activate
             if (!waitForVideoToFinish || _isVideoFinished)
             {
                 ActivateLoadedScene();
             }
-            // Otherwise we'll wait for the video to finish
+            else if (waitForVideoToFinish)
+            {
+                // Continue waiting for the video to finish if needed
+                Debug.Log("Scene loaded but waiting for video to finish...");
+                
+                // Wait here until the video is finished
+                while (!_isVideoFinished)
+                {
+                    yield return null;
+                }
+                
+                // Video is now finished, activate the scene
+                ActivateLoadedScene();
+            }
         }
         
         private void Update()
         {
-            // If we're waiting for both the video and scene load to complete
-            if (waitForVideoToFinish && loadInBackground && _isVideoFinished && _loadOperation != null && _loadOperation.progress >= 0.9f)
-            {
-                ActivateLoadedScene();
+            // This is a backup check, but the coroutine now handles this more reliably
+            if (waitForVideoToFinish && loadInBackground)
+            { 
+                if (_isVideoFinished && _loadOperation != null && _loadOperation.progress >= 0.9f && !_loadOperation.allowSceneActivation)
+                {
+                    Debug.Log("Update method detected both video complete and scene ready - activating scene");
+                    ActivateLoadedScene();
+                }
             }
         }
         
@@ -170,6 +211,25 @@ namespace UI.Loading
             {
                 ActivateLoadedScene();
             }
+        }
+        
+        private void ActivateSkipButton()
+        {
+            // Activate the skip button when the scene is ready to load
+            if (skipButton != null)
+            {
+                skipButton.SetActive(true);
+                Debug.Log("Scene loading complete - Skip button activated");
+            }
+        }
+        
+        /// <summary>
+        /// This should be called from the Skip Button's onClick event in the Inspector
+        /// </summary>
+        public void OnSkipButtonClicked()
+        {
+            // Call the existing skip method
+            SkipVideo();
         }
     }
 } 
