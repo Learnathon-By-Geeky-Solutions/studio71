@@ -21,7 +21,9 @@ namespace UI.Loading
         [SerializeField] private CanvasGroup fadeCanvasGroup; // Canvas group used for fading
         
         [Header("Videos")]
-        [Tooltip("Video clips to play during loading. Index 0 = Level1, Index 1 = Level2")]
+        [Tooltip("Video clips array for both level loading and victory videos.\n" +
+                "0-4: Level loading videos (Level1-5)\n" +
+                "5-9: Victory videos (Level1-5)")]
         [SerializeField] private VideoClip[] loadingVideos;
         
         [Header("Loading Settings")]
