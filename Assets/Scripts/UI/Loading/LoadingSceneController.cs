@@ -7,7 +7,7 @@ using SingletonManagers;
 namespace UI.Loading
 {
     /// <summary>
-    /// Controls the loading scene with video playback.
+    /// Controls the loading scene with video playback and scene transition.
     /// </summary>
     public class LoadingSceneController : MonoBehaviour
     {
@@ -28,13 +28,30 @@ namespace UI.Loading
         [Tooltip("Whether to start loading the next scene in the background while the video plays")]
         [SerializeField] private bool loadInBackground = true;
         
+        [Header("Debug Settings")]
+        [Tooltip("Enable extra debug logging for state transitions")]
+        [SerializeField] private bool verboseLogging = false;
+        
+        // Loading state variables
+        private enum LoadingState { NotStarted, Loading, ReadyToActivate, Activating, Completed }
+        private LoadingState _sceneLoadingState = LoadingState.NotStarted;
+        private LoadingState _videoState = LoadingState.NotStarted;
+        
         private AsyncOperation _loadOperation;
         private int _targetSceneIndex;
         private int _videoIndex;
-        private bool _isVideoFinished = false;
+        private Coroutine _loadingCoroutine;
         
         private void Start()
         {
+            LogMessage("LoadingSceneController starting");
+            
+            // Ensure the skip button is disabled initially
+            if (skipButton != null)
+            {
+                skipButton.SetActive(false);
+            }
+            
             // Get the scene and video info from SceneIndexes
             _targetSceneIndex = SceneIndexes.GetTargetScene();
             _videoIndex = SceneIndexes.GetVideoToPlay();
@@ -42,16 +59,12 @@ namespace UI.Loading
             // Validate the target scene
             if (_targetSceneIndex < 0)
             {
-                // Ensure the skip button is disabled initially
-                if (skipButton != null)
-                {
-                    skipButton.SetActive(false);
-                }
-                
                 Debug.LogError("No target scene specified for loading scene.");
                 // Fallback to main menu
                 _targetSceneIndex = SceneIndexes.MaineMenuScene;
             }
+            
+            LogMessage($"Target scene: {_targetSceneIndex}, Video index: {_videoIndex}");
             
             // Start playing the appropriate video
             PlayLoadingVideo();
@@ -59,12 +72,30 @@ namespace UI.Loading
             // Start loading the target scene in the background
             if (loadInBackground)
             {
-                StartCoroutine(LoadTargetSceneAsync());
+                _loadingCoroutine = StartCoroutine(LoadTargetSceneAsync());
+            }
+        }
+        
+        private void OnDestroy()
+        {
+            // Clean up event handler when destroyed
+            if (videoPlayer != null)
+            {
+                videoPlayer.loopPointReached -= OnVideoFinished;
+            }
+            
+            // Stop the coroutine if it's still running
+            if (_loadingCoroutine != null)
+            {
+                StopCoroutine(_loadingCoroutine);
+                _loadingCoroutine = null;
             }
         }
         
         private void PlayLoadingVideo()
         {
+            LogMessage("Starting video playback");
+            
             // Validate the video index
             if (_videoIndex < 0 || _videoIndex >= loadingVideos.Length || loadingVideos[_videoIndex] == null)
             {
@@ -92,34 +123,56 @@ namespace UI.Loading
                 
                 // Start playback
                 videoPlayer.Play();
-                Debug.Log($"Playing loading video {_videoIndex} for scene {_targetSceneIndex}");
+                _videoState = LoadingState.Loading;
+                LogMessage($"Playing loading video {_videoIndex} for scene {_targetSceneIndex}");
             }
             else
             {
                 Debug.LogError("No valid video clips found in LoadingSceneController.");
-                _isVideoFinished = true; // Skip video since there isn't one
+                _videoState = LoadingState.ReadyToActivate; // Skip video since there isn't one
+                
+                // If not loading in background, start loading now
+                if (!loadInBackground)
+                {
+                    _loadingCoroutine = StartCoroutine(LoadTargetSceneAsync());
+                }
+                else
+                {
+                    CheckAndActivateScene();
+                }
             }
         }
         
         private void OnVideoFinished(VideoPlayer vp)
         {
-            _isVideoFinished = true;
+            if (_videoState == LoadingState.ReadyToActivate)
+            {
+                LogMessage("Video finished event triggered, but video state already marked as ready");
+                return;
+            }
+            
+            LogMessage("Video playback finished");
+            _videoState = LoadingState.ReadyToActivate;
             
             // If we're not loading in background, start loading now
-            if (!loadInBackground)
+            if (!loadInBackground && _sceneLoadingState == LoadingState.NotStarted)
             {
-                StartCoroutine(LoadTargetSceneAsync());
+                _loadingCoroutine = StartCoroutine(LoadTargetSceneAsync());
             }
-            // If we are loading in background and the scene is ready, activate it
-            else if (_loadOperation != null && _loadOperation.isDone)
+            // Otherwise check if we can activate the scene
+            else
             {
-                ActivateLoadedScene();
+                CheckAndActivateScene();
             }
         }
         
         private IEnumerator LoadTargetSceneAsync()
         {
-            Debug.Log($"Starting to load scene {_targetSceneIndex} in background");
+            // Update state
+            _sceneLoadingState = LoadingState.Loading;
+            
+            LogMessage($"Starting to load scene {_targetSceneIndex} asynchronously");
+            
             // Start loading the target scene asynchronously
             _loadOperation = SceneManager.LoadSceneAsync(_targetSceneIndex);
             
@@ -130,66 +183,78 @@ namespace UI.Loading
             float lastProgress = 0f;
             
             // Wait until the load is nearly complete
-            while (_loadOperation.progress < 0.9f)
+            while (_loadOperation != null && _loadOperation.progress < 0.9f)
             {
                 // Log progress updates but only when it changes significantly
                 if (_loadOperation.progress >= lastProgress + 0.1f)
                 {
-                    Debug.Log($"Scene loading progress: {_loadOperation.progress:P0}");
+                    LogMessage($"Scene loading progress: {_loadOperation.progress:P0}");
                     lastProgress = _loadOperation.progress;
                 }
                 yield return null;
             }
 
-            Debug.Log("Scene loading reached 90% complete - ready for activation");
+            LogMessage("Scene loading reached 90% complete - ready for activation");
             
             // Scene is ready to load, activate the skip button
             ActivateSkipButton();
             
-            // Scene is ready to activate
-            if (!waitForVideoToFinish || _isVideoFinished)
-            {
-                ActivateLoadedScene();
-            }
-            else if (waitForVideoToFinish)
-            {
-                // Continue waiting for the video to finish if needed
-                Debug.Log("Scene loaded but waiting for video to finish...");
-                
-                // Wait here until the video is finished
-                while (!_isVideoFinished)
-                {
-                    yield return null;
-                }
-                
-                // Video is now finished, activate the scene
-                ActivateLoadedScene();
-            }
+            // Update loading state
+            _sceneLoadingState = LoadingState.ReadyToActivate;
+            
+            // Check if we can activate the scene
+            CheckAndActivateScene();
         }
         
         private void Update()
         {
-            // This is a backup check, but the coroutine now handles this more reliably
-            if (waitForVideoToFinish && loadInBackground)
-            { 
-                if (_isVideoFinished && _loadOperation != null && _loadOperation.progress >= 0.9f && !_loadOperation.allowSceneActivation)
-                {
-                    Debug.Log("Update method detected both video complete and scene ready - activating scene");
-                    ActivateLoadedScene();
-                }
+            // This is a safety check to ensure we don't miss state changes
+            if (_sceneLoadingState == LoadingState.ReadyToActivate && 
+                (!waitForVideoToFinish || _videoState == LoadingState.ReadyToActivate) &&
+                _loadOperation != null && !_loadOperation.allowSceneActivation)
+            {
+                LogMessage("Update safety check detected both video complete and scene ready - activating scene");
+                ActivateLoadedScene();
+            }
+        }
+        
+        private void CheckAndActivateScene()
+        {
+            // Do we have both video ready (or skipped) and scene loaded?
+            bool videoReady = !waitForVideoToFinish || _videoState == LoadingState.ReadyToActivate;
+            bool sceneReady = _sceneLoadingState == LoadingState.ReadyToActivate;
+            
+            LogMessage($"Checking activation conditions - Video ready: {videoReady}, Scene ready: {sceneReady}");
+            
+            if (videoReady && sceneReady)
+            {
+                LogMessage("Both video and scene are ready for activation");
+                ActivateLoadedScene();
             }
         }
         
         private void ActivateLoadedScene()
         {
+            // Double-check to prevent multiple activations
+            if (_sceneLoadingState == LoadingState.Activating || _sceneLoadingState == LoadingState.Completed)
+            {
+                LogMessage("Scene activation already in progress or completed");
+                return;
+            }
+            
+            _sceneLoadingState = LoadingState.Activating;
+            
             if (_loadOperation != null)
             {
-                Debug.Log($"Loading complete. Activating scene {_targetSceneIndex}");
+                LogMessage($"Loading complete. Activating scene {_targetSceneIndex}");
                 _loadOperation.allowSceneActivation = true;
+                _sceneLoadingState = LoadingState.Completed;
             }
             else
             {
                 // Direct load as fallback
+                Debug.LogWarning("Using synchronous loading as fallback. This may cause frame drops.");
+                _sceneLoadingState = LoadingState.Completed;
                 SceneManager.LoadScene(_targetSceneIndex);
             }
         }
@@ -197,29 +262,37 @@ namespace UI.Loading
         // Optional: Add a skip button functionality
         public void SkipVideo()
         {
+            LogMessage("Video skip requested");
+            
             if (videoPlayer.isPlaying)
             {
                 videoPlayer.Stop();
             }
-            _isVideoFinished = true;
             
-            if (!loadInBackground)
+            // Update state only if not already ready
+            if (_videoState != LoadingState.ReadyToActivate)
             {
-                StartCoroutine(LoadTargetSceneAsync());
-            }
-            else if (_loadOperation != null && _loadOperation.progress >= 0.9f)
-            {
-                ActivateLoadedScene();
+                _videoState = LoadingState.ReadyToActivate;
+                
+                // If not loading in background and not started yet, start loading now
+                if (!loadInBackground && _sceneLoadingState == LoadingState.NotStarted)
+                {
+                    _loadingCoroutine = StartCoroutine(LoadTargetSceneAsync());
+                }
+                else
+                {
+                    CheckAndActivateScene();
+                }
             }
         }
         
         private void ActivateSkipButton()
         {
             // Activate the skip button when the scene is ready to load
-            if (skipButton != null)
+            if (skipButton != null && !skipButton.activeSelf)
             {
                 skipButton.SetActive(true);
-                Debug.Log("Scene loading complete - Skip button activated");
+                LogMessage("Skip button activated");
             }
         }
         
@@ -230,6 +303,14 @@ namespace UI.Loading
         {
             // Call the existing skip method
             SkipVideo();
+        }
+        
+        private void LogMessage(string message)
+        {
+            if (verboseLogging)
+            {
+                Debug.Log($"[LoadingController] {message}");
+            }
         }
     }
 } 

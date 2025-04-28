@@ -77,7 +77,7 @@ namespace UI
         public static void LoadMenu()
         {
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
-            SceneIndexes.LoadSceneByIndex(SceneIndexes.MaineMenuScene);
+            SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.MaineMenuScene);
         }
         public void Sound()
         {

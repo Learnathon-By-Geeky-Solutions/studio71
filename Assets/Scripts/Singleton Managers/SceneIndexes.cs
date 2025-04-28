@@ -1,5 +1,6 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using System.Collections;
 
 /// <summary>
 /// Provides static access to scene indexes and a method to load scenes.
@@ -14,84 +15,100 @@ public static class SceneIndexes
     public static readonly int Level2Scene = 4;
     
     // Static field to track which scene to load after the loading scene
-    private static int s_targetSceneToLoad = -1;
+    private static int _targetSceneIndex = -1;
     
     // Static field to track which video to play in the loading scene
-    private static int s_videoToPlay = -1;
+    private static int _videoToPlay = -1;
     
     // Video indexes (corresponding to the videos in the LoadingSceneController)
     public static readonly int Level1Video = 0;
     public static readonly int Level2Video = 1;
 
     /// <summary>
-    /// Loads the scene corresponding to the given index.
+    /// DEPRECATED: Use LoadSceneByIndexAsync instead.
+    /// Loads a scene synchronously by index. Warning: May cause frame drops.
     /// </summary>
-    /// <param name="sceneIndex">The build index of the scene to load.</param>
+    [System.Obsolete("Use LoadSceneByIndexAsync instead to prevent frame drops")]
     public static void LoadSceneByIndex(int sceneIndex)
     {
-        // Basic validation could be added here (e.g., check if index is within range)
+        Debug.LogWarning("Using synchronous scene loading. This may cause frame drops. Consider using LoadSceneByIndexAsync instead.");
         SceneManager.LoadScene(sceneIndex);
     }
     
     /// <summary>
-    /// Loads the scene with a video transition.
+    /// Loads a scene asynchronously by index.
     /// </summary>
-    /// <param name="sceneIndex">The build index of the target scene to load after the video.</param>
-    /// <param name="videoIndex">The index of the video to play during loading.</param>
-    public static void LoadSceneWithVideo(int sceneIndex, int videoIndex)
+    /// <param name="sceneIndex">The build index of the scene to load</param>
+    /// <param name="allowSceneActivation">Whether to automatically activate the scene when loaded</param>
+    /// <returns>The AsyncOperation that can be used to track progress</returns>
+    public static AsyncOperation LoadSceneByIndexAsync(int sceneIndex, bool allowSceneActivation = true)
     {
-        // Set the static fields that the loading scene will check
-        s_targetSceneToLoad = sceneIndex;
-        s_videoToPlay = videoIndex;
-        
-        // Load the loading scene
-        SceneManager.LoadScene(LoadingScene);
+        Debug.Log($"Asynchronously loading scene {sceneIndex}");
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneIndex);
+        loadOperation.allowSceneActivation = allowSceneActivation;
+        return loadOperation;
     }
     
     /// <summary>
-    /// Gets the target scene to load after the loading scene.
+    /// Loads a scene with a video transition.
     /// </summary>
-    /// <returns>The build index of the scene to load.</returns>
+    /// <param name="targetSceneIndex">Target scene to load after video</param>
+    /// <param name="videoIndex">Video to play during loading</param>
+    public static void LoadSceneWithVideo(int targetSceneIndex, int videoIndex)
+    {
+        // Save the target scene and video to play
+        SetTargetScene(targetSceneIndex);
+        SetVideoToPlay(videoIndex);
+        
+        // Load the loading scene asynchronously
+        LoadSceneByIndexAsync(LoadingScene);
+    }
+    
+    /// <summary>
+    /// Gets the target scene index set before loading the loading scene.
+    /// </summary>
     public static int GetTargetScene()
     {
-        return s_targetSceneToLoad;
+        return _targetSceneIndex;
     }
     
     /// <summary>
-    /// Gets the index of the video to play during loading.
+    /// Gets the video index to play during loading.
     /// </summary>
-    /// <returns>The index of the video to play.</returns>
     public static int GetVideoToPlay()
     {
-        return s_videoToPlay;
+        return _videoToPlay;
     }
     
     /// <summary>
-    /// Loads scene from SlidingMenuScene with appropriate video based on the destination.
+    /// Loads a level from the sliding menu with the appropriate video.
     /// </summary>
-    /// <param name="sceneIndex">The build index of the scene to load.</param>
     public static void LoadLevelFromSlidingMenu(int sceneIndex)
     {
         // Determine which video to play based on the destination scene
-        int videoIndex;
+        int videoToPlay = -1;
         
         if (sceneIndex == Level1Scene)
         {
-            videoIndex = Level1Video;
+            videoToPlay = Level1Video;
         }
         else if (sceneIndex == Level2Scene)
         {
-            videoIndex = Level2Video;
-        }
-        else
-        {
-            // For other scenes, just load directly
-            LoadSceneByIndex(sceneIndex);
-            return;
+            videoToPlay = Level2Video;
         }
         
-        // Load with the appropriate video
-        LoadSceneWithVideo(sceneIndex, videoIndex);
+        // Load the scene with the appropriate video
+        LoadSceneWithVideo(sceneIndex, videoToPlay);
+    }
+
+    private static void SetTargetScene(int sceneIndex)
+    {
+        _targetSceneIndex = sceneIndex;
+    }
+
+    private static void SetVideoToPlay(int videoIndex)
+    {
+        _videoToPlay = videoIndex;
     }
 }
 }

@@ -27,13 +27,13 @@ namespace UI.MainMenu
         #region Public Button Actions
         /// <summary>
         /// Called when the Play button is clicked.
-        /// Loads the game scene asynchronously.
+        /// Loads the sliding menu scene asynchronously.
         /// </summary>
         public static void PlayGame()
         {
             PlayButtonSound();
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
-            SceneIndexes.LoadSceneByIndex(SceneIndexes.SlidingMenuScene);
+            SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.SlidingMenuScene);
         }
 
         /// <summary>

@@ -467,6 +467,7 @@ MonoBehaviour:
   - {fileID: 32900000, guid: 31492e158a75636429b0ff574e7d9082, type: 3}
   waitForVideoToFinish: 1
   loadInBackground: 1
+  verboseLogging: 0
 --- !u!4 &1372860647
 Transform:
   m_ObjectHideFlags: 0
