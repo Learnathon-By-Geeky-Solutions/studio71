@@ -1,4 +1,5 @@
 using System;
+using dialogue;
 using Player;
 using SingletonManagers;
 using UnityEngine;
@@ -57,7 +58,7 @@ namespace UI
 
         private void Pause()
         {
-            if (SceneManager.GetActiveScene().buildIndex < 3) return;
+            if (SceneManager.GetActiveScene().buildIndex < 3 || InkDialogueManager.IsDialogueOpen) return;
             if (!IsGamePaused())
             {
                 pauseMenuUI.SetActive(true);
