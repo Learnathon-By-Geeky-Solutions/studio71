@@ -19,12 +19,12 @@ namespace LevelConditions
         [SerializeField] private bool _winOnAllEnemiesDead;
         public bool WinOnAllEnemiesDead
         {
-            get => _winOnAllEnemiesDead;set=>_winOnAllEnemiesDead = value;
+            get => _winOnAllEnemiesDead;private set=>_winOnAllEnemiesDead = value;
         }
         [SerializeField] private bool _winOnTimerEnd;
         public bool WinOnTimerEnd
         {
-            get => _winOnTimerEnd;set=> _winOnTimerEnd = value;
+            get => _winOnTimerEnd;private set=> _winOnTimerEnd = value;
         }
         [SerializeField] private float _surviveTime;
         public float SurviveTime
@@ -38,12 +38,17 @@ namespace LevelConditions
         [SerializeField] private bool _loseOnPlayerDeath = true;
         public bool LoseOnPlayerDeath
         {
-            get => _loseOnPlayerDeath;set => _loseOnPlayerDeath = value;
+            get => _loseOnPlayerDeath;private set => _loseOnPlayerDeath = value;
         }
         [SerializeField] private bool _loseOnBaseDestroyed = false;
         public bool LoseOnBaseDestroyed
         {
-            get => _loseOnBaseDestroyed;set => _loseOnBaseDestroyed = value;
+            get => _loseOnBaseDestroyed;private set => _loseOnBaseDestroyed = value;
+        }
+        [SerializeField] private bool _loseOnTimerEndEnemiesSurviving=false;
+        public bool LoseOnTimerEndEnemiesSurviving
+        {
+            get => _loseOnTimerEndEnemiesSurviving;private set => _loseOnTimerEndEnemiesSurviving=value;
         }
         #endregion
 

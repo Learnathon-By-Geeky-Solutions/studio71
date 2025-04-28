@@ -75,6 +75,12 @@ namespace SingletonManagers {
             if (_levelEnded || _currentConditions == null || !_currentConditions.LoseOnBaseDestroyed) return;
             HandleLose();
         }
+
+        public void OnTimerEndEnemiesSurviving()
+        {
+            if(_levelEnded||_currentConditions==null||!_currentConditions.LoseOnTimerEndEnemiesSurviving) return;
+            HandleLose();
+        }
         #endregion
 
         #region Methods for Proper Working

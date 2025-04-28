@@ -57,21 +57,21 @@ namespace HealthSystem
         private void Start()
         {
             if (!gameObject.CompareTag("Enemy")) return;
-            EnemyChecker.Instance?.RegisterEnemy();
+
+            if (EnemyChecker.Instance == null) return;
+            EnemyChecker.Instance.RegisterEnemy();
+
             switch (gameObject.name)
             {
                 case "FirstClear":
-                {
-                    EnemyChecker.Instance?.RegisterFirstClear();
+                    EnemyChecker.Instance.RegisterFirstClear();
                     break;
-                }
                 case "SecondClear":
-                {
-                    EnemyChecker.Instance?.RegisterSecondClear();
+                    EnemyChecker.Instance.RegisterSecondClear();
                     break;
-                }
             }
         }
+
         /// <summary>
         /// Apply damage to this entity.
         /// </summary>
@@ -127,15 +127,19 @@ namespace HealthSystem
             // Destroy object if it's an enemy or destroyOnDeath is true
             if (gameObject.CompareTag("Enemy"))
             {
-                EnemyChecker.Instance.UnregisterEnemy();
-                switch (gameObject.name)
+                if (EnemyChecker.Instance != null)
                 {
-                    case "FirstClear":
-                        EnemyChecker.Instance.UnregisterFirstClear();
-                        break;
-                    case "SecondClear":
-                        EnemyChecker.Instance.UnregisterSecondClear();
-                        break;
+                    EnemyChecker.Instance.UnregisterEnemy();
+
+                    switch (gameObject.name)
+                    {
+                        case "FirstClear":
+                            EnemyChecker.Instance.UnregisterFirstClear();
+                            break;
+                        case "SecondClear":
+                            EnemyChecker.Instance.UnregisterSecondClear();
+                            break;
+                    }
                 }
                 Destroy(gameObject, 3.2f);
             }
