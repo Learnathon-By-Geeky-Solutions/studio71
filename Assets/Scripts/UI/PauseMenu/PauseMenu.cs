@@ -35,12 +35,9 @@ namespace UI
             InputHandler.Instance.OnPause += Pause;
         }
         private void OnDisable()
-        {
-            if (_playerController != null)
-            {
-                Resume();
-            }
+        { 
             InputHandler.Instance.OnPause -= Pause;
+            Resume();
 
         }
 
@@ -60,21 +57,19 @@ namespace UI
 
         private void Pause()
         {
-            if (SceneManager.GetActiveScene().buildIndex >= 3)
+            if (SceneManager.GetActiveScene().buildIndex < 3) return;
+            if (!IsGamePaused())
             {
-                if (!IsGamePaused())
-                {
-                    pauseMenuUI.SetActive(true);
-                    Time.timeScale = 0f;
-                    s_gameIsPaused = true;
-                    _playerController.enabled = false;
-                    AudioManager.PlaySound(SoundKeys.BackgroundMusic);
+                pauseMenuUI.SetActive(true);
+                Time.timeScale = 0f;
+                s_gameIsPaused = true;
+                _playerController.enabled = false;
+                AudioManager.PlaySound(SoundKeys.BackgroundMusic);
 
-                }
-                else
-                {
-                    Resume();
-                }
+            }
+            else
+            {
+                Resume();
             }
             // Show the pause menu UI here
         }
