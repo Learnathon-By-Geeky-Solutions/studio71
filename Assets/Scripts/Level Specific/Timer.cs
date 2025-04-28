@@ -6,16 +6,12 @@ namespace LevelSpecific
 {
     public class Timer : MonoBehaviour
     {
-        public TMP_Text timerText; // Assign in inspector
+        [SerializeField] private TMP_Text timerText; // Assign in inspector
 
         private float remainingTime;
 
         public float RemainingTime { get; private set; }
 
-        private void Start()
-        {
-            StartTimer(120f);
-        }
         public void StartTimer(float duration)
         {
             remainingTime = duration;

@@ -16,6 +16,7 @@ MonoBehaviour:
   _sceneBuildIndex: 3
   _winOnAllEnemiesDead: 0
   _winOnTimerEnd: 1
-  _surviveTime: 0
+  _surviveTime: 12
   _loseOnPlayerDeath: 1
   _loseOnBaseDestroyed: 0
+  _loseOnTimerEndEnemiesSurviving: 0
