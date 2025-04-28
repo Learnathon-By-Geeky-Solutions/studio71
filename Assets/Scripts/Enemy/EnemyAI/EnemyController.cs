@@ -1,13 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System; // Add this to resolve the Action error
+using System;
+using PatrolEnemy;
 
 namespace PatrolEnemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
     {
-        // State types enum
         public enum EnemyStateType
         {
             Idle,
@@ -23,6 +23,8 @@ namespace PatrolEnemy
         [SerializeField] private Transform grenadePoint;
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private GameObject grenadePrefab;
+
+        private IdleState IdleStatVar;
 
         // Detection ranges
         [Header("Detection Settings")]
@@ -42,43 +44,44 @@ namespace PatrolEnemy
         [SerializeField] private float recoveryThreshold = 30f;
         [SerializeField] private float recoveryRate = 5f;
 
-        // Alert countdown
         [Header("Alert Settings")]
         [SerializeField] private float alertCountdown = 3f;
 
-        // State management
         public IEnemyState currentState;
-        private  IdleState idleState = new IdleState();
+        private IdleState idleState = new IdleState();
         private AlertState alertState = new AlertState();
-        private  FollowState followState = new FollowState();
-        private  ShootState shootState = new ShootState();
-        private  GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
-        private  RecoveryState recoveryState = new RecoveryState();
+        private FollowState followState = new FollowState();
+        private ShootState shootState = new ShootState();
+        private GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
+        private RecoveryState recoveryState = new RecoveryState();
 
-        // Public properties
-        public NavMeshAgent Agent { get; private set; }
-        public Transform CurrentTarget { get; private set; }
+        public NavMeshAgent Agent ;
+        public Transform CurrentTarget { get; private set;}
         public float CurrentHealth
         {
             get { return currentHealth; }
-            set { currentHealth = Mathf.Clamp(value, 0, maxHealth); } // Ensure health stays within bounds
+            set { currentHealth = Mathf.Clamp(value, 0, maxHealth); }
         }
-        public int CurrentAmmo { get; set; }
-        public int CurrentGrenades { get; set; }
-        public float AlertTime { get; set; }
-        public bool IsReloading { get; set; }
-        public bool IsThrowingGrenade { get; set; }
+        public int CurrentAmmo { get; set;}
+        public int CurrentGrenades { get; set;}
+        public float AlertTime { get; set;}
+        public bool IsReloading { get; set;}
+        public bool IsIdleAlert = false;
+        public bool IsRecoverReturing { get; set;}
+        public bool IsNotGrenadeThrowing { get; set;}
+
+
         public bool HasLineOfSight { get; private set; }
         public Vector3 InitialPosition { get; private set; }
 
-        // New booleans for animation and state control
-        public bool isAlert;
-        public bool isShooting;
-        public bool isRecovering;
-        public bool isIdle;
-        public bool isFollowing;
+        [SerializeField] private bool isAlert;
+        [SerializeField] private bool isShooting;
+        [SerializeField] private bool isRecovering;
+        [SerializeField] private bool isIdle;
+        [SerializeField] private bool isFollowing;
+        [SerializeField] private bool isThrowingGrenade;
 
-        // Public accessors for ranges and settings
+        //Public Access Modifiers
         public float PatrolRange => patrolRange;
         public float DetectionRange => detectionRange;
         public float AttackRange => attackRange;
@@ -92,7 +95,13 @@ namespace PatrolEnemy
         public float ReloadTime => reloadTime;
         public float GrenadeThrowCooldown => grenadeThrowCooldown;
         public int MaxAmmo => maxAmmo;
-        public int MaxGrenades => maxGrenades;
+        public bool _isFollowing => isFollowing;
+        public bool _isShooting => isShooting;
+        public bool _isIdle => isIdle;
+        public bool _isRecovering => isRecovering;
+        public bool _isAlert => isAlert;
+        public bool _isThrowingGrenade => isThrowingGrenade;
+
 
         // Event for state change
         public event Action<EnemyStateType> OnStateChanged;
@@ -115,11 +124,7 @@ namespace PatrolEnemy
         private void Update()
         {
             DetectPlayer();
-            if (currentState != null)
-            {
-                currentState.UpdateState(this);
-            }
-
+            currentState?.UpdateState(this);
             TakeDamage();
         }
 
@@ -176,7 +181,6 @@ namespace PatrolEnemy
 
             Vector3 direction = (target.position - firePoint.position).normalized;
             RaycastHit hit;
-            Debug.DrawRay(firePoint.position, direction * detectionRange, Color.red);
 
             if (Physics.Raycast(firePoint.position, direction, out hit, detectionRange, obstacleLayer))
             {
@@ -189,7 +193,6 @@ namespace PatrolEnemy
         public void ChangeState(EnemyStateType stateType)
         {
             IEnemyState newState;
-            Debug.Log($"Changing state to: {stateType}");
 
             switch (stateType)
             {
@@ -216,27 +219,19 @@ namespace PatrolEnemy
                     break;
             }
 
-            if (currentState != null)
-            {
-                currentState.ExitState(this);
-            }
-
+            currentState?.ExitState(this);
             currentState = newState;
+            currentState?.EnterState(this);
 
-            if (currentState != null)
-            {
-                Debug.Log($"Changing to {currentState.GetType().Name}");
-                currentState.EnterState(this);
-            }
-
-            // Update booleans here to match the current state
+            // Update booleans
             isAlert = stateType == EnemyStateType.Alert;
             isShooting = stateType == EnemyStateType.Shoot;
             isRecovering = stateType == EnemyStateType.Recovery;
             isIdle = stateType == EnemyStateType.Idle;
             isFollowing = stateType == EnemyStateType.Follow;
+            isThrowingGrenade = stateType == EnemyStateType.GrenadeThrow;
+            
 
-            OnStateChanged?.Invoke(stateType);
         }
 
         public void TakeDamage()
@@ -251,20 +246,10 @@ namespace PatrolEnemy
             }
         }
 
-        // Add this method to return the current state type
-
-
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            if (Application.isPlaying)
-            {
-                Gizmos.DrawWireSphere(InitialPosition, patrolRange);
-            }
-            else
-            {
-                Gizmos.DrawWireSphere(transform.position, patrolRange);
-            }
+            Gizmos.DrawWireSphere(Application.isPlaying ? InitialPosition : transform.position, patrolRange);
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, detectionRange);

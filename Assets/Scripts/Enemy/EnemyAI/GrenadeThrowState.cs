@@ -3,7 +3,7 @@ using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
-using Random = UnityEngine.Random;
+
 
 namespace PatrolEnemy
 {
@@ -17,6 +17,7 @@ namespace PatrolEnemy
             Debug.Log("Entered Grenade Throw State");
             grenadeCTS = new CancellationTokenSource();
             isThrowing = false;
+            controller.IsNotGrenadeThrowing = true;
             AttemptGrenadeThrow(controller).Forget();
         }
         
@@ -48,12 +49,6 @@ namespace PatrolEnemy
             Vector3 lookPos = controller.CurrentTarget.position;
             lookPos.y = controller.transform.position.y;
             controller.transform.LookAt(lookPos);
-
-            // Try to reposition for LOS if not already throwing
-            if (!isThrowing && !controller.HasLineOfSight)
-            {
-                RepositionForLOS(controller);
-            }
         }
         
         public void ExitState(EnemyController controller)
@@ -70,6 +65,8 @@ namespace PatrolEnemy
                    !controller.HasLineOfSight)
             {
                 isThrowing = true;
+                controller.Agent.isStopped = true;
+                controller.IsNotGrenadeThrowing = false;
                 
                 // Throw grenade
                 GameObject grenade = GameObject.Instantiate(
@@ -97,30 +94,14 @@ namespace PatrolEnemy
                 }
                 catch (OperationCanceledException)
                 {
-                    break; // Exit if interrupted
+                    break;
                 }
 
                 isThrowing = false;
+                controller.IsNotGrenadeThrowing = false;
+
             }
         }
 
-        private static void RepositionForLOS(EnemyController controller)
-        {
-            // Try moving sideways to regain LOS
-            Vector3 randomOffset = new Vector3(
-                Random.Range(-2f, 2f), 
-                0f, 
-                Random.Range(-2f, 2f)
-            ).normalized;
-
-            Vector3 newPos = controller.CurrentTarget.position + randomOffset * controller.AttackRange;
-            
-            // Sample position on NavMesh
-            if (NavMesh.SamplePosition(newPos, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-            {
-                controller.Agent.SetDestination(hit.position);
-                controller.Agent.isStopped = false;
-            }
-        }
     }
 }

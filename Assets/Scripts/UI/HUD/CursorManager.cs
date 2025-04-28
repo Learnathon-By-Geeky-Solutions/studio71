@@ -26,7 +26,7 @@ namespace UI.HUD
             {
                 Debug.LogWarning($"Sprite Field empty on {gameObject.name}");
             }
-            _image.sprite = SceneManager.GetActiveScene().buildIndex > 2 ? _crossHair : _generalCursor;
+            _image.sprite = SceneManager.GetActiveScene().buildIndex >= 2 ? _crossHair : _generalCursor;
         }
         private void OnEnable()
         {
@@ -48,14 +48,14 @@ namespace UI.HUD
         }
 
         private void CursorChange()
-        {if(SceneManager.GetActiveScene().buildIndex > 2)
         {
+            if (SceneManager.GetActiveScene().buildIndex < 2) return;
             if (_pauseMenu.IsGamePaused() )
             {
                 _yOffset = 35;
                 _image.sprite = _crossHair;
             }
-            else { _yOffset = 0; _image.sprite = _generalCursor; }}
+            else { _yOffset = 0; _image.sprite = _generalCursor; }
         }
     }
 }
