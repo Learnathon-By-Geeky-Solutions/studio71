@@ -12,13 +12,13 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64 # Build a Windows 64-bit standalone.
-          - WebGL # WebGL.
+          - StandaloneWindows64
+          - WebGL
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          lfs: true # If your project uses Git LFS
+          lfs: true
 
       - uses: actions/cache@v3
         with:
@@ -28,9 +28,7 @@ jobs:
 
       - uses: game-ci/unity-builder@v4
         env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # Set this secret if you have a Pro/Enterprise license
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}     # Set this secret with your Unity account email
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }} # Set this secret with your Unity account password
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }} # Use the masked serial
         with:
           unityVersion: 6000.0.32f1
           targetPlatform: ${{ matrix.targetPlatform }}
@@ -40,8 +38,8 @@ jobs:
       - name: Deploy to Itch.io
         uses: manleydev/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }} # Use the secret you already set
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
           ITCH_GAME: 3knot3
           ITCH_USER: sarwar2arnob
           PACKAGE: ./build/${{ matrix.targetPlatform }}
-          CHANNEL: ${{ matrix.targetPlatform }} # Uses the target platform as the channel
+          CHANNEL: ${{ matrix.targetPlatform }}
