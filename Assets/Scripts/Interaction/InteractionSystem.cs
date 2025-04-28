@@ -95,14 +95,15 @@ namespace Interaction
             {
                 _currentTarget = nearest;
                 
-                if (_interactionButton != null)
+                if (_interactionButton != null && !_currentTarget.CompareTag("Npc"))
                 {
                     _interactionButton.SetActive(true);
+                     _interactionText.text = "Pick Up Item";
                 }
                 
-                if (_interactionText != null)
+                if (_interactionText != null && _currentTarget.CompareTag("Npc"))
                 {
-                    _interactionText.text = _currentTarget.CompareTag("Npc") ? "Talk" : "Pick Up Item";
+                    Interact();
                 }
             }
             else
