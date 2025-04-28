@@ -282,7 +282,14 @@ namespace dialogue
                     }
                     else
                     {
-                        Avatar.Play(character.animationState);
+                        try
+                        {
+                            Avatar.Play(character.animationState);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Debug.LogError($"Failed to play animation state '{character.animationState}' for character {character.characterName}: {e.Message}", this);
+                        }
                     }
                 }
             }
@@ -420,9 +427,12 @@ namespace dialogue
                           if (choicePanel != null) choicePanel.SetActive(false);
                       });
 
+            // Wait for the animation to finish first
+            yield return new WaitForSeconds(animationDuration);
+            
+            // Update dialogue state and re-enable player controls AFTER animation completes
             IsDialogueOpen = false;
             EnablePlayerControl();
-            yield return new WaitForSeconds(animationDuration);
         }
         #endregion
     }

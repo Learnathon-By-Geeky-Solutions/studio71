@@ -101,7 +101,7 @@ namespace Interaction
                      _interactionText.text = "Pick Up Item";
                 }
                 
-                if (_interactionText != null && _currentTarget.CompareTag("Npc"))
+                if (_currentTarget.CompareTag("Npc"))
                 {
                     Interact();
                 }
