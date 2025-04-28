@@ -28,9 +28,9 @@ jobs:
 
       - uses: game-ci/unity-builder@v4
         env:
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }} # Set this secret if you have a Pro/Enterprise license
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}     # Set this secret with your Unity account email
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }} # Set this secret with your Unity account password
         with:
           unityVersion: 6000.0.32f1
           targetPlatform: ${{ matrix.targetPlatform }}
@@ -40,7 +40,7 @@ jobs:
       - name: Deploy to Itch.io
         uses: manleydev/butler-publish-itchio-action@master
         env:
-          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }}
+          BUTLER_CREDENTIALS: ${{ secrets.BUTLER_CREDENTIALS }} # Use the secret you already set
           ITCH_GAME: 3knot3
           ITCH_USER: sarwar2arnob
           PACKAGE: ./build/${{ matrix.targetPlatform }}
