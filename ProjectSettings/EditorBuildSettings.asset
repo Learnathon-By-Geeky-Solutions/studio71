@@ -20,6 +20,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Hamidur Rahman.unity
     guid: 63260197c8c00654084aa360cd0e191c
+  - enabled: 1
+    path: Assets/Scenes/Munsi  Abdur Rouf.unity
+    guid: ae66dc99892af134b96adcbef1e04aa4
+  - enabled: 1
+    path: Assets/Scenes/Mostafa Kamal.unity
+    guid: fa9efa3c33448a54f8e48ba39a041f68
+  - enabled: 1
+    path: Assets/Scenes/Mohiuddin Jahangir.unity
+    guid: 87469e40733fcb147a04e40f5504837d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 60d119ec1edfb284f8c86194aa613daf, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 5f0fa73ad133a3a4ab542b45891aaef2, type: 3}
