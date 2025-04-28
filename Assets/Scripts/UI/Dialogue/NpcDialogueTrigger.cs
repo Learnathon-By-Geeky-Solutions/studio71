@@ -10,7 +10,7 @@ namespace dialogue
     {
         [SerializeField] private TextAsset inkJSON;
         private InkDialogueManager dialogueManager;
-
+        private bool _alreadyTriggerd = false;
         private void Awake()
         {
             // Try to get the InkDialogueManager component
@@ -32,6 +32,7 @@ namespace dialogue
         /// </summary>
         public void TriggerDialogue()
         {
+            if (_alreadyTriggerd) return; 
             if (inkJSON == null)
             {
                 Debug.LogError($"No ink JSON file assigned to NPC {gameObject.name}");
@@ -43,7 +44,7 @@ namespace dialogue
                 Debug.LogError($"No InkDialogueManager found for NPC {gameObject.name}");
                 return;
             }
-
+            _alreadyTriggerd=true;
             dialogueManager.StartDialogue(inkJSON);
         }
     }

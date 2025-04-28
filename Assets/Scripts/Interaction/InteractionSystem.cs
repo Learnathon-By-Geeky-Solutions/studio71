@@ -48,11 +48,9 @@ namespace Interaction
         private void Update()
         {
             // Check for interactables at specified intervals instead of every frame
-            if (Time.time >= _nextDetectionTime)
-            {
-                FindNearestInteractable();
-                _nextDetectionTime = Time.time + _detectionInterval;
-            }
+            if (!(Time.time >= _nextDetectionTime)) return;
+            FindNearestInteractable();
+            _nextDetectionTime = Time.time + _detectionInterval;
         }
 
         /// <summary>
