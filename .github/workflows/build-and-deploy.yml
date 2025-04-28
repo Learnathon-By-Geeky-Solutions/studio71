@@ -12,13 +12,13 @@ jobs:
       fail-fast: false
       matrix:
         targetPlatform:
-          - StandaloneWindows64
-          - WebGL
+          - StandaloneWindows64 # Build a Windows 64-bit standalone.
+          - WebGL # WebGL.
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          lfs: true
+          lfs: true # If your project uses Git LFS
 
       - uses: actions/cache@v3
         with:
@@ -28,7 +28,9 @@ jobs:
 
       - uses: game-ci/unity-builder@v4
         env:
-          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }} # Use the masked serial
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           unityVersion: 6000.0.32f1
           targetPlatform: ${{ matrix.targetPlatform }}
@@ -42,4 +44,4 @@ jobs:
           ITCH_GAME: 3knot3
           ITCH_USER: sarwar2arnob
           PACKAGE: ./build/${{ matrix.targetPlatform }}
-          CHANNEL: ${{ matrix.targetPlatform }}
+          CHANNEL: ${{ matrix.targetPlatform }} # Uses the target platform as the channel
