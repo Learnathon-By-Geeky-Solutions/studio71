@@ -3,6 +3,7 @@ using UnityEngine;
 using SingletonManagers;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using dialogue;
 namespace UI.HUD
 {
     public class CursorManager : MonoBehaviour
@@ -49,7 +50,7 @@ namespace UI.HUD
 
         private void CursorChange()
         {
-            if (SceneManager.GetActiveScene().buildIndex < 3) return;
+            if (SceneManager.GetActiveScene().buildIndex < 3|| InkDialogueManager.IsDialogueOpen) return;
             if (_pauseMenu.IsGamePaused() )
             {
                 _yOffset = 35;
