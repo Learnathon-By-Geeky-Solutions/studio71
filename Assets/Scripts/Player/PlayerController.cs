@@ -54,8 +54,27 @@ namespace Player
         public int GrenadeCount
         {
             get => _grenadeCount;
-            private set => _grenadeCount = value;
+            private set 
+            { 
+                // Only trigger event if value actually changed
+                if (_grenadeCount != value)
+                {
+                    _grenadeCount = value;
+                    OnGrenadeCountChanged?.Invoke(_grenadeCount);
+                }
+            }
         }
+        
+        // Event that fires when grenade count changes
+        public delegate void GrenadeCountChangeHandler(int newCount);
+        public event GrenadeCountChangeHandler OnGrenadeCountChanged;
+        
+        // Method to add grenades (for pickups)
+        public void AddGrenades(int amount)
+        {
+            GrenadeCount += amount;
+        }
+        
         private LineRenderer _lineRenderer;
         [SerializeField] LineRenderer _radiusRenderer;
         [SerializeField] private int _lineResolution = 30; // Number of points in trajectory
