@@ -15,6 +15,7 @@ namespace LevelSpecific {
 
         private float spawnRate;              // Current spawn rate
         private Timer _levelTimer;
+        private bool _isSpawning = true;
         private void Awake()
         {
             _levelTimer = GameObject.Find("Timer").GetComponent<Timer>();
@@ -29,11 +30,12 @@ namespace LevelSpecific {
             _levelTimer.StartTimer(LevelConditionManager.Instance._currentConditions.SurviveTime);
             StartCoroutine(SpawnEnemies());
             StartCoroutine(ChangeSpawnRate());
+            StartCoroutine(StopSpawning());
         }
 
         private IEnumerator SpawnEnemies()
         {
-            while (true)
+            while (_isSpawning)
             {
                 // Randomly select a spawn point and an enemy
                 Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
@@ -47,13 +49,18 @@ namespace LevelSpecific {
                 yield return new WaitForSeconds(spawnRate);
             }
         }
-
         private IEnumerator ChangeSpawnRate()
         {
             yield return new WaitForSeconds(LevelConditionManager.Instance._currentConditions.SurviveTime / 2);
-            // Update spawn rate, logic can be customized based on your requirements
+            // Update spawn rate, logic can be customized based on requirements
             spawnRate = Mathf.Max(0.5f, spawnRate - 0.5f);  // Example: decrease spawn rate by 0.5 but keep it above 0.5
             Debug.Log("Spawn rate changed to: " + spawnRate);
+        }
+        private IEnumerator StopSpawning()
+        {
+            yield return new WaitForSeconds(LevelConditionManager.Instance._currentConditions.SurviveTime);
+            _isSpawning = false;
+            LevelConditionManager.Instance.OnTimerFinished();
         }
 
 

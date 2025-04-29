@@ -2221,6 +2221,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 6396474058012393408}
+        m_TargetAssemblyTypeName: UI.HUD.CursorManager, Assembly-CSharp
+        m_MethodName: CursorChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1379086795806110472}
         m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
         m_MethodName: Resume
@@ -2999,6 +3011,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
+--- !u!114 &6396474058012393408 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2856904616178524615, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
+  m_PrefabInstance: {fileID: 9178640436433706503}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f070178bdd1c194bb624442bf362bbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &7807170963629216209 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1385332390866964438, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
