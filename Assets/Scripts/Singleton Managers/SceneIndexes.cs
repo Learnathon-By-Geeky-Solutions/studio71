@@ -8,7 +8,7 @@ using System.Collections;
 namespace SingletonManagers{
 public static class SceneIndexes
 {
-    public static readonly int MaineMenuScene = 0;
+    public static readonly int MainMenuScene = 0;
     public static readonly int SlidingMenuScene = 1;
     public static readonly int LoadingScene = 2; // Loading scene with videos
     public static readonly int Level1Scene = 3;

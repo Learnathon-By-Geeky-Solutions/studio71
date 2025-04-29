@@ -34,11 +34,13 @@ namespace UI
         private void OnEnable()
         {
             InputHandler.Instance.OnPause += Pause;
+            AudioManager.PlaySound(SoundKeys.inGameSound);
         }
         private void OnDisable()
         { 
             InputHandler.Instance.OnPause -= Pause;
             Resume();
+            AudioManager.StopSound(SoundKeys.inGameSound);
 
         }
 
@@ -52,6 +54,7 @@ namespace UI
             s_gameIsPaused = false;
             _playerController.enabled = true; // Enable player controls when resuming
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
+            AudioManager.PlaySound(SoundKeys.inGameSound);
             Debug.Log("Resuming game...");
             // Hide the pause menu UI here
         }
@@ -65,6 +68,7 @@ namespace UI
                 Time.timeScale = 0f;
                 s_gameIsPaused = true;
                 _playerController.enabled = false;
+                AudioManager.StopSound(SoundKeys.inGameSound);
                 AudioManager.PlaySound(SoundKeys.BackgroundMusic);
 
             }
@@ -78,7 +82,7 @@ namespace UI
         public static void LoadMenu()
         {
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
-            SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.MaineMenuScene);
+            SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.MainMenuScene);
         }
         public void Sound()
         {

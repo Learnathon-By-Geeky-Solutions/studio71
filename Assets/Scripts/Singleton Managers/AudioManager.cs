@@ -16,6 +16,9 @@ namespace SingletonManagers
         public const string ReloadStart = "reload_start";
         public const string GrenadeThrow = "grenadeThrow";
         public const string GrenadeExplosion = "Grenade_Explosion";
+
+        public const string LevelSelectionMusic= "level_selection_music";
+        public const string inGameSound= "in_game_sound";
         // Add other sound keys here as needed
     }
 
@@ -48,15 +51,18 @@ namespace SingletonManagers
         private readonly Queue<AudioSource> _audioSourcePool = new Queue<AudioSource>();
         private float _sfxVolumeMultiplier = 1.0f; // Global volume multiplier for SFX
         private float _backgroundMusicVolumeMultiplier = 1.0f; // Global volume multiplier for background music
+        private float _inGameSoundVolumeMultiplier = 1.0f; // Global volume multiplier for in-game sounds
         private AudioSource _backgroundMusicSource; // Reference to the current background music source
 
         // Public getters for current volume levels
         public float SfxVolumeMultiplier => _sfxVolumeMultiplier;
         public float BackgroundMusicVolumeMultiplier => _backgroundMusicVolumeMultiplier;
+        public float InGameSoundVolumeMultiplier => _inGameSoundVolumeMultiplier;
 
         // PlayerPrefs keys
         private const string SfxVolumeKey = "SfxVolume";
         private const string BackgroundVolumeKey = "BackgroundVolume";
+        private const string InGameSoundVolumeKey = "InGameSoundVolume";
 
         private void Start()
         {
@@ -99,14 +105,52 @@ namespace SingletonManagers
             PlayerPrefs.SetFloat(BackgroundVolumeKey, _backgroundMusicVolumeMultiplier); // Save to PlayerPrefs
             PlayerPrefs.Save(); // Explicitly save (optional but good practice)
 
-            // Update the volume of the currently playing background music source
-            if (_backgroundMusicSource != null && 
-                _backgroundMusicSource.isPlaying && 
-                _clipDictionary.TryGetValue(SoundKeys.BackgroundMusic, out AudioClipInfo clipInfo))
+            // Update volume of currently playing audio sources that use the background music multiplier
+            UpdateBackgroundMusicVolumes();
+        }
+        
+        private void UpdateBackgroundMusicVolumes()
+        {
+            // Get all active audio sources
+            AudioSource[] allAudioSources = audioSourceParent.GetComponentsInChildren<AudioSource>(true);
+            
+            foreach (AudioSource source in allAudioSources)
             {
-                // Apply the multiplier to the clip's default volume
-                _backgroundMusicSource.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
+                // Skip inactive sources
+                if (!source.gameObject.activeInHierarchy || !source.isPlaying)
+                    continue;
+                
+                // Check if this source is playing background music or level selection music
+                if (source.clip != null)
+                {
+                    // Find the sound name for this clip
+                    string soundName = null;
+                    foreach (var entry in _clipDictionary)
+                    {
+                        if (entry.Value.clip == source.clip)
+                        {
+                            soundName = entry.Key;
+                            break;
+                        }
+                    }
+                    
+                    // If it's background music or level selection music, update its volume
+                    if (soundName == SoundKeys.BackgroundMusic || soundName == SoundKeys.LevelSelectionMusic)
+                    {
+                        if (_clipDictionary.TryGetValue(soundName, out AudioClipInfo clipInfo))
+                        {
+                            source.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
+                        }
+                    }
+                }
             }
+        }
+
+        public void SetInGameSoundVolume(float volume)
+        {
+            _inGameSoundVolumeMultiplier = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat(InGameSoundVolumeKey, _inGameSoundVolumeMultiplier); // Save to PlayerPrefs
+            PlayerPrefs.Save(); // Explicitly save (optional but good practice)
         }
 
         private void LoadVolumes()
@@ -114,7 +158,8 @@ namespace SingletonManagers
             // Load from PlayerPrefs, using 1.0f as the default if not found
             _sfxVolumeMultiplier = PlayerPrefs.GetFloat(SfxVolumeKey, 1.0f); 
             _backgroundMusicVolumeMultiplier = PlayerPrefs.GetFloat(BackgroundVolumeKey, 1.0f);
-            Debug.Log($"Loaded volumes - SFX: {_sfxVolumeMultiplier}, Music: {_backgroundMusicVolumeMultiplier}");
+            _inGameSoundVolumeMultiplier = PlayerPrefs.GetFloat(InGameSoundVolumeKey, 1.0f);
+            Debug.Log($"Loaded volumes - SFX: {_sfxVolumeMultiplier}, Music: {_backgroundMusicVolumeMultiplier}, In-Game Sounds: {_inGameSoundVolumeMultiplier}");
         }
 
         private AudioSource CreateAudioSource()
@@ -161,9 +206,13 @@ namespace SingletonManagers
             float finalVolume = clipInfo.defaultVolume * volumeMultiplier;
 
             // Apply the correct global volume multiplier
-            if (soundName == SoundKeys.BackgroundMusic)
+            if (soundName == SoundKeys.BackgroundMusic || soundName == SoundKeys.LevelSelectionMusic)
             {
                 finalVolume *= _backgroundMusicVolumeMultiplier;
+            }
+            else if (soundName == SoundKeys.inGameSound)
+            {
+                finalVolume *= _inGameSoundVolumeMultiplier;
             }
             else // Apply SFX volume to all other sounds
             {

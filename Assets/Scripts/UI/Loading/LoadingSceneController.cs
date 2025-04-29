@@ -111,7 +111,7 @@ namespace UI.Loading
             {
                 Debug.LogError("No target scene specified for loading scene.");
                 // Fallback to main menu
-                _targetSceneIndex = SceneIndexes.MaineMenuScene;
+                _targetSceneIndex = SceneIndexes.MainMenuScene;
             }
             
             LogMessage($"Target scene: {_targetSceneIndex}, Video index: {_videoIndex}");

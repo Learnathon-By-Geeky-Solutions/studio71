@@ -9,6 +9,7 @@ public class PauseMenuSoundHandler : MonoBehaviour
     [SerializeField]private GameObject pauseMenuButtons;
     [SerializeField]private Slider sfxSlider;
     [SerializeField]private Slider backgroundMusicSlider;
+    [SerializeField]private Slider inGameSoundSlider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
@@ -41,6 +42,18 @@ public class PauseMenuSoundHandler : MonoBehaviour
         {
             Debug.LogError("Background Music Slider is not assigned in pauseMenuSoundHandler!");
         }
+        
+        if (inGameSoundSlider != null)
+        {
+            float currentInGameSoundVolume = AudioManager.Instance.InGameSoundVolumeMultiplier;
+            Debug.Log($"PauseMenuSoundHandler: Setting In-Game Sound slider initial value to: {currentInGameSoundVolume}");
+            inGameSoundSlider.SetValueWithoutNotify(currentInGameSoundVolume);
+            inGameSoundSlider.onValueChanged.AddListener(OnInGameSoundSliderChanged);
+        }
+        else
+        {
+            Debug.LogError("In-Game Sound Slider is not assigned in pauseMenuSoundHandler!");
+        }
     }
 
     
@@ -60,11 +73,20 @@ public class PauseMenuSoundHandler : MonoBehaviour
             AudioManager.Instance.SetBackgroundMusicVolume(value);
         }
     }
+    
+    public static void OnInGameSoundSliderChanged(float value)
+    {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.SetInGameSoundVolume(value);
+        }
+    }
 
     public void backToPauseMenu()
-    {
+    {   pauseMenuButtons.SetActive(true);
+        Debug.Log("backToPauseMenu");
          soundMenuUI.SetActive(false);
-        pauseMenuButtons.SetActive(true);
+        
     }
 
 }
