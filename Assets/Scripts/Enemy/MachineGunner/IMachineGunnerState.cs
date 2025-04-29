@@ -14,5 +14,6 @@ namespace MachineGunner
         Suppress,
         Shoot,
         OverheatAndReload,
+        Death
     }
 }

@@ -1,5 +1,5 @@
 using UnityEngine;
-using MachineGunner; 
+using HealthSystem;
 
 namespace MachineGunner
 {
@@ -13,9 +13,11 @@ namespace MachineGunner
         [SerializeField]private float SuppressiveRange = 15f;
         [SerializeField]private float _shootRange = 7f;
 
+        private Health _health;
+
         [Header("Shooting Configuration")]
-        [SerializeField]public GameObject bulletPrefab;
-        [SerializeField]public Transform firePoint;
+        [SerializeField]private GameObject bulletPrefab;
+        public Transform firePoint;
         [SerializeField]private float fireRate = 0.1f;
         [SerializeField]private float burstDuration = 2f; // Duration of a single burst in ShootState
         [SerializeField]private float suppressiveBurstDuration = 3f;
@@ -23,8 +25,9 @@ namespace MachineGunner
         [SerializeField]private float coolingRate = 2f;
         [SerializeField]private float reloadTime = 3f;
         [SerializeField]private int magazineSize = 30;
+        [Range(0f, 90f)]
         [SerializeField]private float suppressiveFireSpreadAngle = 15f; // Angle for bullet spread in suppressive fire
-        [SerializeField]private float bulletForce = 10f;
+
 
         [Header("Detection")]
         public string playerTag { get; private set; } = "Player";
@@ -60,6 +63,7 @@ namespace MachineGunner
         private bool _isOverheated = false;
         private float _reloadStartTime;
         private int _currentAmmo;
+
         private Vector3 _lastKnownPlayerPosition;
 
         #endregion
@@ -92,8 +96,10 @@ namespace MachineGunner
 
         #region Unity Callbacks
 
-        void Start()
+
+        void Awake()
         {
+            _health = GetComponent<Health>();
             _player = GameObject.FindGameObjectWithTag(playerTag);
             _currentState = new IdleState();
             _currentState.EnterState(this);
@@ -111,6 +117,9 @@ namespace MachineGunner
 
             _currentState?.UpdateState(this);
             _timeSinceLastShot += Time.deltaTime;
+
+            DeathHandler();
+
         }
 
         void OnDrawGizmos()
@@ -169,6 +178,16 @@ namespace MachineGunner
             _currentState.EnterState(this);
         }
 
+        private void DeathHandler(){
+
+            if(_health.CurrentHealth <= 0)
+            {
+
+                SwitchState(new DeathState());
+            }
+
+        }
+
         #endregion
 
         #region Detection Methods
@@ -202,36 +221,48 @@ namespace MachineGunner
 
         #endregion
 
-        
-        public void ShootBullet(Vector3 targetPosition, bool isSuppressive = false)
+       public void ShootBullet(Vector3 targetPosition, bool isSuppressive = false)
+{
+    if (_currentAmmo > 0 && !_isOverheated && _timeSinceLastShot >= fireRate)
+    {
+        // Flatten the target position to be level with the fire point
+        targetPosition.y = firePoint.position.y;
+
+        // Calculate horizontal direction
+        Vector3 direction = (targetPosition - firePoint.position).normalized;
+
+        if (isSuppressive)
         {
-            if (_currentAmmo > 0 && !_isOverheated && _timeSinceLastShot >= fireRate)
-            {
-                GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-                Rigidbody rb = bullet.GetComponent<Rigidbody>();
-                if (rb != null)
-                {
-                    Vector3 direction = firePoint.forward; // Use the firePoint's current forward direction
-                    if (isSuppressive)
-                    {
-                        direction = Quaternion.Euler(0f, Random.Range(-suppressiveFireSpreadAngle, suppressiveFireSpreadAngle), 0f) * direction;
-                    }
-                    rb.linearVelocity = direction * bulletForce;
-                }
-                _timeSinceLastShot = 0f;
-                _currentAmmo--;
-                _currentHeat += 1f;
-                if (_currentHeat >= overheatThreshold)
-                {
-                    _isOverheated = true;
-                    SwitchState(new OverheatAndReloadState());
-                }
-            }
-            else if (_currentAmmo <= 0 && !_isOverheated)
-            {
-                SwitchState(new OverheatAndReloadState()); // Force reload if out of ammo
-            }
+            float spreadAngle = suppressiveFireSpreadAngle;
+
+            // Apply horizontal (XZ) spread only
+            direction = Quaternion.Euler(
+                0f,
+                Random.Range(-spreadAngle, spreadAngle),
+                0f
+            ) * direction;
         }
+
+        // Create horizontal rotation
+        Quaternion bulletRotation = Quaternion.LookRotation(direction, Vector3.up);
+
+        // Instantiate bullet
+        Instantiate(bulletPrefab, firePoint.position, bulletRotation);
+
+        // Ammo, heat, and overheat logic
+        _timeSinceLastShot = 0f;
+        _currentAmmo--;
+        _currentHeat += 1f;
+
+        if (_currentHeat >= overheatThreshold)
+        {
+            _isOverheated = true;
+            SwitchState(new OverheatAndReloadState());
+        }
+    }
+}
+
+
 
         public void StartCoolingAndReloading()
         {

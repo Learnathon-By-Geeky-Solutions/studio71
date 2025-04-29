@@ -729,7 +729,6 @@ MonoBehaviour:
   reloadTime: 3
   magazineSize: 180
   suppressiveFireSpreadAngle: 15
-  bulletForce: 10
   idleRotationAngle: 60
   idleRotationOffset: 0
   burstSweepAngle: 30
@@ -785,10 +784,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.36
+  m_Radius: 0.48
   m_Height: 2.05
   m_Direction: 1
-  m_Center: {x: 0, y: 0.82, z: 0}
+  m_Center: {x: 0, y: 1.03, z: 0}
 --- !u!1 &2064021729287202506
 GameObject:
   m_ObjectHideFlags: 0
@@ -3376,7 +3375,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.975
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 64450426059999270, guid: 9b81e64683c3b5146a913703abead367, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

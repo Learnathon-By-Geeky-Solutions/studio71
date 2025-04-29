@@ -10,6 +10,8 @@ namespace PatrolEnemy
 
         public void EnterState(EnemyController controller)
         {
+            controller.Agent.isStopped=true;
+            controller.Agent.velocity=Vector3.zero;
             Debug.Log("DEATH");
         }
 

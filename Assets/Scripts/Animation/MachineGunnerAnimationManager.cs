@@ -41,6 +41,7 @@ namespace MachineGunnerAnim
                 { MachineGunnerStateType.Shoot, "Shoot" },
                 { MachineGunnerStateType.Suppress, "Shoot" },
                 { MachineGunnerStateType.OverheatAndReload, "Reload" },
+                { MachineGunnerStateType.Death, "Death" },
             };
         }
 
@@ -72,6 +73,8 @@ namespace MachineGunnerAnim
             if (_controller.CurrentState is ShootState) return MachineGunnerStateType.Shoot;
             if (_controller.CurrentState is SuppressState) return MachineGunnerStateType.Suppress;
             if (_controller.CurrentState is OverheatAndReloadState) return MachineGunnerStateType.OverheatAndReload;
+            if (_controller.CurrentState is DeathState) return MachineGunnerStateType.Death;
+
 
             return MachineGunnerStateType.Idle;
         }
