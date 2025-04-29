@@ -40,7 +40,7 @@ namespace LevelSpecific {
             yield return new WaitForSeconds(0.1f);
             while (_isSpawning)
             {
-                // Wait while dialogue is open
+                // Wait while dialogue is Finished
                 yield return new WaitUntil(() => !InkDialogueManager.IsDialogueOpen);
 
                 // Spawn an enemy
@@ -61,6 +61,8 @@ namespace LevelSpecific {
         }
         private IEnumerator StopSpawning()
         {
+            yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => !InkDialogueManager.IsDialogueOpen);
             yield return new WaitForSeconds(LevelConditionManager.Instance._currentConditions.SurviveTime);
             _isSpawning = false;
             LevelConditionManager.Instance.OnTimerFinished();
