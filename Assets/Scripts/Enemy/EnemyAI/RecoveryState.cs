@@ -38,12 +38,10 @@ namespace PatrolEnemy
         // Recover health over time
         if (Time.time >= lastHealthRecoveryTime + healthRecoveryInterval)
         {
-            controller.CurrentHealth = Mathf.Min(controller.CurrentHealth + controller.RecoveryRate * 10 * Time.deltaTime, controller.MaxHealth);
-            lastHealthRecoveryTime = Time.time;
-            Debug.Log($"Recovering at initial position. Current health: {controller.CurrentHealth}");
+            controller._health.Heal(controller.RecoveryRate*Time.deltaTime);
 
             // If health is fully recovered, go back to Idle state
-            if (controller.CurrentHealth >= controller.MaxHealth)
+            if (controller._health.CurrentHealth >= controller._health.MaxHealth)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Idle);
             }
@@ -58,11 +56,10 @@ namespace PatrolEnemy
         // Still attempt to recover in place
         if (Time.time >= lastHealthRecoveryTime + healthRecoveryInterval)
         {
-            controller.CurrentHealth = Mathf.Min(controller.CurrentHealth + controller.RecoveryRate * 10 * Time.deltaTime, controller.MaxHealth);
-            lastHealthRecoveryTime = Time.time;
+            controller._health.Heal(controller.RecoveryRate*Time.deltaTime);
             controller.IsRecoverReturing = false;
-            Debug.Log($"Recovering in place (path failed). Current health: {controller.CurrentHealth}");
-            if (controller.CurrentHealth >= controller.MaxHealth)
+            Debug.Log($"Recovering in place (path failed). Current health: {controller._health.CurrentHealth}");
+            if (controller._health.CurrentHealth >= controller._health.MaxHealth)
             {
                 controller.ChangeState(EnemyController.EnemyStateType.Idle);
             }

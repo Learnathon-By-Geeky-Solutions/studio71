@@ -882,6 +882,12 @@ MonoBehaviour:
   canvas: {fileID: 3913597073153037015}
   healthSlider: {fileID: 3212508671210958851}
   heightOffset: 3
+  animationDuration: 0.5
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  healFlashColor: {r: 0, g: 1, b: 0, a: 1}
+  flashDuration: 0.3
+  pulseSizeMultiplier: 1.2
+  pulseSpeed: 5
 --- !u!1 &2732413420709728147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1047,7 +1053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d249bc3bd3766e459e85a05ca956f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 90
+  _maxHealth: 100
   _onHealthChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1080,10 +1086,8 @@ MonoBehaviour:
   reloadTime: 2
   maxGrenades: 3
   grenadeThrowCooldown: 5
-  maxHealth: 100
-  currentHealth: 0
   recoveryThreshold: 30
-  recoveryRate: 5
+  _recoveryRate: 2
   alertCountdown: 3
   Agent: {fileID: 7513518096679223944}
   IsIdleAlert: 0
