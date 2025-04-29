@@ -13,6 +13,7 @@ namespace SingletonManagers {
         [SerializeField] private List<LevelConditionSO> _allLevelConditions;
         public LevelConditionSO _currentConditions { get; private set; }
         private bool _levelEnded = false;
+        //private GameObject _playerGameObject;
         public bool _videoPlayed { get; private set; }
         #endregion
 
@@ -63,7 +64,6 @@ namespace SingletonManagers {
         public void OnTimerFinished()
         {
             if (_levelEnded || _currentConditions == null || !_currentConditions.WinOnTimerEnd) return;
-            Time.timeScale = 0f;
             HandleWin();
         }
 

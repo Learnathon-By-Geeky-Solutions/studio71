@@ -1,8 +1,10 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using SingletonManagers;
+using dialogue;
 namespace LevelSpecific {
     public class EnemySpawner : MonoBehaviour
     {
@@ -35,17 +37,18 @@ namespace LevelSpecific {
 
         private IEnumerator SpawnEnemies()
         {
+            yield return new WaitForSeconds(0.1f);
             while (_isSpawning)
             {
-                // Randomly select a spawn point and an enemy
+                // Wait while dialogue is open
+                yield return new WaitUntil(() => !InkDialogueManager.IsDialogueOpen);
+
+                // Spawn an enemy
                 Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
                 GameObject enemy = enemies[Random.Range(0, enemies.Count)];
-
-
-                // Instantiate the enemy at the selected spawn point
                 Instantiate(enemy, spawnPoint.position, Quaternion.identity);
 
-                // Wait for the next spawn
+                // Wait for next spawn
                 yield return new WaitForSeconds(spawnRate);
             }
         }

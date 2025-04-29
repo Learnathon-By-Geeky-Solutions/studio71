@@ -176,7 +176,10 @@ namespace dialogue
             DisablePlayerControl();
             ContinueStory();
         }
-
+        private void Update()
+        {
+            print(Time.timeScale);
+        }
         /// <summary>
         /// Advances the dialogue to the next line or choice.
         /// </summary>

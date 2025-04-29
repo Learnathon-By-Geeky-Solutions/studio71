@@ -58,7 +58,6 @@ namespace UI
             Debug.Log("Resuming game...");
             // Hide the pause menu UI here
         }
-
         private void Pause()
         {
             if (SceneManager.GetActiveScene().buildIndex < 3 || InkDialogueManager.IsDialogueOpen) return;
