@@ -13,23 +13,23 @@ namespace HealthSystem
     public class Health : MonoBehaviour
     {
         [Header("Health Settings")]
-        [SerializeField] private int _maxHealth = 100;
+        [SerializeField] private float _maxHealth = 100;
         
         [Header("Events")] 
         [Tooltip("Event triggered when health changes. Passes current health value.")]
-        [SerializeField] private UnityEvent<int> _onHealthChanged = new UnityEvent<int>();
+        [SerializeField] private UnityEvent<float> _onHealthChanged = new UnityEvent<float>();
         
         [Tooltip("Event triggered when entity dies.")]
         [SerializeField] private UnityEvent _onDeath = new UnityEvent();
         
-        private int _currentHealth;
+        private float _currentHealth;
         
         #region Public Events (Read-Only Access)
         /// <summary>
         /// Event triggered when health changes. Passes current health value.
         /// Subscribe to this event to react to health updates.
         /// </summary>
-        public UnityEvent<int> OnHealthChanged => _onHealthChanged;
+        public UnityEvent<float> OnHealthChanged => _onHealthChanged;
         
         /// <summary>
         /// Event triggered when entity dies.
@@ -40,10 +40,10 @@ namespace HealthSystem
         
         #region Properties
         /// <summary>Maximum possible health.</summary>
-        public int MaxHealth => _maxHealth;
+        public float MaxHealth => _maxHealth;
         
         /// <summary>Current health value.</summary>
-        public int CurrentHealth => _currentHealth;
+        public float CurrentHealth => _currentHealth;
         
         /// <summary>Whether the entity is alive (health > 0).</summary>
         public bool IsAlive => _currentHealth > 0;
@@ -100,7 +100,7 @@ namespace HealthSystem
         /// Heal the entity by the specified amount.
         /// </summary>
         /// <param name="healAmount">Amount of health to restore</param>
-        public void Heal(int healAmount)
+        public void Heal(float healAmount)
         {
             if (!IsAlive) return;
             

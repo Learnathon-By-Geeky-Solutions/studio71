@@ -4,8 +4,6 @@ namespace PatrolEnemy
     {
         void EnterState(EnemyController controller);
         void UpdateState(EnemyController controller);
-        void ExitState(EnemyController controller);
-
-        
+        void ExitState(EnemyController controller);        
     }
 }

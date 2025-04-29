@@ -27,7 +27,7 @@ namespace HealthSystem
         private Vector3 originalScale;
         private Health healthComponent;
         private Camera mainCamera;
-        private int lastHealthValue;
+        private float lastHealthValue;
         private Coroutine healthChangeCoroutine;
         private Coroutine colorFlashCoroutine;
         private Coroutine pulseCoroutine;
@@ -131,7 +131,7 @@ namespace HealthSystem
         /// <summary>
         /// Called when the health value changes.
         /// </summary>
-        private void OnHealthValueChanged(int newHealth)
+        private void OnHealthValueChanged(float newHealth)
         {
             // Don't animate if this is initialization
             if (lastHealthValue == 0 && newHealth == healthComponent.MaxHealth)

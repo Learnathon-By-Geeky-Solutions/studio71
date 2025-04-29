@@ -41,7 +41,8 @@ namespace Enemy_Anim
                 { EnemyController.EnemyStateType.Follow, "Run" },
                 { EnemyController.EnemyStateType.Shoot, "Shoot" },
                 { EnemyController.EnemyStateType.GrenadeThrow, "ThrowGrenade" },
-                { EnemyController.EnemyStateType.Recovery, "CrouchIdle" }
+                { EnemyController.EnemyStateType.Recovery, "CrouchIdle" },
+                { EnemyController.EnemyStateType.Death, "Death" }
             };
         }
 
@@ -73,6 +74,7 @@ namespace Enemy_Anim
                     PlayAnimation("Idle");
                     return;
                 }
+             
             }
 
             else if (currentState == EnemyController.EnemyStateType.Idle)
@@ -89,15 +91,6 @@ namespace Enemy_Anim
                 }
             }
 
-            /*else if (currentState == EnemyController.EnemyStateType.GrenadeThrow)
-            {
-                if (_enemyController.IsNotGrenadeThrowing)
-                {
-                    PlayAnimation("Alert");
-                    return;
-                }              
-            }*/
-
             if (_stateToAnimation.TryGetValue(currentState, out string animationName))
             {
                 PlayAnimation(animationName);
@@ -112,6 +105,7 @@ namespace Enemy_Anim
             if (_enemyController._isShooting) return EnemyController.EnemyStateType.Shoot;
             if (_enemyController._isRecovering) return EnemyController.EnemyStateType.Recovery;
             if (_enemyController._isThrowingGrenade) return EnemyController.EnemyStateType.GrenadeThrow;
+            if(_enemyController.IsDead) return EnemyController.EnemyStateType.Death;
 
             return EnemyController.EnemyStateType.Idle;
         }

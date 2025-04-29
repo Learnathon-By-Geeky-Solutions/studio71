@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.AI;
 using System;
 using PatrolEnemy;
+using HealthSystem;
+using Ink.Runtime;
 
 namespace PatrolEnemy
 {
@@ -15,7 +17,9 @@ namespace PatrolEnemy
             Follow,
             Shoot,
             GrenadeThrow,
-            Recovery
+            Recovery,
+            Death
+
         }
 
         // References
@@ -23,6 +27,8 @@ namespace PatrolEnemy
         [SerializeField] private Transform grenadePoint;
         [SerializeField] private GameObject bulletPrefab;
         [SerializeField] private GameObject grenadePrefab;
+
+        public Health _health{get; private set;}
 
         private IdleState IdleStatVar;
 
@@ -39,10 +45,8 @@ namespace PatrolEnemy
         [SerializeField] private float reloadTime = 2f;
         [SerializeField] private int maxGrenades = 3;
         [SerializeField] private float grenadeThrowCooldown = 5f;
-        [SerializeField] private float maxHealth = 100f;
-        [SerializeField] private float currentHealth;
-        [SerializeField] private float recoveryThreshold = 30f;
-        [SerializeField] private float recoveryRate = 5f;
+        [SerializeField] private float recoveryThreshold=0f;
+        [SerializeField] private int _recoveryRate;
 
         [Header("Alert Settings")]
         [SerializeField] private float alertCountdown = 3f;
@@ -55,13 +59,10 @@ namespace PatrolEnemy
         private GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
         private RecoveryState recoveryState = new RecoveryState();
 
+        private DeathState deathState = new DeathState();
+
         public NavMeshAgent Agent ;
         public Transform CurrentTarget { get; private set;}
-        public float CurrentHealth
-        {
-            get { return currentHealth; }
-            set { currentHealth = Mathf.Clamp(value, 0, maxHealth); }
-        }
         public int CurrentAmmo { get; set;}
         public int CurrentGrenades { get; set;}
         public float AlertTime { get; set;}
@@ -74,20 +75,20 @@ namespace PatrolEnemy
         public bool HasLineOfSight { get; private set; }
         public Vector3 InitialPosition { get; private set; }
 
-        [SerializeField] private bool isAlert;
-        [SerializeField] private bool isShooting;
-        [SerializeField] private bool isRecovering;
-        [SerializeField] private bool isIdle;
-        [SerializeField] private bool isFollowing;
-        [SerializeField] private bool isThrowingGrenade;
+         private bool isAlert;
+         private bool isShooting;
+         private bool isRecovering;
+         private bool isIdle;
+         private bool isFollowing;
+         private bool isThrowingGrenade;
+         private bool _isDead;
 
         //Public Access Modifiers
         public float PatrolRange => patrolRange;
         public float DetectionRange => detectionRange;
         public float AttackRange => attackRange;
-        public float MaxHealth => maxHealth;
         public float RecoveryThreshold => recoveryThreshold;
-        public float RecoveryRate => recoveryRate;
+        public float RecoveryRate => _recoveryRate;
         public Transform FirePoint => firePoint;
         public Transform GrenadePoint => grenadePoint;
         public GameObject BulletPrefab => bulletPrefab;
@@ -101,6 +102,7 @@ namespace PatrolEnemy
         public bool _isRecovering => isRecovering;
         public bool _isAlert => isAlert;
         public bool _isThrowingGrenade => isThrowingGrenade;
+        public bool IsDead=>_isDead;
 
 
         // Event for state change
@@ -109,7 +111,7 @@ namespace PatrolEnemy
         private void Awake()
         {
             Agent = GetComponent<NavMeshAgent>();
-            CurrentHealth = maxHealth;
+            _health = GetComponent<Health>();
             CurrentAmmo = maxAmmo;
             CurrentGrenades = maxGrenades;
             AlertTime = alertCountdown;
@@ -214,6 +216,9 @@ namespace PatrolEnemy
                 case EnemyStateType.Recovery:
                     newState = recoveryState;
                     break;
+                case EnemyStateType.Death:
+                    newState = deathState;
+                    break;
                 default:
                     newState = idleState;
                     break;
@@ -236,11 +241,12 @@ namespace PatrolEnemy
 
         public void TakeDamage()
         {
-            if (CurrentHealth <= 0)
+            if (_health.CurrentHealth <= 0)
             {
-                // Die
+                _isDead=true;
+               ChangeState(EnemyStateType.Death);
             }
-            else if (CurrentHealth < recoveryThreshold && !(currentState is RecoveryState))
+            else if (_health.CurrentHealth < recoveryThreshold && !(currentState is RecoveryState))
             {
                 ChangeState(EnemyStateType.Recovery);
             }
