@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using dialogue;
 namespace LevelSpecific
 {
     public class Timer : MonoBehaviour
@@ -22,9 +23,11 @@ namespace LevelSpecific
         {
             while (remainingTime > 0f)
             {
+                yield return new WaitUntil(() => !InkDialogueManager.IsDialogueOpen);
                 UpdateTimerDisplay();
                 yield return new WaitForSeconds(1f);
                 remainingTime -= 1f;
+                print(RemainingTime);
             }
 
             remainingTime = 0f; // Safety reset

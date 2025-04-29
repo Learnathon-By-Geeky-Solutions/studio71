@@ -27,9 +27,12 @@ namespace Weapon
             if (((1 << other.gameObject.layer) & hitLayers) == 0) return;
             Vector3 hitPoint = transform.position;
             Health health = other.GetComponent<Health>();
-            if (health != null && health.CurrentHealth > 0)
+            if (other.gameObject.tag is "Player" or "Enemy")
             {
-                health.TakeDmg(_bulletDmg);
+                if (health != null && health.CurrentHealth > 0)
+                {
+                    health.TakeDmg(_bulletDmg);
+                }
                 ParticleManager.Instance.PlayParticle("Blood Splatter", hitPoint, Quaternion.identity);
                 AudioManager.PlaySound(SoundKeys.BloodHit, hitPoint);
             }
