@@ -34,7 +34,6 @@ namespace SingletonManagers {
         {
             Time.timeScale = 1.0f;
             AssignLevelConditionForScene(scene.buildIndex);
-            mode.HumanName();
             _levelEnded = false;
             _videoPlayed = true;
         }
