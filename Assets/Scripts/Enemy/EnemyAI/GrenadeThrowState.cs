@@ -2,6 +2,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
+using SingletonManagers;
 
 
 namespace PatrolEnemy
@@ -14,6 +15,7 @@ namespace PatrolEnemy
         public void EnterState(EnemyController controller)
         {
             Debug.Log("Entered Grenade Throw State");
+            AudioManager.PlaySound(SoundKeys.GrenadeThrow);
             grenadeCTS = new CancellationTokenSource();
             isThrowing = false;
             controller.IsNotGrenadeThrowing = true;

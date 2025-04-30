@@ -1,5 +1,8 @@
 using UnityEngine;
 using HealthSystem;
+using SingletonManagers;
+using Unity.Mathematics;
+using Random = UnityEngine.Random;
 
 namespace MachineGunner
 {
@@ -248,9 +251,11 @@ namespace MachineGunner
 
         // Instantiate bullet
         Instantiate(bulletPrefab, firePoint.position, bulletRotation);
+        AudioManager.PlaySound(SoundKeys.GunShot);
+        ParticleManager.Instance.PlayParticle("Gunshot", firePoint.position, quaternion.identity);
 
-        // Ammo, heat, and overheat logic
-        _timeSinceLastShot = 0f;
+                // Ammo, heat, and overheat logic
+                _timeSinceLastShot = 0f;
         _currentAmmo--;
         _currentHeat += 1f;
 

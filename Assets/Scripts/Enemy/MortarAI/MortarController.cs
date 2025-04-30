@@ -162,55 +162,5 @@ namespace MortarSystem
 
             _pathDisplayTimer = pathDisplayDuration;
         }
-
-        #region OnDrawGizmos
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, AlertRadius);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, FiringRadius);
-
-            Gizmos.color = Color.green;
-            if (FirePoint != null)
-            {
-                Gizmos.DrawSphere(FirePoint.position, 0.2f);
-                Gizmos.DrawLine(transform.position, FirePoint.position);
-
-                if (Player != null && _currentState == FiringState)
-                {
-                    Gizmos.color = Color.cyan;
-                    Vector3 targetPosition = Player.position;
-                    Vector3 startPosition = FirePoint.position;
-                    float gravity = Physics.gravity.magnitude;
-                    float trajectoryHeight = TrajectoryHeight;
-
-                    float sqrtTerm1 = 2 * (targetPosition.y - startPosition.y + trajectoryHeight) / gravity;
-                    float sqrtTerm2 = 2 * trajectoryHeight / gravity;
-
-                    if (sqrtTerm1 >= 0 && sqrtTerm2 >= 0)
-                    {
-                        float timeToTarget = Mathf.Sqrt(sqrtTerm1) + Mathf.Sqrt(sqrtTerm2);
-                        Vector3 horizontalDisplacement = new Vector3(targetPosition.x - startPosition.x, 0f, targetPosition.z - startPosition.z);
-                        Vector3 horizontalVelocity = horizontalDisplacement / timeToTarget;
-                        Vector3 verticalVelocity = Vector3.up * Mathf.Sqrt(2 * gravity * trajectoryHeight);
-                        Vector3 launchVelocity = horizontalVelocity + verticalVelocity;
-
-                        Vector3 previousPosition = startPosition;
-                        for (int i = 1; i <= projectilePathResolution; i++)
-                        {
-                            float timeStep = timeToTarget * i / projectilePathResolution;
-                            Vector3 currentPosition = startPosition + launchVelocity * timeStep + 0.5f * Physics.gravity * timeStep * timeStep;
-                            Gizmos.DrawLine(previousPosition, currentPosition);
-                            previousPosition = currentPosition;
-                        }
-                    }
-                }
-            }
-        }
-
-        #endregion
     }
 }

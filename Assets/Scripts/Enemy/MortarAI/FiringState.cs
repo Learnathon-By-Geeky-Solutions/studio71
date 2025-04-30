@@ -1,3 +1,4 @@
+using SingletonManagers;
 using UnityEngine;
 
 namespace MortarSystem
@@ -100,6 +101,7 @@ namespace MortarSystem
                 mortar.VisualizeProjectilePath();
 
                 GameObject projectile = GameObject.Instantiate(mortar._ProjectilePrefab, startPosition, Quaternion.identity);
+                AudioManager.PlaySound(SoundKeys.GrenadeThrow);
                 Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
                 if (projectileRb != null)

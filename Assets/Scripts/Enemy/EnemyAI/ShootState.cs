@@ -3,6 +3,8 @@ using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
 using UnityEngine.AI;
+using SingletonManagers;
+using Unity.Mathematics;
 
 namespace PatrolEnemy
 {
@@ -98,7 +100,9 @@ namespace PatrolEnemy
         private void FireBullet(EnemyController controller)
         {
             GameObject.Instantiate(controller.BulletPrefab, controller.FirePoint.position, controller.FirePoint.rotation);
-            controller.CurrentAmmo--;      
+            controller.CurrentAmmo--;
+            AudioManager.PlaySound(SoundKeys.GunShot);
+            ParticleManager.Instance.PlayParticle("Gunshot", controller.FirePoint.position, quaternion.identity);
 
             if (controller.CurrentAmmo <= 0)
             {
@@ -109,6 +113,7 @@ namespace PatrolEnemy
         private async UniTaskVoid ReloadWeaponAsync(EnemyController controller)
         {
             Debug.Log("Reloading weapon...");
+            AudioManager.PlaySound(SoundKeys.ReloadStart);
             controller.IsReloading = true;
 
             try
