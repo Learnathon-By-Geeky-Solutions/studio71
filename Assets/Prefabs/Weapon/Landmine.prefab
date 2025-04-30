@@ -211,10 +211,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   alertRadius: 11.58
-  alertDuration: 6.78
+  alertDuration: 4
   hitLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 520
   explosionRadius: 5.72
   explosionForce: 700
   damage: 100

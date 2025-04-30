@@ -43,7 +43,7 @@ namespace MortarSystem
 
         private static void FireProjectile(MortarController mortar)
         {
-            if (mortar.ProjectilePrefab == null || mortar.FirePoint == null || mortar.Player == null||mortar._isDeath)
+            if (mortar._ProjectilePrefab == null || mortar._FirePoint == null || mortar.Player == null||mortar._isDeath)
             {
                 Debug.LogError("Projectile Prefab, Fire Point, or Player not assigned!");
                 mortar.SwitchState(mortar.IdleState);
@@ -51,7 +51,7 @@ namespace MortarSystem
             }
 
             Vector3 targetPosition = mortar.Player.position;
-            Vector3 startPosition = mortar.FirePoint.position;
+            Vector3 startPosition = mortar._FirePoint.position;
             float gravity = Physics.gravity.magnitude;
             float trajectoryHeight = mortar.TrajectoryHeight; // Now using dynamic height
 
@@ -99,7 +99,7 @@ namespace MortarSystem
                 // Visualize the projectile path using LineRenderer
                 mortar.VisualizeProjectilePath();
 
-                GameObject projectile = GameObject.Instantiate(mortar.ProjectilePrefab, startPosition, Quaternion.identity);
+                GameObject projectile = GameObject.Instantiate(mortar._ProjectilePrefab, startPosition, Quaternion.identity);
                 Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
                 if (projectileRb != null)

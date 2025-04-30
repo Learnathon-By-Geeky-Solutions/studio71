@@ -112,8 +112,20 @@ MonoBehaviour:
     isLoop: 0
     spatialBlend: 0.8
   - name: background_music
-    clip: {fileID: 8300000, guid: a299f1e3b2bb35042b5e422d1a78ab70, type: 3}
+    clip: {fileID: 8300000, guid: f3d268810cc816945b7f59ac793f3367, type: 3}
     defaultVolume: 1
+    defaultPitch: 1
+    isLoop: 1
+    spatialBlend: 0.8
+  - name: level_selection_music
+    clip: {fileID: 8300000, guid: 91f7cd055ae3316488779f4d93e23030, type: 3}
+    defaultVolume: 1
+    defaultPitch: 1
+    isLoop: 1
+    spatialBlend: 0.8
+  - name: in_game_sound
+    clip: {fileID: 8300000, guid: f3758457a1e320d478e609f4ac888d75, type: 3}
+    defaultVolume: 0.5
     defaultPitch: 1
     isLoop: 1
     spatialBlend: 0.8

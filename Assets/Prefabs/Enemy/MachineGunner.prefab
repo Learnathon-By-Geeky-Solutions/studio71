@@ -717,11 +717,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbc7d15de0902c3488ac88317af040da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertRange: 59
   SuppressiveRange: 46.8
   _shootRange: 14.3
   bulletPrefab: {fileID: 7360562052038701241, guid: 69cb2fe2ea6e4844c99d89790bf861aa, type: 3}
-  firePoint: {fileID: 8288080387772714679}
+  _firePoint: {fileID: 8288080387772714679}
   fireRate: 0.5
   burstDuration: 2
   suppressiveBurstDuration: 3
@@ -3409,7 +3408,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806839015968532, guid: 9b81e64683c3b5146a913703abead367, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.86963177
+      value: 0.86963165
       objectReference: {fileID: 0}
     - target: {fileID: 4806839015968532, guid: 9b81e64683c3b5146a913703abead367, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3417,7 +3416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806839015968532, guid: 9b81e64683c3b5146a913703abead367, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.025823783
+      value: 0.0258255
       objectReference: {fileID: 0}
     - target: {fileID: 4806839015968532, guid: 9b81e64683c3b5146a913703abead367, type: 3}
       propertyPath: m_LocalRotation.w

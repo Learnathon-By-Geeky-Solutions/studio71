@@ -1088,10 +1088,8 @@ MonoBehaviour:
   maxGrenades: 3
   grenadeThrowCooldown: 5
   recoveryThreshold: 30
-  _recoveryRate: 2
+  _recoveryRate: 30
   alertCountdown: 3
-  Agent: {fileID: 7513518096679223944}
-  IsIdleAlert: 0
 --- !u!1 &3038401109736658641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2150,7 +2148,7 @@ Transform:
   m_GameObject: {fileID: 7519620681587337230}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 14.886982, y: 22.538742, z: -29.26997}
+  m_LocalPosition: {x: 0.3, y: 22.5, z: -0.6}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 1
   m_Children: []

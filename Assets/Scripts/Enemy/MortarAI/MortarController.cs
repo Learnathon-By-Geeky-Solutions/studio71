@@ -26,8 +26,8 @@ namespace MortarSystem
         [SerializeField] private float idleScanRange = 90f;
 
         [Header("Firing")]
-        [SerializeField] public GameObject ProjectilePrefab {get; private set;}
-        public Transform FirePoint{get; private set;}
+        [SerializeField]private GameObject ProjectilePrefab ;
+        [SerializeField]private Transform FirePoint;
         [SerializeField] private float baseTrajectoryHeight = 5f;
         [SerializeField] private float maxTrajectoryHeight = 20f;
         [SerializeField] private float trajectoryHeightMultiplier = 0.15f;
@@ -41,6 +41,13 @@ namespace MortarSystem
         public bool _isDeath { get; private set; }
         public float IdleScanAngle => idleScanAngle;
         public float IdleScanRange => idleScanRange;
+
+        public GameObject _ProjectilePrefab => ProjectilePrefab ;
+
+        public Transform _FirePoint => FirePoint;
+
+
+
 
         public float TrajectoryHeight
         {

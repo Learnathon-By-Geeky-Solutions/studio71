@@ -8,7 +8,7 @@ namespace MachineGunner
         #region Public Variables
 
         [Header("Ranges")]
-        public float alertRange { get ; set;}
+        [SerializeField] private float alertRange;
 
         [SerializeField]private float SuppressiveRange = 15f;
         [SerializeField]private float _shootRange = 7f;
@@ -17,7 +17,7 @@ namespace MachineGunner
 
         [Header("Shooting Configuration")]
         [SerializeField]private GameObject bulletPrefab;
-        public Transform firePoint { get ; private set;}
+        [SerializeField] private Transform _firePoint;
         [SerializeField]private float fireRate = 0.1f;
         [SerializeField]private float burstDuration = 2f; // Duration of a single burst in ShootState
         [SerializeField]private float suppressiveBurstDuration = 3f;
@@ -77,7 +77,7 @@ namespace MachineGunner
         public bool IsOverheated => _isOverheated;
         public int CurrentAmmo => _currentAmmo;
         public float SuppressiveFireSpreadAngle => suppressiveFireSpreadAngle;
-        
+        public Transform firePoint=>_firePoint;
         public float BurstDuration =>  burstDuration ;
         public float BurstSweepAngle => burstSweepAngle;
         public float BurstSweepSpeed => burstSweepSpeed;
