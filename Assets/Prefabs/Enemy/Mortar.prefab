@@ -676,8 +676,8 @@ MonoBehaviour:
   FiringRadius: 50
   idleScanAngle: 0
   idleScanRange: 90
-  ProjectilePrefab: {fileID: 0}
-  FirePoint: {fileID: 0}
+  ProjectilePrefab: {fileID: 1206594183249076, guid: 3d3c84f8cd69b8d4d81f4372600be7c7, type: 3}
+  FirePoint: {fileID: 8637382835709171898}
   trajectoryHeight: 5
   projectilePathResolution: 10
 --- !u!1 &3548791540106319155

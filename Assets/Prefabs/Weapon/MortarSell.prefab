@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23245724858212492}
   - component: {fileID: 64737778282252932}
   - component: {fileID: 100909629470708800}
+  - component: {fileID: 8397204149111838051}
   m_Layer: 0
   m_Name: MortarSell
   m_TagString: Untagged
@@ -137,3 +138,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8397204149111838051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206594183249076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7010665ae4690014f94c24ea886c0210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosionDelay: 3
+  explosionRadius: 4
+  explosionForce: 700
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 264
+  _MortarDmg: 120
