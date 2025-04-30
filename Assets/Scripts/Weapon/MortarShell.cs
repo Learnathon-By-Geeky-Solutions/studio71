@@ -14,7 +14,7 @@ public class MortarShell : MonoBehaviour
 
 
         private Rigidbody _rigidbody;
-         private Transform player; // Reference to the player
+        private Transform player; // Reference to the player
 
         private void Start()
         {

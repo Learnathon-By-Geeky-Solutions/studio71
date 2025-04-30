@@ -964,7 +964,7 @@ MonoBehaviour:
   _radiusResolution: 30
   _collisionMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4294967295
   walkSound: walking
   crouchSound: crouching
   sprintSound: sprinting
@@ -2337,7 +2337,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3626021565138828119}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Shell Eject Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2400,7 +2400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3029001573563741626}
   - component: {fileID: 2480317299932930715}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Explosion Renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2478,7 +2478,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.033662796
+        value: 0.04950142
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -2628,7 +2628,7 @@ GameObject:
   - component: {fileID: 8460620712381622974}
   - component: {fileID: 7060925450600628464}
   - component: {fileID: 1864749132391485537}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: AK-47
   m_TagString: Untagged
   m_Icon: {fileID: 0}

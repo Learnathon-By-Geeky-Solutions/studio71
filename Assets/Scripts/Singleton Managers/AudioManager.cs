@@ -16,7 +16,8 @@ namespace SingletonManagers
         public const string ReloadStart = "reload_start";
         public const string GrenadeThrow = "grenadeThrow";
         public const string GrenadeExplosion = "Grenade_Explosion";
-
+        public const string BombExplosion = "bomb_explosion";
+        public const string BombBeep = "Bomb_Countdown_Beep";
         public const string LevelSelectionMusic= "level_selection_music";
         public const string inGameSound= "in_game_sound";
         // Add other sound keys here as needed
