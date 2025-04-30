@@ -50,7 +50,6 @@ namespace UI.Loading
         private int _targetSceneIndex;
         private int _videoIndex;
         private Coroutine _loadingCoroutine;
-        private RenderTexture _videoRenderTexture;
         
         private void Awake()
         {
@@ -137,20 +136,21 @@ namespace UI.Loading
                 return;
             }
             
-            _videoRenderTexture = videoPlayer.targetTexture;
+            // Declare as local variable instead of field
+            RenderTexture videoRenderTexture = videoPlayer.targetTexture;
             
             // Make sure the texture is created
-            _videoRenderTexture.Create();
+            videoRenderTexture.Create();
             
             // Set the initial color (usually black)
-            RenderTexture.active = _videoRenderTexture;
+            RenderTexture.active = videoRenderTexture;
             GL.Clear(true, true, initialRenderTextureColor);
             RenderTexture.active = null;
             
             // Set it to the video display if available
             if (videoDisplay != null)
             {
-                videoDisplay.texture = _videoRenderTexture;
+                videoDisplay.texture = videoRenderTexture;
                 
                 // Start with zero alpha to avoid flash 
                 if (videoDisplay.color.a > 0)
@@ -239,57 +239,73 @@ namespace UI.Loading
             }
         }
         
-        private void CheckForOverlappingElements(GameObject buttonObj)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "this method doesnot need to be static as it is a standalone something")]
+        private  void CheckForOverlappingElements(GameObject buttonObj)
         {
             if (buttonObj == null) return;
             
-            // Get the button's RectTransform
+            // Get the button's RectTransform and Canvas
             RectTransform buttonRect = buttonObj.GetComponent<RectTransform>();
-            if (buttonRect == null) return;
+            Canvas buttonCanvas = buttonObj.GetComponentInParent<Canvas>();
+            if (buttonRect == null || buttonCanvas == null) return;
             
             // Get all RaycastTarget graphics in the scene
             UnityEngine.UI.Graphic[] graphics = FindObjectsOfType<UnityEngine.UI.Graphic>();
             
-            Debug.Log($"Checking for elements overlapping skip button. Found {graphics.Length} UI graphics.");
+     
             
             foreach (UnityEngine.UI.Graphic graphic in graphics)
             {
-                // Skip the button itself
-                if (graphic.gameObject == buttonObj) continue;
+                // Skip the button itself or its children
+                if (graphic.gameObject == buttonObj || graphic.transform.IsChildOf(buttonObj.transform)) continue;
                 
-                // Check if this element is blocking raycasts
-                if (graphic.raycastTarget)
+                // Skip if the graphic doesn't block raycasts
+                if (!graphic.raycastTarget) continue;
+                
+                // Get the graphic's details
+                RectTransform graphicRect = graphic.GetComponent<RectTransform>();
+                Canvas graphicCanvas = graphic.canvas;
+                if (graphicRect == null || graphicCanvas == null) continue;
+
+                // Check if this graphic is potentially blocking the button
+                if (IsGraphicBlockingButton(graphicCanvas, buttonCanvas, graphicRect))
                 {
-                    RectTransform graphicRect = graphic.GetComponent<RectTransform>();
-                    Canvas graphicCanvas = graphic.canvas;
-                    Canvas buttonCanvas = buttonObj.GetComponentInParent<Canvas>();
-                    
-                    // If the graphic is on a higher sorting layer than the button
-                    if (graphicCanvas != null && buttonCanvas != null && 
-                        graphicCanvas.sortingOrder > buttonCanvas.sortingOrder)
-                    {
-                        Debug.LogWarning($"UI element '{graphic.name}' on canvas with higher sortingOrder ({graphicCanvas.sortingOrder} > {buttonCanvas.sortingOrder}) " +
-                                        $"might be blocking the skip button. Disabling its raycastTarget.");
-                        
-                        // Disable raycast on elements that might block the button
-                        graphic.raycastTarget = false;
-                    }
-                    
-                    // Check for objects covering the button at the same sorting level
-                    else if (graphicCanvas == buttonCanvas)
-                    {
-                        // Check if this is a full-screen element
-                        Vector2 sizeDelta = graphicRect.sizeDelta;
-                        if (sizeDelta.x >= Screen.width * 0.9f && sizeDelta.y >= Screen.height * 0.9f)
-                        {
-                            Debug.LogWarning($"Large UI element '{graphic.name}' might be covering the skip button. " +
-                                           $"Disabling its raycastTarget.");
-                            graphic.raycastTarget = false;
-                        }
-                    }
+                   
+                    graphic.raycastTarget = false;
                 }
             }
         }
+        
+        /// <summary>
+        /// Determines if a UI graphic is potentially blocking the target button.
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "this method doesnot need to be static as it is inside invoke function calling")]
+        private  bool IsGraphicBlockingButton( Canvas graphicCanvas, Canvas buttonCanvas, RectTransform graphicRect)
+        {
+            // Check 1: Is the graphic on a canvas with a higher sorting order?
+            if (graphicCanvas.sortingOrder > buttonCanvas.sortingOrder)
+            {
+                return true; // Higher canvas always blocks
+            }
+            
+            // Check 2: Is the graphic on the same canvas and potentially overlapping/covering?
+            if (graphicCanvas.sortingOrder == buttonCanvas.sortingOrder)
+            {
+                // Simple check: Is it a large element (potentially full-screen)?
+                Vector2 sizeDelta = graphicRect.sizeDelta;
+                if (sizeDelta.x >= Screen.width * 0.9f && sizeDelta.y >= Screen.height * 0.9f)
+                {
+                    return true; // Likely a full-screen blocker
+                }
+                
+               
+            }
+            
+            // Not considered blocking based on these checks
+            return false;
+        }
+        
+        
         
         private void OnDestroy()
         {
@@ -356,7 +372,7 @@ namespace UI.Loading
                 }
             }
         }
-        
+       [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1172:Unused method parameters should be removed", Justification = "Method overloading")]
         private void OnVideoPrepared(VideoPlayer vp)
         {
             // Register for video completion event
@@ -366,6 +382,7 @@ namespace UI.Loading
             videoPlayer.Play();
             LogMessage($"Video prepared, starting playback of video {_videoIndex}");
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S1172:Unused method parameters should be removed", Justification = "Method overloading")]
         
         private void OnVideoFinished(VideoPlayer vp)
         {

@@ -83,8 +83,9 @@ public class PauseMenuSoundHandler : MonoBehaviour
     }
 
     public void backToPauseMenu()
-    {   pauseMenuButtons.SetActive(true);
-        Debug.Log("backToPauseMenu");
+    {   AudioManager.PlaySound(SoundKeys.ButtonPress);
+         pauseMenuButtons.SetActive(true);
+        
          soundMenuUI.SetActive(false);
         
     }

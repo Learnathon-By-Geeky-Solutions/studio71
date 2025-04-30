@@ -88,6 +88,10 @@ namespace UI
             soundMenuUI.SetActive(true);
             pauseMenuButtons.SetActive(false);
         }
+        public void buttonSound()
+        {
+            AudioManager.PlaySound(SoundKeys.ButtonPress);
+        }
     }
 }
 
