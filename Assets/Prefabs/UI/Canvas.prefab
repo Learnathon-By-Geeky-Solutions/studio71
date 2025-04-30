@@ -565,7 +565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8154188276958035947
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1334,8 +1334,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -3.0200195, y: -36.992}
-  m_SizeDelta: {x: -22.9515, y: 191.32}
+  m_AnchoredPosition: {x: 12.752136, y: -36.992}
+  m_SizeDelta: {x: -54.495747, y: 191.32}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1828588545532573748
 CanvasRenderer:
@@ -1365,8 +1365,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This tutorial/guide will show you how to create a great Dialogue system
-    - from a simple U
+  m_text: "\u09AE\u09BF\u09B6\u09A8 \u09AC\u09CD\u09AF\u09B0\u09CD\u09A5\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
@@ -1375,8 +1374,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278716424
-  m_fontColor: {r: 0.031446517, g: 0.030952074, b: 0.030952074, a: 1}
+    rgba: 4279506755
+  m_fontColor: {r: 0.26415092, g: 0.089807995, b: 0.07725165, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1399,7 +1398,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1820,8 +1819,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -2.3798828, y: 95.6601}
-  m_SizeDelta: {x: -24.1599, y: 73.9818}
+  m_AnchoredPosition: {x: 12.770082, y: 95.6601}
+  m_SizeDelta: {x: -54.459835, y: 73.9818}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9050775780159281112
 CanvasRenderer:
@@ -1851,9 +1850,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Name
-
-'
+  m_text: "\u09AE\u09BF\u09B6\u09A8 \u09AC\u09CD\u09AF\u09B0\u09CD\u09A5\n\n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
   m_sharedMaterial: {fileID: -1414316303894556192, guid: 87410d7955bde34458401bc17cd4f99e, type: 2}
@@ -1886,7 +1883,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 4
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2097,9 +2094,9 @@ RectTransform:
   - {fileID: 7483766841496451446}
   m_Father: {fileID: 3968445241551743863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 904.81494, y: -35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4858165827436348342
@@ -2233,9 +2230,9 @@ RectTransform:
   - {fileID: 4718827947215522093}
   m_Father: {fileID: 3968445241551743863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 150, y: -35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5700922252756448972
@@ -2369,9 +2366,9 @@ RectTransform:
   - {fileID: 3945516900296723580}
   m_Father: {fileID: 3968445241551743863}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 527.4075, y: -35}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 300, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8780904479245978316
