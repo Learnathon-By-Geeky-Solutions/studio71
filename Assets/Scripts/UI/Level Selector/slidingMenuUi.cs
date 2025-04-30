@@ -16,7 +16,7 @@ namespace LevelSelection
         }
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         public static void backToMainMenu()
-        {
+        {    AudioManager.PlaySound(SoundKeys.ButtonPress);
             SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.MainMenuScene);
         }
 
