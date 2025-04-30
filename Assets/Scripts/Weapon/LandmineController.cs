@@ -3,7 +3,7 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using HealthSystem;
 using SingletonManagers;
-
+using System.Linq;
 namespace Weapon
 {
     public class LandmineController : MonoBehaviour
@@ -42,17 +42,8 @@ namespace Weapon
                 return;
                 
             // Check if player is in alert range
-            Collider[] colliders = Physics.OverlapSphere(transform.position, alertRadius);
-            playerDetected = false;
-            
-            foreach (Collider collider in colliders)
-            {
-                if (collider.CompareTag("Player"))
-                {
-                    playerDetected = true;
-                    break;
-                }
-            }
+         Collider[] colliders = Physics.OverlapSphere(transform.position, alertRadius);
+playerDetected = colliders.Any(collider => collider.CompareTag("Player"));
             
             // If player detected and mine is idle, switch to alert state
             if (playerDetected && currentState == LandmineState.Idle)
