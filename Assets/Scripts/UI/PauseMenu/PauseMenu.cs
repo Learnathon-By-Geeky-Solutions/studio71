@@ -47,7 +47,7 @@ namespace UI
         // Update is called once per frame
 
 
-        private void Resume()
+        public void Resume()
         {
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
