@@ -884,7 +884,7 @@ MonoBehaviour:
   heightOffset: 3
   animationDuration: 0.5
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  healFlashColor: {r: 0, g: 1, b: 0, a: 1}
+  healFlashColor: {r: 0, g: 0.381132, b: 0, a: 1}
   flashDuration: 0.3
   pulseSizeMultiplier: 1.2
   pulseSpeed: 5
@@ -1089,7 +1089,7 @@ MonoBehaviour:
   grenadeThrowCooldown: 5
   recoveryThreshold: 30
   _recoveryRate: 30
-  alertCountdown: 3
+  alertCountdown: 1.6
 --- !u!1 &3038401109736658641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2199,7 +2199,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 34804d2f5b482e841868d16074a05276, type: 3}
-  m_Color: {r: 0.043137252, g: 0.22066373, b: 1, a: 1}
+  m_Color: {r: 0.86415094, g: 0.24409142, b: 0.1614168, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

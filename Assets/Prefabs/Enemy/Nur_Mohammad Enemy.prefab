@@ -884,7 +884,7 @@ MonoBehaviour:
   heightOffset: 3
   animationDuration: 0.5
   damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
-  healFlashColor: {r: 0, g: 1, b: 0, a: 1}
+  healFlashColor: {r: 0, g: 0.4415095, b: 0, a: 1}
   flashDuration: 0.3
   pulseSizeMultiplier: 1.2
   pulseSpeed: 5
@@ -1088,7 +1088,7 @@ MonoBehaviour:
   grenadeThrowCooldown: 5
   recoveryThreshold: 30
   _recoveryRate: 0
-  alertCountdown: 3
+  alertCountdown: 1.6
 --- !u!1 &3038401109736658641
 GameObject:
   m_ObjectHideFlags: 0
