@@ -792,11 +792,11 @@ PrefabInstance:
     - target: {fileID: 2856904616178524615, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
       propertyPath: _generalCursor
       value: 
-      objectReference: {fileID: 21300000, guid: c488ccf8cbdb9af488127cab9b13acdf, type: 3}
+      objectReference: {fileID: -2413806693520163455, guid: 250868570dd1d6943a96effa7c6f5c01, type: 3}
     - target: {fileID: 6000208295399657652, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: c488ccf8cbdb9af488127cab9b13acdf, type: 3}
+      objectReference: {fileID: -2413806693520163455, guid: 250868570dd1d6943a96effa7c6f5c01, type: 3}
     - target: {fileID: 6000208295399657652, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
       propertyPath: m_Color.b
       value: 0.2509804
