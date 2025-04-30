@@ -32,7 +32,7 @@ public class WinLose : MonoBehaviour
         _winText.SetActive(true);
         Invoke("PlayWinVideoAndReturn", _returnDelay);
     }
-    
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "invoke cant call static function")]
     private void PlayWinVideoAndReturn()
     {
         // Get the current scene index
@@ -65,7 +65,7 @@ public class WinLose : MonoBehaviour
         Debug.LogWarning($"Scene index {sceneIndex} is not a recognized level. Using default victory video.");
         return 0;
     }
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "start can not be static")]
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "invoke cant call static function")]
     private  void ReturnToLevelSelect()
     {  
         SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.SlidingMenuScene);

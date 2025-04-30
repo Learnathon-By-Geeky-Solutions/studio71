@@ -268,10 +268,9 @@ namespace UI.Loading
                 if (graphicRect == null || graphicCanvas == null) continue;
 
                 // Check if this graphic is potentially blocking the button
-                if (IsGraphicBlockingButton(graphic, graphicCanvas, buttonCanvas, graphicRect))
+                if (IsGraphicBlockingButton(graphicCanvas, buttonCanvas, graphicRect))
                 {
-                    // Log and disable raycast if blocking
-                    LogBlockingElement(graphic, graphicCanvas, buttonCanvas);
+                   
                     graphic.raycastTarget = false;
                 }
             }
@@ -280,7 +279,8 @@ namespace UI.Loading
         /// <summary>
         /// Determines if a UI graphic is potentially blocking the target button.
         /// </summary>
-        private bool IsGraphicBlockingButton(UnityEngine.UI.Graphic graphic, Canvas graphicCanvas, Canvas buttonCanvas, RectTransform graphicRect)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "this method doesnot need to be static as it is inside invoke function calling")]
+        private  bool IsGraphicBlockingButton( Canvas graphicCanvas, Canvas buttonCanvas, RectTransform graphicRect)
         {
             // Check 1: Is the graphic on a canvas with a higher sorting order?
             if (graphicCanvas.sortingOrder > buttonCanvas.sortingOrder)
@@ -298,30 +298,14 @@ namespace UI.Loading
                     return true; // Likely a full-screen blocker
                 }
                 
-                // TODO: Add more sophisticated overlap checks if needed (RectTransformUtility.RectangleContainsScreenPoint, etc.)
+               
             }
             
             // Not considered blocking based on these checks
             return false;
         }
         
-        /// <summary>
-        /// Logs a warning message about a blocking UI element.
-        /// </summary>
-        private void LogBlockingElement(UnityEngine.UI.Graphic graphic, Canvas graphicCanvas, Canvas buttonCanvas)
-        {
-            string reason;
-            if (graphicCanvas.sortingOrder > buttonCanvas.sortingOrder)
-            {
-                reason = $"on canvas with higher sortingOrder ({graphicCanvas.sortingOrder} > {buttonCanvas.sortingOrder})";
-            }
-            else
-            {
-                reason = "large element on the same canvas";
-            }
-            
-            Debug.LogWarning($"UI element '{graphic.name}' ({reason}) might be blocking the skip button. Disabling its raycastTarget.");
-        }
+        
         
         private void OnDestroy()
         {
