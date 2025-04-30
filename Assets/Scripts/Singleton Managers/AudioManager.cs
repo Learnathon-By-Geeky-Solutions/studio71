@@ -112,37 +112,35 @@ namespace SingletonManagers
         
         private void UpdateBackgroundMusicVolumes()
         {
-            // Get all active audio sources
-            AudioSource[] allAudioSources = audioSourceParent.GetComponentsInChildren<AudioSource>(true);
-            
+            // Get the specific clips for background and level selection music once
+            AudioClip backgroundClip = _clipDictionary.TryGetValue(SoundKeys.BackgroundMusic, out AudioClipInfo bgInfo) ? bgInfo.clip : null;
+            AudioClip levelSelectClip = _clipDictionary.TryGetValue(SoundKeys.LevelSelectionMusic, out AudioClipInfo lsInfo) ? lsInfo.clip : null;
+
+            // Get all audio sources under the parent
+            AudioSource[] allAudioSources = audioSourceParent.GetComponentsInChildren<AudioSource>(true); // Get inactive too, filter below
+
             foreach (AudioSource source in allAudioSources)
             {
-                // Skip inactive sources
-                if (!source.gameObject.activeInHierarchy || !source.isPlaying)
+                // Basic checks: active, playing, has clip
+                if (!source.gameObject.activeInHierarchy || !source.isPlaying || source.clip == null)
                     continue;
-                
-                // Check if this source is playing background music or level selection music
-                if (source.clip != null)
+
+                AudioClipInfo clipInfoToUse = null;
+
+                // Check if the source is playing one of the relevant music clips
+                if (backgroundClip != null && source.clip == backgroundClip)
                 {
-                    // Find the sound name for this clip
-                    string soundName = null;
-                    foreach (var entry in _clipDictionary)
-                    {
-                        if (entry.Value.clip == source.clip)
-                        {
-                            soundName = entry.Key;
-                            break;
-                        }
-                    }
-                    
-                    // If it's background music or level selection music, update its volume
-                    if (soundName == SoundKeys.BackgroundMusic || soundName == SoundKeys.LevelSelectionMusic)
-                    {
-                        if (_clipDictionary.TryGetValue(soundName, out AudioClipInfo clipInfo))
-                        {
-                            source.volume = clipInfo.defaultVolume * _backgroundMusicVolumeMultiplier;
-                        }
-                    }
+                    clipInfoToUse = bgInfo; // Use the info retrieved earlier
+                }
+                else if (levelSelectClip != null && source.clip == levelSelectClip)
+                {
+                    clipInfoToUse = lsInfo; // Use the info retrieved earlier
+                }
+
+                // If it's one of the relevant music clips, update its volume
+                if (clipInfoToUse != null)
+                {
+                    source.volume = clipInfoToUse.defaultVolume * _backgroundMusicVolumeMultiplier;
                 }
             }
         }

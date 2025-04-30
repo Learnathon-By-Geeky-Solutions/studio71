@@ -32,6 +32,8 @@ namespace HealthSystem
         private Coroutine colorFlashCoroutine;
         private Coroutine pulseCoroutine;
 
+        private const float Epsilon = 0.001f; // Small tolerance for float comparisons
+
         private void Awake()
         {
             Initialize();
@@ -133,8 +135,9 @@ namespace HealthSystem
         /// </summary>
         private void OnHealthValueChanged(float newHealth)
         {
-            // Don't animate if this is initialization
-            if (lastHealthValue == 0 && newHealth == healthComponent.MaxHealth)
+            // Don't animate if this is the initial setup (from near 0 to near max)
+            if (Mathf.Abs(lastHealthValue - 0f) < Epsilon && 
+                Mathf.Abs(newHealth - healthComponent.MaxHealth) < Epsilon)
             {
                 healthSlider.value = newHealth;
                 lastHealthValue = newHealth;

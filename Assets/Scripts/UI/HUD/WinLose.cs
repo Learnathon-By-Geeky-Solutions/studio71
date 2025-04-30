@@ -2,8 +2,8 @@ using UnityEngine;
 using TMPro;
 using SingletonManagers;
 using Unity.VisualScripting;
-
-public class WIN_LOSE : MonoBehaviour
+namespace UI{
+public class WinLose : MonoBehaviour
 {
     [SerializeField] private GameObject _winText;
     [SerializeField] private GameObject _loseText;
@@ -52,7 +52,7 @@ public class WIN_LOSE : MonoBehaviour
         SceneIndexes.LoadSceneWithVideo(SceneIndexes.SlidingMenuScene, videoIndex);
     }
     
-    private int GetLevelNumber(int sceneIndex)
+    private static int GetLevelNumber(int sceneIndex)
     {
         // Map scene index to level number (1-5)
         if (sceneIndex == SceneIndexes.Level1Scene) return 1;
@@ -65,9 +65,9 @@ public class WIN_LOSE : MonoBehaviour
         Debug.LogWarning($"Scene index {sceneIndex} is not a recognized level. Using default victory video.");
         return 0;
     }
-    
-    private void ReturnToLevelSelect()
-    {
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "start can not be static")]
+    private  void ReturnToLevelSelect()
+    {  
         SceneIndexes.LoadSceneByIndexAsync(SceneIndexes.SlidingMenuScene);
     }
-}
+}}

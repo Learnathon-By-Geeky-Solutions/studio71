@@ -38,16 +38,7 @@ public static class SceneIndexes
     public static readonly int Victory4Video = 8; // Victory video for level 4
     public static readonly int Victory5Video = 9; // Victory video for level 5
 
-    /// <summary>
-    /// DEPRECATED: Use LoadSceneByIndexAsync instead.
-    /// Loads a scene synchronously by index. Warning: May cause frame drops.
-    /// </summary>
-    [System.Obsolete("Use LoadSceneByIndexAsync instead to prevent frame drops")]
-    public static void LoadSceneByIndex(int sceneIndex)
-    {
-        Debug.LogWarning("Using synchronous scene loading. This may cause frame drops. Consider using LoadSceneByIndexAsync instead.");
-        SceneManager.LoadScene(sceneIndex);
-    }
+    
     
     /// <summary>
     /// Loads a scene asynchronously by index.
