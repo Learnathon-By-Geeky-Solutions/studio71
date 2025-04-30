@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 using System;
@@ -10,7 +9,7 @@ namespace PatrolEnemy
     public class GrenadeThrowState : IEnemyState
     {
         private CancellationTokenSource grenadeCTS;
-        private bool isThrowing;
+        public bool isThrowing{get ; set ;}
         
         public void EnterState(EnemyController controller)
         {

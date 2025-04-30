@@ -51,13 +51,10 @@ namespace MachineGunnerAnim
 
             MachineGunnerStateType currentState = GetCurrentStateType();
 
-            if (currentState == MachineGunnerStateType.OverheatAndReload)
+            if (currentState == MachineGunnerStateType.OverheatAndReload && !_controller.IsOverheated)
             {
-                if (!_controller.IsOverheated)
-                {
-                    PlayAnimation("Idle");
-                    return;
-                }
+                PlayAnimation("Idle");
+                return;
             }
 
             if (_stateToAnimation.TryGetValue(currentState, out string animationName))

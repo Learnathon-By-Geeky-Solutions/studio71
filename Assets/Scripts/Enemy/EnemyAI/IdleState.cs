@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.AI;
 using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace PatrolEnemy
 {
     public class IdleState : IEnemyState
     {
-        private float patrolWaitTime = 3f;
+        private readonly float patrolWaitTime = 3f;
         private bool returningToZone = false;
         private bool isRunning = false;
 
@@ -37,11 +38,10 @@ namespace PatrolEnemy
             {
                 isRunning = false;
                 controller.ChangeState(EnemyController.EnemyStateType.Alert);
-                return;
             }
         }
 
-        private async void StartPatrolRoutine(EnemyController controller)
+        private async Task StartPatrolRoutine(EnemyController controller)
         {
             if (!isRunning) return;
 
@@ -90,7 +90,7 @@ namespace PatrolEnemy
             }
         }
 
-        private Vector3 GetPatrolPoint(EnemyController controller)
+        private static Vector3 GetPatrolPoint(EnemyController controller)
         {
             // Generate random point within patrol range
             Vector2 randomCirclePoint = Random.insideUnitCircle * controller.PatrolRange;

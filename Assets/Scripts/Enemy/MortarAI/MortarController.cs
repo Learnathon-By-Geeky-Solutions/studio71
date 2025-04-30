@@ -26,8 +26,8 @@ namespace MortarSystem
         [SerializeField] private float idleScanRange = 90f;
 
         [Header("Firing")]
-        [SerializeField] public GameObject ProjectilePrefab;
-        public Transform FirePoint;
+        [SerializeField] public GameObject ProjectilePrefab {get; private set;}
+        public Transform FirePoint{get; private set;}
         [SerializeField] private float baseTrajectoryHeight = 5f;
         [SerializeField] private float maxTrajectoryHeight = 20f;
         [SerializeField] private float trajectoryHeightMultiplier = 0.15f;

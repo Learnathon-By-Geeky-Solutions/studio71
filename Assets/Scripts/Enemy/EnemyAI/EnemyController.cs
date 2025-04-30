@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using System;
-using PatrolEnemy;
 using HealthSystem;
 using Ink.Runtime;
 
@@ -30,7 +29,6 @@ namespace PatrolEnemy
 
         public Health _health{get; private set;}
 
-        private IdleState IdleStatVar;
 
         // Detection ranges
         [Header("Detection Settings")]
@@ -51,23 +49,23 @@ namespace PatrolEnemy
         [Header("Alert Settings")]
         [SerializeField] private float alertCountdown = 3f;
 
-        public IEnemyState currentState;
-        private IdleState idleState = new IdleState();
-        private AlertState alertState = new AlertState();
-        private FollowState followState = new FollowState();
-        private ShootState shootState = new ShootState();
-        private GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
-        private RecoveryState recoveryState = new RecoveryState();
+        public IEnemyState currentState{ get; set;}
+        private readonly IdleState idleState = new IdleState();
+        private readonly AlertState alertState = new AlertState();
+        private readonly FollowState followState = new FollowState();
+        private readonly ShootState shootState = new ShootState();
+        private readonly GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
+        private readonly RecoveryState recoveryState = new RecoveryState();
 
         private DeathState deathState = new DeathState();
 
-        public NavMeshAgent Agent ;
+        public NavMeshAgent Agent { get; set;}
         public Transform CurrentTarget { get; private set;}
         public int CurrentAmmo { get; set;}
         public int CurrentGrenades { get; set;}
         public float AlertTime { get; set;}
         public bool IsReloading { get; set;}
-        public bool IsIdleAlert = false;
+        public bool IsIdleAlert{ get; set;}
         public bool IsRecoverReturing { get; set;}
         public bool IsNotGrenadeThrowing { get; set;}
 
@@ -103,10 +101,6 @@ namespace PatrolEnemy
         public bool _isAlert => isAlert;
         public bool _isThrowingGrenade => isThrowingGrenade;
         public bool IsDead=>_isDead;
-
-
-        // Event for state change
-        public event Action<EnemyStateType> OnStateChanged;
 
         private void Awake()
         {
@@ -153,7 +147,7 @@ namespace PatrolEnemy
             HasLineOfSight = CheckLineOfSight(CurrentTarget);
         }
 
-        private GameObject[] FindActivePlayers()
+        private static GameObject[] FindActivePlayers()
         {
             return GameObject.FindGameObjectsWithTag("Player");
         }
