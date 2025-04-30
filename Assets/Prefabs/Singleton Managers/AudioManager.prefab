@@ -125,7 +125,7 @@ MonoBehaviour:
     spatialBlend: 0.8
   - name: in_game_sound
     clip: {fileID: 8300000, guid: f3758457a1e320d478e609f4ac888d75, type: 3}
-    defaultVolume: 0.5
+    defaultVolume: 0.383
     defaultPitch: 1
     isLoop: 1
     spatialBlend: 0.8

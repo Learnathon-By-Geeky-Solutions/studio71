@@ -4860,6 +4860,10 @@ PrefabInstance:
       propertyPath: _yOffset
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 2856904616178524615, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
+      propertyPath: _generalCursor
+      value: 
+      objectReference: {fileID: 21300000, guid: 0ba23c42bf28ad744a524d82c9dcbc0e, type: 3}
     - target: {fileID: 7437915545179878073, guid: e22f0c7d83035ef4cb2f1c95cc1491f4, type: 3}
       propertyPath: m_Name
       value: Reticle
