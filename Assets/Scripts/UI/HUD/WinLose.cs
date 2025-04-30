@@ -24,12 +24,14 @@ public class WinLose : MonoBehaviour
     private void LOSE()
     {
         _loseText.SetActive(true);
+        AudioManager.StopSound(SoundKeys.inGameSound);
         Invoke("ReturnToLevelSelect", _returnDelay);
     }
     
     private void WIN()
     {
         _winText.SetActive(true);
+        AudioManager.StopSound(SoundKeys.inGameSound);
         Invoke("PlayWinVideoAndReturn", _returnDelay);
     }
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "invoke cant call static function")]

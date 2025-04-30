@@ -73,12 +73,6 @@ namespace SingletonManagers {
             HandleLose();
         }
 
-        public void OnBaseDestroyed()
-        {
-            if (_levelEnded || _currentConditions == null || !_currentConditions.LoseOnBaseDestroyed) return;
-            HandleLose();
-        }
-
         public void OnTimerEndEnemiesSurviving()
         {
             if(_levelEnded||_currentConditions==null||!_currentConditions.LoseOnTimerEndEnemiesSurviving) return;

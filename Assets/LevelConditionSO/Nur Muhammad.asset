@@ -18,5 +18,4 @@ MonoBehaviour:
   _winOnTimerEnd: 1
   _surviveTime: 120
   _loseOnPlayerDeath: 1
-  _loseOnBaseDestroyed: 0
   _loseOnTimerEndEnemiesSurviving: 0

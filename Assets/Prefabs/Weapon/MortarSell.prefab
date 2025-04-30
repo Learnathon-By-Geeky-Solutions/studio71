@@ -137,7 +137,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &8397204149111838051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,10 +150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7010665ae4690014f94c24ea886c0210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionDelay: 3
-  explosionRadius: 4
-  explosionForce: 700
-  hitLayers:
+  _explosionDelay: 15
+  _explosionRadius: 20
+  _explosionForce: 700
+  _targetLayers:
     serializedVersion: 2
-    m_Bits: 264
-  _MortarDmg: 120
+    m_Bits: 0
+  _mortarDamage: 0

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelName: Mostafa Kamal
   _sceneBuildIndex: 6
-  _winOnAllEnemiesDead: 0
-  _winOnTimerEnd: 1
-  _surviveTime: 12
+  _winOnAllEnemiesDead: 1
+  _winOnTimerEnd: 0
+  _surviveTime: 0
   _loseOnPlayerDeath: 1
   _loseOnBaseDestroyed: 0
   _loseOnTimerEndEnemiesSurviving: 0

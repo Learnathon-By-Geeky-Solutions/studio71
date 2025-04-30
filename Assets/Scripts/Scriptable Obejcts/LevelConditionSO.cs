@@ -41,11 +41,7 @@ namespace LevelConditions
         {
             get => _loseOnPlayerDeath;private set => _loseOnPlayerDeath = value;
         }
-        [SerializeField] private bool _loseOnBaseDestroyed = false;
-        public bool LoseOnBaseDestroyed
-        {
-            get => _loseOnBaseDestroyed;private set => _loseOnBaseDestroyed = value;
-        }
+
         [SerializeField] private bool _loseOnTimerEndEnemiesSurviving=false;
         public bool LoseOnTimerEndEnemiesSurviving
         {
