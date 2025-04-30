@@ -7,11 +7,13 @@ namespace GameEnvironment
         [SerializeField] private GameObject[] _bladePrefabs;
         [SerializeField] private GameObject[] _bushPrefabs;
         [SerializeField] private GameObject[] _TreePrefabs;
+        [SerializeField] private GameObject _landMine;
 
         [Header("Counts")]
         [SerializeField] private int _bladeCount = 5000;
         [SerializeField] private int _bushCount = 1000;
         [SerializeField] private int _treeCount = 500;
+        [SerializeField] private int _landMineCount = 20;
 
         [Header("Noise Settings")]
         [SerializeField] private float _noiseScaleBlades = 0.4f;
@@ -23,11 +25,13 @@ namespace GameEnvironment
 
         private Bounds _groundBounds;
         private Transform _vegetationContainer;
+        [SerializeField] private bool _landMineActivated;
 
         private void Start()
         {
             InitBounds();
             GenerateAllVegetation();
+            if(_landMineActivated ) SpawnLandmine();
         }
 
         private void InitBounds()
@@ -92,6 +96,22 @@ namespace GameEnvironment
                 placed++;
             }
         }
+        private void SpawnLandmine()
+        {
+            if (!_landMineActivated || _landMine == null || _landMineCount <= 0)
+                return;
+
+            int placed = 0;
+            int maxAttempts = _landMineCount * 5;
+
+            for (int i = 0; i < maxAttempts && placed < _landMineCount; i++)
+            {
+                Vector3 pos = GetRandomPointOnGround();
+                Instantiate(_landMine, pos, Quaternion.identity, _vegetationContainer);
+                placed++;
+            }
+        }
+
 
         private Vector3 GetRandomPointOnGround()
         {

@@ -210,11 +210,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd7d2e31707762543a8dc6332951d181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertRadius: 11.58
+  alertRadius: 1.01
   alertDuration: 4
   hitLayers:
     serializedVersion: 2
-    m_Bits: 520
+    m_Bits: 8
   explosionRadius: 5.72
   explosionForce: 700
   damage: 100

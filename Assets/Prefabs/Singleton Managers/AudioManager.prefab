@@ -129,5 +129,17 @@ MonoBehaviour:
     defaultPitch: 1
     isLoop: 1
     spatialBlend: 0.8
+  - name: Bomb_Countdown_Beep
+    clip: {fileID: 8300000, guid: 299d8a71a489e0449b5293d59fcda212, type: 3}
+    defaultVolume: 0.383
+    defaultPitch: 1
+    isLoop: 0
+    spatialBlend: 0.8
+  - name: bomb_explosion
+    clip: {fileID: 8300000, guid: 8f4854ca829a64c46adbafd6837a6854, type: 3}
+    defaultVolume: 0.383
+    defaultPitch: 1
+    isLoop: 0
+    spatialBlend: 0.8
   initialPoolSize: 12
   audioSourceParent: {fileID: 0}
