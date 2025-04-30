@@ -1,4 +1,4 @@
-﻿-> start
+-> start
 
 === start ===
 # id: 2
