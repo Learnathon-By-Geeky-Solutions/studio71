@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelName: Munsi  Abdur Rouf
   _sceneBuildIndex: 5
-  _winOnAllEnemiesDead: 0
-  _winOnTimerEnd: 1
-  _surviveTime: 12
+  _winOnAllEnemiesDead: 1
+  _winOnTimerEnd: 0
+  _surviveTime: 300
   _loseOnPlayerDeath: 1
-  _loseOnBaseDestroyed: 0
-  _loseOnTimerEndEnemiesSurviving: 0
+  _loseOnTimerEndEnemiesSurviving: 1

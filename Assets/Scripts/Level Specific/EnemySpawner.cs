@@ -56,7 +56,7 @@ namespace LevelSpecific {
         {
             yield return new WaitForSeconds(LevelConditionManager.Instance._currentConditions.SurviveTime / 2);
             // Update spawn rate, logic can be customized based on requirements
-            spawnRate = Mathf.Max(0.5f, spawnRate - 0.5f);  // Example: decrease spawn rate by 0.5 but keep it above 0.5
+            spawnRate = Mathf.Max(3f, spawnRate - 0.5f);  // Example: decrease spawn rate by 0.5 but keep it above 0.5
             Debug.Log("Spawn rate changed to: " + spawnRate);
         }
         private IEnumerator StopSpawning()
@@ -66,6 +66,10 @@ namespace LevelSpecific {
             yield return new WaitForSeconds(LevelConditionManager.Instance._currentConditions.SurviveTime);
             _isSpawning = false;
             LevelConditionManager.Instance.OnTimerFinished();
+            if (GameObject.FindWithTag("Enemy"))
+            {
+                LevelConditionManager.Instance.OnTimerEndEnemiesSurviving();
+            }
         }
 
 
