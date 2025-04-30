@@ -882,6 +882,12 @@ MonoBehaviour:
   canvas: {fileID: 3913597073153037015}
   healthSlider: {fileID: 3212508671210958851}
   heightOffset: 3
+  animationDuration: 0.5
+  damageFlashColor: {r: 1, g: 0, b: 0, a: 1}
+  healFlashColor: {r: 0, g: 1, b: 0, a: 1}
+  flashDuration: 0.3
+  pulseSizeMultiplier: 1.2
+  pulseSpeed: 5
 --- !u!1 &2732413420709728147
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,19 +1086,11 @@ MonoBehaviour:
   reloadTime: 2
   maxGrenades: 3
   grenadeThrowCooldown: 5
-  maxHealth: 100
-  currentHealth: 0
   recoveryThreshold: 30
-  recoveryRate: 5
+  _recoveryRate: 0
   alertCountdown: 3
   Agent: {fileID: 7513518096679223944}
   IsIdleAlert: 0
-  isAlert: 0
-  isShooting: 0
-  isRecovering: 0
-  isIdle: 0
-  isFollowing: 0
-  isThrowingGrenade: 0
 --- !u!1 &3038401109736658641
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,7 +2203,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300020, guid: b3a849229c6faea448cb1f0200840e8d, type: 3}
+  m_Mesh: {fileID: 4300024, guid: b3a849229c6faea448cb1f0200840e8d, type: 3}
   m_Bones:
   - {fileID: 3333167007083175269}
   - {fileID: 1326529858584687997}

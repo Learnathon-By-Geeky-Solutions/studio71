@@ -48,7 +48,7 @@ namespace UI.HUD
             _rectTransform.position = new Vector3(InputHandler.Instance.MousePosition.x, InputHandler.Instance.MousePosition.y + _yOffset, 0);
         }
 
-        private void CursorChange()
+        public void CursorChange()
         {
             if (SceneManager.GetActiveScene().buildIndex < 3|| InkDialogueManager.IsDialogueOpen) return;
             if (_pauseMenu.IsGamePaused() )
