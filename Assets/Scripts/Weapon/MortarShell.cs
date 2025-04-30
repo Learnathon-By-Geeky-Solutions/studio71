@@ -2,54 +2,61 @@ using HealthSystem;
 using UnityEngine;
 using SingletonManagers;
 using Player;
-namespace Weapon{
-public class MortarShell : MonoBehaviour
+
+namespace Weapon
 {
-    [Header("Explosion Settings")]
-        [SerializeField] private float explosionDelay = 15f;
-        [SerializeField] private float explosionRadius = 20f;
-        [SerializeField] private float explosionForce = 700f;
-        [SerializeField] private LayerMask hitLayers;
-        [SerializeField] private int _MortarDmg = 0;
+    public class MortarShell : MonoBehaviour
+    {
+        [Header("Explosion Settings")]
+        [SerializeField] private float _explosionDelay = 15f;
+        [SerializeField] private float _explosionRadius = 20f;
+        [SerializeField] private float _explosionForce = 700f;
+        [SerializeField] private LayerMask _targetLayers;
+        [SerializeField] private int _mortarDamage = 0;
 
+        private Rigidbody _shellRigidbody;
+        private Transform _playerTransform; // Reference to the player's transform
 
-        private Rigidbody _rigidbody;
-        private Transform player; // Reference to the player
-
-        private void Start()
+        private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            player = GameObject.FindGameObjectWithTag("Player")?.transform; // Find player by tag
+            _shellRigidbody = GetComponent<Rigidbody>();
+            _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform; // Find player by tag
 
-            if (player == null)
+            if (_playerTransform == null)
             {
                 Debug.LogError("Player not found! Make sure the player has the 'Player' tag.");
                 return;
             }
-            // Schedule explosion
-            Invoke(nameof(Explode), explosionDelay);
+
+            // Schedule the detonation
+            Invoke(nameof(Detonate), _explosionDelay);
         }
 
-        private void Explode()
+        private void Detonate()
         {
             ParticleManager.Instance.PlayParticle("Grenade Explosion", transform.position, Quaternion.identity);
             AudioManager.PlaySound(SoundKeys.GrenadeExplosion, transform.position, 1f, 1f); // Play explosion sound
-            Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
-            foreach (Collider other in colliders)
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, _explosionRadius);
+
+            foreach (Collider hitObject in hitColliders)
             {
-                if (((1 << other.gameObject.layer) & hitLayers) == 0) continue; // Correct bitmask check
-                Debug.Log($"Hit {other.gameObject.name}");
+                if (((1 << hitObject.gameObject.layer) & _targetLayers) == 0) continue; // Correct bitmask check
+                Debug.Log($"Mortar hit: {hitObject.gameObject.name}");
 
-                Rigidbody rb = other.GetComponent<Rigidbody>();
-                if (rb != null)
-                    rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+                Rigidbody targetRigidbody = hitObject.GetComponent<Rigidbody>();
+                if (targetRigidbody != null)
+                {
+                    targetRigidbody.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
+                }
 
-                Health health = other.GetComponent<Health>();
-                if (health != null)
-                    health.TakeDmg(_MortarDmg);
+                Health targetHealth = hitObject.GetComponent<Health>();
+                if (targetHealth != null)
+                {
+                    targetHealth.TakeDmg(_mortarDamage);
+                }
             }
 
-            Destroy(gameObject); // Destroy grenade after explosion
+            Destroy(gameObject); // Destroy the mortar shell after detonation
         }
-}
+    }
 }

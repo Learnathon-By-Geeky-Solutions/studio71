@@ -56,8 +56,7 @@ namespace PatrolEnemy
         private readonly ShootState shootState = new ShootState();
         private readonly GrenadeThrowState grenadeThrowState = new GrenadeThrowState();
         private readonly RecoveryState recoveryState = new RecoveryState();
-
-        private DeathState deathState = new DeathState();
+        private readonly DeathState deathState = new DeathState();
 
         public NavMeshAgent Agent { get; set;}
         public Transform CurrentTarget { get; private set;}
