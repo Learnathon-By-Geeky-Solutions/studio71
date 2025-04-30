@@ -43,8 +43,6 @@ namespace PatrolEnemy
 
         private async Task StartPatrolRoutine(EnemyController controller)
         {
-            if (!isRunning) return;
-
             try
             {
                 while (isRunning)

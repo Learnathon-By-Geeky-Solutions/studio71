@@ -1,10 +1,12 @@
 using UnityEngine;
-
-public class DestroyAfterTime : MonoBehaviour
+namespace UI
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private void Start()
+    public class DestroyAfterTime : MonoBehaviour
     {
-        Destroy(gameObject, 5f);
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Minor Code Smell", "S2325:Methods and properties that don't access instance data should be static", Justification = "Start can not be static")]
+        private void Start()
+        {
+            Destroy(gameObject, 5f);
+        }
     }
 }

@@ -13,7 +13,6 @@ namespace SingletonManagers {
         [SerializeField] private List<LevelConditionSO> _allLevelConditions;
         public LevelConditionSO _currentConditions { get; private set; }
         private bool _levelEnded = false;
-        //private GameObject _playerGameObject;
         public bool _videoPlayed { get; private set; }
         #endregion
 
@@ -31,6 +30,7 @@ namespace SingletonManagers {
         #endregion
 
         #region Methods for Scriptable Object
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("maintainability", "S1172:Unused method parameters should be removed", Justification = "Parameter Needed for Proper Execution")]
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
             Time.timeScale = 1.0f;

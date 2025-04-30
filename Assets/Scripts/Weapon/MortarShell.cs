@@ -14,13 +14,9 @@ namespace Weapon
         [SerializeField] private LayerMask _targetLayers;
         [SerializeField] private int _mortarDamage = 0;
 
-        private Rigidbody _shellRigidbody;
-        private Transform _playerTransform; // Reference to the player's transform
-
         private void Awake()
         {
-            _shellRigidbody = GetComponent<Rigidbody>();
-            _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform; // Find player by tag
+            Transform _playerTransform = GameObject.FindGameObjectWithTag("Player")?.transform; // Find player by tag
 
             if (_playerTransform == null)
             {
