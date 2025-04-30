@@ -2,7 +2,7 @@
 
 #   🎮 3knot3 🚀
 
-    *A top-down 2.5D shooting game based on the 1971 Liberation War of Bangladesh.*
+ <p><em>A top-down 2.5D shooting game based on the 1971 Liberation War of Bangladesh.</em></p>
 
 [![Game Banner](https://github.com/Learnathon-By-Geeky-Solutions/studio71/blob/main/Assets/Sprites/3knot3_Banner.png)](https://github.com/Learnathon-By-Geeky-Solutions/studio71/blob/main/Assets/Sprites/3knot3_Banner.png)
 
@@ -19,7 +19,7 @@
 
 ##   📢 Project Status
 
-    **In Development:** We are currently developing levels based on the "7 Bir Sreshtho" (seven highest gallantry award winners of Bangladesh), with 2 levels in progress. Multiplayer functionality is also under development. The game is inspired by the book "বীরশ্রেষ্ঠ" by জাহানারা ইমাম.
+**In Development:** We are currently developing levels based on the "7 Bir Sreshtho" (seven highest gallantry award winners of Bangladesh), with 2 levels in progress. Multiplayer functionality is also under development. The game is inspired by the book "বীরশ্রেষ্ঠ" by জাহানারা ইমাম.
 
 ---
 
@@ -40,7 +40,7 @@
 
 ##   🎮 Quick Start
 
-    *(This section will be more complete when there's a playable build)*
+*(This section will be more complete when there's a playable build)*
 
 * **Controls:** (See table below)
 * **Requirements:**
@@ -114,7 +114,7 @@
 
 <div align="center">
 
-    <h2>   🔥 Meet Team - <b>Studio71</b></h2>
+## 🔥 Meet Team - **Studio71**
 
 </div>
 
