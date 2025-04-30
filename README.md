@@ -19,7 +19,7 @@
 
 ##   📢 Project Status
 
-**In Development:** We are currently developing levels based on the "7 Bir Sreshtho" (seven highest gallantry award winners of Bangladesh), with 2 levels in progress. Multiplayer functionality is also under development. The game is inspired by the book "বীরশ্রেষ্ঠ" by জাহানারা ইমাম.
+**In Development:** We are currently developing levels based on the "7 Bir Sreshtho" (seven highest gallantry award winners of Bangladesh), with 5 levels in progress. Multiplayer functionality is also under development. The game is inspired by the book "বীরশ্রেষ্ঠ" by জাহানারা ইমাম.
 
 ---
 
