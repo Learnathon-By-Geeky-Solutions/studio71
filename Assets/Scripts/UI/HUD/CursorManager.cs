@@ -29,14 +29,7 @@ namespace UI.HUD
             }
             _image.sprite = SceneManager.GetActiveScene().buildIndex >= 3 ? _crossHair : _generalCursor;
         }
-        private void OnEnable()
-        {
-            InputHandler.Instance.OnPause += CursorChange;
-        }
-        private void OnDisable()
-        {
-            InputHandler.Instance.OnPause -= CursorChange;
-        }
+
         private void Start()
         {
             Cursor.SetCursor(_transparentCursor, Vector2.zero, CursorMode.Auto);

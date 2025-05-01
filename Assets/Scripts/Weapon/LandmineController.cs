@@ -43,7 +43,7 @@ namespace Weapon
                 
             // Check if player is in alert range
          Collider[] colliders = Physics.OverlapSphere(transform.position, alertRadius);
-playerDetected = colliders.Any(collider => collider.CompareTag("Player"));
+         playerDetected = colliders.Any(collider => collider.CompareTag("Player"));
             
             // If player detected and mine is idle, switch to alert state
             if (playerDetected && currentState == LandmineState.Idle)
@@ -51,46 +51,30 @@ playerDetected = colliders.Any(collider => collider.CompareTag("Player"));
                 AlertSequenceAsync().Forget();
             }
         }
-        
+
         private async UniTaskVoid AlertSequenceAsync()
         {
-            // Prevent multiple alert sequences
             if (isProcessingAlert) return;
             isProcessingAlert = true;
-            
-            // Switch to alert state
+
             currentState = LandmineState.Alert;
-            
-            // Activate alert indicator if available
+
             if (alertIndicator != null)
             {
                 alertIndicator.SetActive(true);
             }
-            
-            // Play alert sound if available
+
             AudioManager.PlaySound(SoundKeys.BombBeep, transform.position, 1f, 1f);
-        
-            // Wait for alert duration
+
             await UniTask.Delay(TimeSpan.FromSeconds(alertDuration), cancellationToken: this.GetCancellationTokenOnDestroy());
-            
-            // Check if player is still in range
-            if (playerDetected)
-            {
-                Explode();
-            }
-            else
-            {
-                // Player left range, return to idle
-                currentState = LandmineState.Idle;
-                if (alertIndicator != null)
-                {
-                    alertIndicator.SetActive(false);
-                }
-            }
-            
+
+            // No longer check if player is still in range
+            Explode();
+
             isProcessingAlert = false;
         }
-        
+
+
         private void Explode()
         {
             // Switch to exploded state
@@ -142,28 +126,5 @@ playerDetected = colliders.Any(collider => collider.CompareTag("Player"));
             Destroy(gameObject, 5f);
         }
         
-        // Draw gizmos to visualize alert and explosion ranges
-        private void OnDrawGizmos()
-        {
-            // Draw alert radius
-            Gizmos.color = new Color(1f, 1f, 0f, 0.3f); // Semi-transparent yellow
-            Gizmos.DrawSphere(transform.position, alertRadius);
-            
-            // Draw alert radius wire
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, alertRadius);
-            
-            // Draw explosion radius 
-            Gizmos.color = new Color(1f, 0f, 0f, 0.2f); // Semi-transparent red
-            Gizmos.DrawSphere(transform.position, explosionRadius);
-            
-            // Draw explosion radius wire
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, explosionRadius);
-            
-            // Draw line connecting center to ground for better visibility
-            Gizmos.color = Color.white;
-            Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z));
-        }
     }
 }

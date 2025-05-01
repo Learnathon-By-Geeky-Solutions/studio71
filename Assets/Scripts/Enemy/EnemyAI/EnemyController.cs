@@ -244,23 +244,5 @@ namespace PatrolEnemy
                 ChangeState(EnemyStateType.Recovery);
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(Application.isPlaying ? InitialPosition : transform.position, patrolRange);
-
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, attackRange);
-
-            if (CurrentTarget != null)
-            {
-                Gizmos.color = HasLineOfSight ? Color.green : Color.yellow;
-                Gizmos.DrawLine(firePoint.position, CurrentTarget.position);
-            }
-        }
     }
 }

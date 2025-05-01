@@ -26,9 +26,18 @@ namespace SingletonManagers
                 {
                     _prefabDictionary[entry.name] = entry.prefab;
                     _particlePools[entry.name] = new Queue<ParticleSystem>();
+
+                    // Instantiate and pool particles at the start
+                    for (int i = 0; i < 2; i++) // Using a fixed size of 10 for pre-pooling
+                    {
+                        ParticleSystem particle = Instantiate(entry.prefab, transform);
+                        particle.gameObject.SetActive(false);
+                        _particlePools[entry.name].Enqueue(particle);
+                    }
                 }
             }
         }
+
         public void PlayParticle(string particleName, Vector3 position, Quaternion rotation)
         {
             if (!_prefabDictionary.ContainsKey(particleName))
@@ -65,4 +74,3 @@ namespace SingletonManagers
         }
     }
 }
-    

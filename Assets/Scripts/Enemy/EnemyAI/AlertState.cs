@@ -11,7 +11,7 @@ namespace PatrolEnemy
         {
             Debug.Log("Entered Alert State");
             alertTimer = 0f;
-            controller.AlertTime = 3f; // Reset alert countdown
+            controller.AlertTime = 1.6f; // Reset alert countdown
             controller.Agent.isStopped = true; // Stop moving while in alert state
         }
         

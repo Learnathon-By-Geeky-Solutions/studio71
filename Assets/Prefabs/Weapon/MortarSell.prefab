@@ -150,10 +150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7010665ae4690014f94c24ea886c0210, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionDelay: 15
-  _explosionRadius: 20
+  _explosionRadius: 4
   _explosionForce: 700
   _targetLayers:
     serializedVersion: 2
-    m_Bits: 0
-  _mortarDamage: 0
+    m_Bits: 776
+  _mortarDamage: 90

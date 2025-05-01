@@ -2,6 +2,7 @@ using System;
 using dialogue;
 using Player;
 using SingletonManagers;
+using UI.HUD;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 namespace UI
@@ -20,11 +21,13 @@ namespace UI
         [SerializeField] private GameObject soundMenuUI;
         [SerializeField] private GameObject pauseMenuButtons;
         private PlayerController _playerController;
+        private CursorManager _cursorManager;
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
         {
             _playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+            _cursorManager=gameObject.GetComponentInChildren<CursorManager>();
             if (_playerController == null)
             {
                 Debug.LogError("PlayerController not found in the scene.");
@@ -51,6 +54,7 @@ namespace UI
         {
             pauseMenuUI.SetActive(false);
             Time.timeScale = 1f;
+            _cursorManager.CursorChange();
             s_gameIsPaused = false;
             _playerController.enabled = true; // Enable player controls when resuming
             AudioManager.StopSound(SoundKeys.BackgroundMusic);
@@ -65,6 +69,7 @@ namespace UI
             {
                 pauseMenuUI.SetActive(true);
                 Time.timeScale = 0f;
+                _cursorManager.CursorChange();
                 s_gameIsPaused = true;
                 _playerController.enabled = false;
                 AudioManager.StopSound(SoundKeys.inGameSound);

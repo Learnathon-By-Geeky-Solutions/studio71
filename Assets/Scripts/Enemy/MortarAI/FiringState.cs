@@ -6,7 +6,7 @@ namespace MortarSystem
     public class FiringState : IMortarState
     {
         private float _reloadTimer = 0f;
-        private readonly float _reloadDuration = 5f; // Adjust reload duration as needed
+        private readonly float _reloadDuration = 10f; // Adjust reload duration as needed
 
         public void EnterState(MortarController mortar)
         {
@@ -101,7 +101,6 @@ namespace MortarSystem
                 mortar.VisualizeProjectilePath();
 
                 GameObject projectile = GameObject.Instantiate(mortar._ProjectilePrefab, startPosition, Quaternion.identity);
-                AudioManager.PlaySound(SoundKeys.GrenadeThrow);
                 Rigidbody projectileRb = projectile.GetComponent<Rigidbody>();
 
                 if (projectileRb != null)
