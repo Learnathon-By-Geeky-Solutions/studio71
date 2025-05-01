@@ -433,6 +433,7 @@ namespace dialogue
             // Update dialogue state and re-enable player controls AFTER animation completes
             IsDialogueOpen = false;
             EnablePlayerControl();
+            Destroy(GameObject.FindGameObjectWithTag("Npc").gameObject);
         }
         #endregion
     }
